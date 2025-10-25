@@ -180,7 +180,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color',
-                    'color' => get_theme_mod('secondary_color', '#BC9061'),
+                    'color' => get_theme_mod('secondary_color', '#F4F3EE'), // swapped -> tertiary default
                 ),
                 array(
                     'name'  => __(
@@ -188,7 +188,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color-dark',
-                    'color' => get_theme_mod('secondary_color_dark', '#9D7A55'),
+                    'color' => get_theme_mod('secondary_color_dark', '#E7E5DF'), // swapped -> tertiary dark
                 ),
                 array(
                     'name'  => __(
@@ -196,7 +196,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color-light',
-                    'color' => get_theme_mod('secondary_color_light', '#DCAB77'),
+                    'color' => get_theme_mod('secondary_color_light', '#FFFFFF'), // swapped -> tertiary light
                 ),
                 array(
                     'name'  => __(
@@ -204,7 +204,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color',
-                    'color' => get_theme_mod('tertiary_color', '#F4F3EE'),
+                    'color' => get_theme_mod('tertiary_color', '#BC9061'), // swapped -> secondary default
                 ),
                 array(
                     'name'  => __(
@@ -212,7 +212,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-dark',
-                    'color' => get_theme_mod('tertiary_color_dark', '#E7E5DF'),
+                    'color' => get_theme_mod('tertiary_color_dark', '#9D7A55'), // swapped -> secondary dark
                 ),
                 array(
                     'name'  => __(
@@ -220,7 +220,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-light',
-                    'color' => get_theme_mod('tertiary_color_light', '#FFFFFF'),
+                    'color' => get_theme_mod('tertiary_color_light', '#DCAB77'), // swapped -> secondary light
                 ),
                 array(
                     'name'  => __(

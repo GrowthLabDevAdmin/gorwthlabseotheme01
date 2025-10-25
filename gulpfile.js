@@ -4,7 +4,10 @@ const terser = require("gulp-terser");
 const sourcemaps = require("gulp-sourcemaps");
 
 const paths = {
-  scss_globals: "./styles/main.scss",
+  scss_globals: [
+    "./styles/**/*.scss",
+    "!./styles/page-templates/**",
+  ],
   scss_templates: "./styles/page-templates/*.scss",
   scss_blocks: "./blocks/**/*.scss",
   js: "./js/**/*.js",

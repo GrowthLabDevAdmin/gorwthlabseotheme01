@@ -5,14 +5,26 @@ Color scheme is defined in theme-functions/color-scheme.php by dynamic selection
 --primary-dark:      #08182f; // rgb(8, 24, 47)
 --primary-light:     #2C3D5B; // rgb(44, 61, 91)
 
---secondary:         #BC9061; // rgb(188, 144, 97)
---secondary-dark:    #9D7A55; // rgb(157, 122, 85)
---secondary-light:   #DCAB77; // rgb(220, 171, 119)
+--secondary:         #F4F3EE; // rgb(244, 243, 238)
+--secondary-dark:    #E7E5DF; // rgb(231, 229, 223)
+--secondary-light:   #FFFFFF; // rgb(255, 255, 255)
 
---tertiary:          #F4F3EE; // rgb(244, 243, 238)
---tertiary-dark:     #E7E5DF; // rgb(231, 229, 223)
---tertiary-light:    #FFFFFF; // rgb(255, 255, 255)
+--tertiary:          #BC9061; // rgb(188, 144, 97)
+--tertiary-dark:     #9D7A55; // rgb(157, 122, 85)
+--tertiary-light:    #DCAB77; // rgb(220, 171, 119)
 
 --text-color:        #15253f; // rgb(21, 37, 63)
 */
 
+:root {
+  //Fonts
+  --font-sans: "Open Sans", sans-serif;
+  --font-serif: "Fraunces", serif;
+
+  //Breakpoints
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-ldpi: 1024px;
+  --breakpoint-mdpi: 1200px;
+  --breakpoint-hdpi: 1440px;
+}
