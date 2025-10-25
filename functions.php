@@ -90,10 +90,10 @@ if (!function_exists('growthlabtheme01_setup')) {
         add_image_size('featured-small', 400, 267, true);
         add_image_size('thumb-grid', 300, 200, true);
 
-        //Tipography and Color Support
+        // Tipography and Color Support
         add_theme_support('appearance-tools');
 
-        //Font Sizes support
+        // Font Sizes support
         add_theme_support('editor-font-sizes', array(
             array(
                 'name' => esc_attr__(
@@ -146,7 +146,7 @@ if (!function_exists('growthlabtheme01_setup')) {
         ));
 
 
-        //Color Palette support
+        // Color Palette support
         add_theme_support(
             'editor-color-palette',
             array(
@@ -156,7 +156,23 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'primary-color',
-                    'color' => get_theme_mod('primary_color', ''),
+                    'color' => get_theme_mod('primary_color', '#15253f'),
+                ),
+                array(
+                    'name'  => __(
+                        'Primary Color Dark',
+                        'growthlabtheme01'
+                    ),
+                    'slug'  => 'primary-color-dark',
+                    'color' => get_theme_mod('primary_color_dark', '#08182f'),
+                ),
+                array(
+                    'name'  => __(
+                        'Primary Color Light',
+                        'growthlabtheme01'
+                    ),
+                    'slug'  => 'primary-color-light',
+                    'color' => get_theme_mod('primary_color_light', '#2C3D5B'),
                 ),
                 array(
                     'name'  => __(
@@ -164,7 +180,23 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color',
-                    'color' => get_theme_mod('secondary_color', ''),
+                    'color' => get_theme_mod('secondary_color', '#BC9061'),
+                ),
+                array(
+                    'name'  => __(
+                        'Secondary Color Dark',
+                        'growthlabtheme01'
+                    ),
+                    'slug'  => 'secondary-color-dark',
+                    'color' => get_theme_mod('secondary_color_dark', '#9D7A55'),
+                ),
+                array(
+                    'name'  => __(
+                        'Secondary Color Light',
+                        'growthlabtheme01'
+                    ),
+                    'slug'  => 'secondary-color-light',
+                    'color' => get_theme_mod('secondary_color_light', '#DCAB77'),
                 ),
                 array(
                     'name'  => __(
@@ -172,15 +204,23 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color',
-                    'color' => get_theme_mod('tertiary_color', ''),
+                    'color' => get_theme_mod('tertiary_color', '#F4F3EE'),
                 ),
                 array(
                     'name'  => __(
-                        'Light Grey Color',
+                        'Tertiary Color Dark',
                         'growthlabtheme01'
                     ),
-                    'slug'  => 'tertiary-color',
-                    'color' => get_theme_mod('light_grey', ''),
+                    'slug'  => 'tertiary-color-dark',
+                    'color' => get_theme_mod('tertiary_color_dark', '#E7E5DF'),
+                ),
+                array(
+                    'name'  => __(
+                        'Tertiary Color Light',
+                        'growthlabtheme01'
+                    ),
+                    'slug'  => 'tertiary-color-light',
+                    'color' => get_theme_mod('tertiary_color_light', '#FFFFFF'),
                 ),
                 array(
                     'name'  => __(
@@ -188,11 +228,13 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01 '
                     ),
                     'slug'  => 'text-color',
-                    'color' => get_theme_mod('text_color', ''),
+                    'color' => get_theme_mod('text_color', '#15253f'),
                 ),
             )
         );
 
+
+        // Register Navigation Menus
         register_nav_menus(
             array(
                 'primary' => esc_html__('Main Menu', 'growthlabtheme01')
@@ -219,7 +261,7 @@ function growthlabtheme01_scripts()
     /* wp_register_style('growthlabtheme01-template-default', get_template_directory_uri() . '/assets/scss/page-templates/template-default.css', array(), '1.0'); */
 
     // Global stylesheet.
-    wp_enqueue_style('growthlabtheme01-main-stylesheet', get_stylesheet_uri(), array(
+    wp_enqueue_style('growthlabtheme01-main-stylesheet', get_template_directory_uri() . "/styles/main.css", array(
         /*  'slick-min',
         'slick-theme-min' */), '1.0');
 

@@ -3,7 +3,7 @@ function theme_customize_register($wp_customize)
 {
     // Primary color
     $wp_customize->add_setting('primary_color', array(
-        'default'   => '',
+        'default'   => '#15253f',
         'transport' => 'refresh',
     ));
 
@@ -12,9 +12,29 @@ function theme_customize_register($wp_customize)
         'label'   => esc_html__('Primary Color', 'theme'),
     )));
 
+    $wp_customize->add_setting('primary_color_dark', array(
+        'default'   => '#08182f',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'primary_color_dark', array(
+        'section' => 'colors',
+        'label'   => esc_html__('Primary Color Dark', 'theme'),
+    )));
+
+    $wp_customize->add_setting('primary_color_light', array(
+        'default'   => '#2C3D5B',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'primary_color_light', array(
+        'section' => 'colors',
+        'label'   => esc_html__('Primary Color Light', 'theme'),
+    )));
+
     // Secondary color
     $wp_customize->add_setting('secondary_color', array(
-        'default'   => '',
+        'default'   => '#BC9061',
         'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
@@ -24,9 +44,31 @@ function theme_customize_register($wp_customize)
         'label'   => esc_html__('Secondary Color', 'theme'),
     )));
 
+    $wp_customize->add_setting('secondary_color_dark', array(
+        'default'   => '#9D7A55',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'secondary_color_dark', array(
+        'section' => 'colors',
+        'label'   => esc_html__('Secondary Color Dark', 'theme'),
+    )));
+
+    $wp_customize->add_setting('secondary_color_light', array(
+        'default'   => '#DCAB77',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'secondary_color_light', array(
+        'section' => 'colors',
+        'label'   => esc_html__('Secondary Color Light', 'theme'),
+    )));
+
     // Tertiary color
     $wp_customize->add_setting('tertiary_color', array(
-        'default'   => '',
+        'default'   => '#F4F3EE',
         'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
@@ -36,21 +78,31 @@ function theme_customize_register($wp_customize)
         'label'   => esc_html__('Tertiary Color', 'theme'),
     )));
 
-    // Light grey color
-    $wp_customize->add_setting('light_grey', array(
-        'default'   => '',
+    $wp_customize->add_setting('tertiary_color_dark', array(
+        'default'   => '#E7E5DF',
         'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
 
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'light_grey', array(
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'tertiary_color_dark', array(
         'section' => 'colors',
-        'label'   => esc_html__('Light Grey Color', 'theme'),
+        'label'   => esc_html__('Tertiary Color Dark', 'theme'),
+    )));
+
+    $wp_customize->add_setting('tertiary_color_light', array(
+        'default'   => '#FFFFFF',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'tertiary_color_light', array(
+        'section' => 'colors',
+        'label'   => esc_html__('Tertiary Color Light', 'theme'),
     )));
 
     // Text Color
     $wp_customize->add_setting('text_color', array(
-        'default'   => '',
+        'default'   => '#15253f',
         'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
@@ -69,9 +121,14 @@ function theme_get_customizer_css()
 
     $colorsHex = array(
         "primary_color" => get_theme_mod('primary_color', ''),
+        "primary_color" => get_theme_mod('primary_color_dark', ''),
+        "primary_color" => get_theme_mod('primary_color_light', ''),
         "secondary_color" => get_theme_mod('secondary_color', ''),
+        "secondary_color" => get_theme_mod('secondary_color_dark', ''),
+        "secondary_color" => get_theme_mod('secondary_color_light', ''),
         "tertiary_color" => get_theme_mod('tertiary_color', ''),
-        "light_grey" => get_theme_mod('light_grey', ''),
+        "tertiary_color" => get_theme_mod('tertiary_color_dark', ''),
+        "tertiary_color" => get_theme_mod('tertiary_color_light', ''),
         "text_color" => get_theme_mod('text_color', '')
     );
 
@@ -89,11 +146,16 @@ function theme_get_customizer_css()
     if (!empty($colorsRGB)):
 ?>
         :root {
-        --primary-color: <?= $colorsRGB['primary_color'] ? $colorsRGB['primary_color'] : '223, 215, 205'  ?>;
-        --secondary-color: <?= $colorsRGB['secondary_color'] ? $colorsRGB['secondary_color'] : '171, 162, 153' ?>;
-        --tertiary-color: <?= $colorsRGB['tertiary_color'] ? $colorsRGB['tertiary_color'] : '89, 82, 78' ?>;
-        --light-grey: <?= $colorsRGB['light_grey'] ? $colorsRGB['light_grey'] : '247, 244, 239' ?>;
-        --text-color: <?= $colorsRGB['text_color'] ? $colorsRGB['text_color'] : '89, 82, 78' ?>;
+        --primary-color: <?= $colorsRGB['primary_color'] ? $colorsRGB['primary_color'] : '21, 37, 63'  ?>;
+        --primary-color-dark: <?= $colorsRGB['primary_color_dark'] ? $colorsRGB['primary_color_dark'] : '8, 24 , 47'  ?>;
+        --primary-color-light: <?= $colorsRGB['primary_color_light'] ? $colorsRGB['primary_color_light'] : '44, 61, 91'  ?>;
+        --secondary-color: <?= $colorsRGB['secondary_color'] ? $colorsRGB['secondary_color'] : '188, 144, 97' ?>;
+        --secondary-color-dark: <?= $colorsRGB['secondary_color_dark'] ? $colorsRGB['secondary_color_dark'] : '157, 122, 85' ?>;
+        --secondary-color-light: <?= $colorsRGB['secondary_color_light'] ? $colorsRGB['secondary_color_light'] : '220, 171, 119' ?>;
+        --tertiary-color: <?= $colorsRGB['tertiary_color'] ? $colorsRGB['tertiary_color'] : '244, 243, 238' ?>;
+        --tertiary-color-dark: <?= $colorsRGB['tertiary_color_dark'] ? $colorsRGB['tertiary_color_dark'] : '231, 229, 223' ?>;
+        --tertiary-color-light: <?= $colorsRGB['tertiary_color_light'] ? $colorsRGB['tertiary_color_light'] : '255, 255, 255' ?>;
+        --text-color: <?= $colorsRGB['text_color'] ? $colorsRGB['text_color'] : '21, 37, 63' ?>;
         }
 <?php
     endif;
