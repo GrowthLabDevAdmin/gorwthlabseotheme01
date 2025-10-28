@@ -1,3 +1,5 @@
+@use "variables" as v;
+
 * {
   margin: 0;
   padding: 0;
@@ -32,7 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
 
-  @media (min-width: var(--breakpoint-tablet)) {
+  @media (min-width: v.$tablet) {
     font-size: 1.8rem;
     line-height: 3.2rem;
   }
@@ -82,11 +84,11 @@ h1 *,
 .h1 * {
   font-size: 4rem;
 
-  @media (min-width: var(--breakpoint-tablet)) {
+  @media (min-width: v.$tablet) {
     font-size: 6.4rem;
   }
 
-  @media (min-width: var(--breakpoint-mdpi)) {
+  @media (min-width: v.$mdpi) {
     font-size: 10.8rem;
   }
 }
@@ -95,7 +97,7 @@ h2,
 .h2 {
   font-size: 4rem;
 
-  @media (min-width: var(--breakpoint-mdpi)) {
+  @media (min-width: v.$mdpi) {
     font-size: 4.8rem;
   }
 }
@@ -106,7 +108,7 @@ h3,
 h3 * {
   font-size: 3.2rem;
 
-  @media (min-width: var(--breakpoint-mdpi)) {
+  @media (min-width: v.$mdpi) {
     font-size: 3.6rem;
   }
 }
@@ -117,7 +119,7 @@ h4,
 h4 * {
   font-size: 2.4rem;
 
-  @media (min-width: var(--breakpoint-mdpi)) {
+  @media (min-width: v.$mdpi) {
     font-size: 3.2rem;
   }
 }
@@ -138,11 +140,13 @@ h6 * {
 
 /*Links*/
 a {
+  text-decoration: none;
   font-family: var(--font-sans);
   color: rgb(var(--tertiary));
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 1.5;
+  transition: 0.3s ease-in-out;
 }
 
 a:hover,
@@ -186,13 +190,9 @@ p {
 
 //Utilidades
 .container {
-  max-width: 1230px;
-  width: 90%;
+  max-width: 1320px;
+  width: calc(100% - 3.2rem);
   margin: 0 auto;
-
-  &.page {
-    padding: 8rem 0;
-  }
 }
 
 .txt-center {
@@ -204,7 +204,7 @@ p {
   font-family: var(--font-sans);
   color: rgba(var(--text), 1);
   line-height: 3.4rem;
-  @media (min-width: var(--breakpoint-tablet)) {
+  @media (min-width: v.$tablet) {
     font-size: 1.8rem;
     line-height: 3.2rem;
   }
@@ -219,7 +219,7 @@ p {
     font-weight: 400;
     line-height: 3.4rem;
     vertical-align: text-top;
-    @media (min-width: var(--breakpoint-tablet)) {
+    @media (min-width: v.$tablet) {
       font-size: 1.8rem;
       line-height: 3.2rem;
     }
@@ -235,12 +235,12 @@ p {
   line-height: 3.2rem;
   text-transform: capitalize;
 
-  @media (min-width: var(--breakpoint-tablet)) {
+  @media (min-width: v.$tablet) {
     font-size: 3rem;
     line-height: 3.4rem;
   }
 
-  @media (min-width: var(--breakpoint-ldpi)) {
+  @media (min-width: v.$ldpi) {
     font-size: 4rem;
     line-height: 4.4rem;
   }
@@ -265,13 +265,16 @@ p {
 }
 
 /* Buttons */
-[type="submit"],
 .btn {
   min-width: fit-content;
   padding: 1.6rem 2.4rem;
   display: inline-block;
-  border-radius: 3.2rem;
+  border-radius: 32px;
   transition: 0.3s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   & > * {
     font-family: var(--font-sans);
@@ -280,44 +283,56 @@ p {
     font-weight: 700;
   }
 
-  &.primary {
+  &--primary {
     background: rgb(var(--primary));
-    color: rgb(var(--secondary-light));
+
+    span {
+      color: rgb(var(--secondary-light));
+    }
 
     &:hover {
-      background: rgb(var(--primary-light), 1);
+      background: rgb(var(--primary-light));
     }
   }
 
-  &.secondary {
+  &--secondary {
     background: rgb(var(--secondary-dark));
-    color: rgb(var(--secondary-light));
+
+    span {
+      color: rgb(var(--secondary-light));
+    }
 
     &:hover {
-      background: rgb(var(--secondary), 1);
+      background: rgb(var(--secondary));
     }
   }
 
-  &.tertiary {
+  &--tertiary {
     background: rgb(var(--tertiary));
-    color: rgb(var(--secondary-light));
+
+    span {
+      color: rgb(var(--secondary-light));
+    }
 
     &:hover {
-      background: rgb(var(--tertiary-light), 1);
+      background: rgb(var(--tertiary-light));
     }
   }
 
-  &.arrow {
+  &--arrow {
     padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    &::after {
-      content: "\2192";
-      margin-left: 1rem;
-      display: inline-block;
-      font-size: 2.5rem;
+    span {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        margin-left: 6px;
+        display: block;
+      }
     }
   }
 }
@@ -337,7 +352,7 @@ p {
     font-size: 2rem;
     line-height: 2.4rem;
     font-weight: bold;
-    @media (min-width: var(--breakpoint-tablet)) {
+    @media (min-width: v.$tablet) {
       font-size: 1.8rem;
       line-height: 3.2rem;
     }

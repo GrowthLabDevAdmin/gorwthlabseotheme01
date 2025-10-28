@@ -81,6 +81,17 @@ if (!function_exists('growthlabtheme01_setup')) {
 		*/
         add_theme_support('post-thumbnails', array('post', 'page'));
 
+        // Custom Logo Support
+        $defaults = array(
+            'height'               => 200,
+            'width'                => 360,
+            'flex-height'          => true,
+            'flex-width'           => true,
+            'unlink-homepage-logo' => true,
+        );
+
+        add_theme_support('custom-logo', $defaults);
+
         //Add custom sized images
         add_image_size('hero-desktop', 1920, 1080, true);
         add_image_size('hero-tablet', 1280, 720, true);
@@ -237,7 +248,12 @@ if (!function_exists('growthlabtheme01_setup')) {
         // Register Navigation Menus
         register_nav_menus(
             array(
-                'primary' => esc_html__('Main Menu', 'growthlabtheme01')
+                'main' => esc_html__('Main Menu', 'growthlabtheme01')
+            )
+        );
+        register_nav_menus(
+            array(
+                'main_es' => esc_html__('Main Menu Spanish', 'growthlabtheme01')
             )
         );
     }
@@ -261,7 +277,7 @@ function growthlabtheme01_scripts()
     /* wp_register_style('growthlabtheme01-template-default', get_template_directory_uri() . '/assets/scss/page-templates/template-default.css', array(), '1.0'); */
 
     // Global stylesheet.
-    wp_enqueue_style('growthlabtheme01-main-stylesheet', get_template_directory_uri() . "/styles/main.css", array(
+    wp_enqueue_style('growthlabtheme01-main-stylesheet', get_template_directory_uri() . "/styles/main-min.css", array(
         /*  'slick-min',
         'slick-theme-min' */), '1.0');
 
@@ -269,7 +285,7 @@ function growthlabtheme01_scripts()
     /* wp_register_script('slick-min', get_template_directory_uri() . '/assets/js/slick-min.js', array('jquery'), '1.0', ['in_footer' => true]); */
 
     // Main JS scripts.
-    /*  wp_enqueue_script('growthlabtheme01-main-scripts', get_template_directory_uri() . '/assets/js/main-min.js', array('jquery', 'slick-min'), '1.0.6', true); */
+    wp_enqueue_script('growthlabtheme01-main-scripts', get_template_directory_uri() . '/js/main-min.js', array(), '1.0', true);
 
     // Load specific template stylesheet
     /* if (is_page()) {
@@ -362,8 +378,8 @@ function get_yt_code($url = false)
 add_filter('gform_disable_css', '__return_true');
 add_filter('gform_init_scripts_footer', '__return_true');
 
-
 include locate_template('theme-functions/acf-functions.php');
 include locate_template('theme-functions/color-scheme.php');
 include locate_template('theme-functions/svg-support.php');
 include locate_template('theme-functions/picture-optimization.php');
+include locate_template('theme-functions/helpers.php');

@@ -21,10 +21,11 @@ Color scheme is defined in theme-functions/color-scheme.php by dynamic selection
   --font-sans: "Open Sans", sans-serif;
   --font-serif: "Fraunces", serif;
 
-  //Breakpoints
-  --breakpoint-mobile: 480px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-ldpi: 1024px;
-  --breakpoint-mdpi: 1200px;
-  --breakpoint-hdpi: 1440px;
 }
+
+//Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$ldpi: 1024px;
+$mdpi: 1200px;
+$hdpi: 1440px;
