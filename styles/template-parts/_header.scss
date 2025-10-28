@@ -29,9 +29,9 @@
     }
 
     @media (min-width: v.$mdpi) {
-      grid-template-columns: 1fr 4fr 1fr 1fr;
+      grid-template-columns: 2fr 8fr 2fr 3fr;
       row-gap: 2.8rem;
-      column-gap: 1.6rem;
+      column-gap: 1.2rem;
     }
   }
 
@@ -204,11 +204,12 @@
     position: relative;
 
     @media (min-width: v.$tablet) {
+      width: fit-content;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    
+
     a {
       width: 100%;
       height: 100%;
@@ -223,7 +224,7 @@
 
       @media (min-width: v.$tablet) {
         height: auto;
-        padding: 1rem;
+        padding: 1.2rem;
         background-color: transparent;
         border: none;
       }
@@ -268,6 +269,10 @@
       flex-direction: column;
 
       @media (min-width: v.$tablet) {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
         &:hover {
           .sub-menu {
             & > .menu-item {
@@ -299,9 +304,9 @@
           content: "\276F";
           width: 2rem;
           height: 2rem;
-          top: 50%;
-          right: -5px;
-          transform: translateY(-50%) rotate(90deg);
+          position: static;
+          transform-origin: center;
+          transform: rotate(90deg);
           color: rgb(var(--tertiary));
         }
       }
@@ -320,14 +325,25 @@
       }
 
       & > .menu-item {
+        min-width: 100%;
+        width: fit-content;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease-out;
 
+        @media (min-width: v.$tablet) {
+          background-color: rgb(var(--primary-light));
+
+          &:hover {
+            background-color: rgb(var(--primary-dark));
+          }
+        }
+
         &-has-children {
           @media (min-width: v.$tablet) {
             &::after {
-              transform: translateY(-50%) rotate(0);
+              position: static;
+              transform: rotate(0);
             }
 
             &:hover {
@@ -337,16 +353,6 @@
                 overflow: visible;
               }
             }
-          }
-        }
-      }
-
-      a {
-        @media (min-width: v.$tablet) {
-          background-color: rgb(var(--primary-light));
-
-          &:hover {
-            background-color: rgb(var(--primary-dark));
           }
         }
       }
@@ -370,7 +376,6 @@
         transform: rotate(180deg);
       }
     }
-    
   }
 
   .callout {
@@ -425,6 +430,7 @@
 
     @media (min-width: v.$tablet) {
       padding: 1.6rem 2.4rem;
+      aspect-ratio: unset;
       border-radius: 32px;
     }
 

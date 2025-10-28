@@ -2,16 +2,14 @@ const { parallel, src, dest, watch } = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
 const terser = require("gulp-terser");
 const sourcemaps = require("gulp-sourcemaps");
-const rename = require("gulp-rename"); // Añade esta línea
+const rename = require("gulp-rename");
+const postcss = require("gulp-postcss");
+const autoprefixer = require("autoprefixer");
 
 const paths = {
   scss_globals: ["./styles/**/*.scss", "!./styles/page-templates/**"],
   scss_blocks: "./blocks/**/*.scss",
-  js: [
-    "./js/**/*.js",
-    "!./js/**/*-min.js", // Excluir archivos ya minificados
-    "!./js/**/*.min.js", // Por si hay archivos con .min.js
-  ],
+  js: ["./js/**/*.js", "!./js/**/*-min.js", "!./js/**/*.min.js"],
   js_blocks: [
     "./blocks/**/*.js",
     "!./blocks/**/*-min.js",
@@ -21,25 +19,27 @@ const paths = {
 
 function buildStyles() {
   return src(paths.scss_globals)
+    .pipe(sourcemaps.init())
     .pipe(sass({ style: "compressed" }).on("error", sass.logError))
+    .pipe(postcss([autoprefixer()]))
     .pipe(
       rename(function (path) {
         path.basename += "-min";
       })
     )
-    .pipe(sourcemaps.init())
     .pipe(sourcemaps.write("./"))
     .pipe(dest("./styles/"));
 }
 function buildStylesBlocks() {
   return src(paths.scss_blocks)
+    .pipe(sourcemaps.init())
     .pipe(sass({ style: "compressed" }).on("error", sass.logError))
+    .pipe(postcss([autoprefixer()]))
     .pipe(
       rename(function (path) {
         path.basename += "-min";
       })
     )
-    .pipe(sourcemaps.init())
     .pipe(sourcemaps.write("./"))
     .pipe(dest("./blocks/"));
 }
