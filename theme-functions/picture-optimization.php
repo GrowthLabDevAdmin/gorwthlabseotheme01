@@ -3,362 +3,182 @@
 /**
  * Responsive Image Helper Functions
  * Generates <picture> elements with WebP support and multiple breakpoints
- */
-
-$GLOBALS['breakpoints'] = [
-    'mobile' => '',
-    'tablet' => '810px',
-    'ldpi' => '1024px',
-    'mdpi' => '1280px',
-    'hdpi' => '1480px',
-];
-
-$GLOBALS['sizes'] = [
-    'featured-small',
-    'hero-mobile',
-    'hero-tablet',
-    'hero-desktop',
-    'full',
-];
-
-// Cache for image metadata to avoid repeated database queries
-$GLOBALS['img_metadata_cache'] = [];
-
-/**
- * Main function to generate responsive picture element
  *
- * @param array|string $img Main image (array from ACF or URL string)
- * @param array|string $mobile_img Mobile-specific image
- * @param array|string $tablet_img Tablet-specific image
- * @param string $size Size to use ('thumbnail', 'medium', 'large', 'full')
- * @param string $classes CSS classes for picture element
- * @param string $id HTML id attribute
- * @param string $alt_text Alternative text (overrides image alt)
- * @param bool $is_cover Whether this is a cover/hero image
- * @param string $img_attr Additional img attributes (use with caution)
- * @param bool $is_priority Whether this is an above-the-fold priority image
- * @return string HTML picture element
+ * This version:
+ * - Detects image sizes registered by WP (including custom add_image_size in functions.php)
+ * - Maps sizes to breakpoints using heuristics
+ * - Generates sources (including WebP if available) for each breakpoint
  */
-function img_print(
-    array|string $img,
-    array|string $mobile_img = [],
-    array|string $tablet_img = [],
-    string $size = 'full',
-    string $classes = '',
-    string $id = '',
-    string $alt_text = '',
-    bool $is_cover = false,
-    string $img_attr = '',
-    bool $is_priority = false
-): string {
-    if (empty($img)) {
-        return '';
-    }
-
-    // Validate size parameter
-    if (!in_array($size, $GLOBALS['sizes'], true)) {
-        $size = 'full';
-    }
-
-    // Get main image fields
-    $img_fields = img_get_fields($img);
-
-    // Handle SVG images separately
-    if (in_array($img_fields['type'], ['image/svg+xml', 'image/svg'], true)) {
-        return image_to_svg($img);
-    }
-
-    // Get WebP version if available
-    $img_webp_fields = img_evaluate_webp($img_fields['urls']['full'])
-        ? img_get_fields($img_fields['urls']['full'], true)
-        : null;
-
-    // Prepare attributes
-    $attrs = img_prepare_attributes($id, $classes, $alt_text, $img_fields['alt'], $img_attr, $is_priority);
-
-    // Build picture element based on configuration
-    if ($size === 'thumbnail') {
-        return img_build_thumbnail($img_fields, $img_webp_fields, $attrs);
-    }
-
-    if ($is_cover && empty($tablet_img) && empty($mobile_img)) {
-        return img_build_simple_cover($img_fields, $img_webp_fields, $size, $attrs);
-    }
-
-    return img_build_responsive_picture(
-        $img_fields,
-        $img_webp_fields,
-        $mobile_img,
-        $tablet_img,
-        $size,
-        $is_cover,
-        $attrs
-    );
-}
 
 /**
- * Prepare and sanitize HTML attributes
+ * SUGGESTED BREAKPOINTS (adjustable)
+ * - mobile : 0 - 599
+ * - tablet : 600 - 1023
+ * - ldpi   : 1024 - 1199
+ * - mdpi   : 1200 - 1439
+ * - hdpi   : 1440+
  */
-function img_prepare_attributes(
-    string $id,
-    string $classes,
-    string $alt_text,
-    string $fallback_alt,
-    string $img_attr,
-    bool $is_priority
-): array {
-    return [
-        'id' => $id ? esc_attr($id) : '',
-        'class' => $classes ? esc_attr($classes) : '',
-        'alt' => esc_attr($alt_text ?: $fallback_alt),
-        'loading' => $is_priority ? 'eager' : 'lazy',
-        'fetchpriority' => $is_priority ? 'high' : 'auto',
-        'decoding' => 'async',
-        'extra' => $img_attr ? ' ' . wp_kses_post($img_attr) : '',
+$GLOBALS['breakpoints'] = [
+    'mobile' => '0px',
+    'tablet' => '600px',
+    'ldpi'   => '1024px',
+    'mdpi'   => '1200px',
+    'hdpi'   => '1440px',
+];
+
+// Initialize size list: read WP registered sizes and ensure 'full' exists
+function po_init_sizes() {
+    $sizes = function_exists('get_intermediate_image_sizes') ? (array) get_intermediate_image_sizes() : [];
+    // ensure 'full' is present
+    if (!in_array('full', $sizes, true)) {
+        $sizes[] = 'full';
+    }
+    // normalize to indexed array
+    $GLOBALS['sizes'] = array_values($sizes);
+}
+po_init_sizes();
+
+// Optional explicit mapping (complements heuristics)
+$GLOBALS['preferred_size_map'] = [
+    // Add explicit mappings here if needed:
+    // 'hero-desktop' => 'mdpi',
+    // 'hero-tablet'  => 'ldpi',
+    // 'hero-mobile'  => 'mobile',
+    // 'featured-large'=> 'mdpi',
+    // 'featured-medium'=> 'tablet',
+    // 'featured-small'=> 'mobile',
+];
+
+// Heuristic: map a WP image size name to a breakpoint
+function po_map_size_to_breakpoint(string $size): string {
+    // Honor explicit overrides set by user first
+    if (!empty($GLOBALS['preferred_size_map'][$size])) {
+        return $GLOBALS['preferred_size_map'][$size];
+    }
+
+    $s = strtolower($size);
+
+    // Keep a small set of guaranteed manual mappings for your custom sizes
+    $manual_overrides = [
+        'hero-desktop'   => 'mdpi',
+        'hero-tablet'    => 'ldpi',
+        'hero-mobile'    => 'mobile',
+        'featured-large' => 'mdpi',
+        'featured-medium'=> 'tablet',
+        'featured-small' => 'mobile',
+        'thumb-grid'     => 'mobile',
     ];
-}
 
-/**
- * Build simple thumbnail picture element
- */
-function img_build_thumbnail(array $img_fields, ?array $img_webp_fields, array $attrs): string
-{
-    $sources = [];
-
-    if ($img_webp_fields) {
-        $sources[] = img_create_source_tag(
-            $img_webp_fields['urls']['thumbnail'],
-            $img_webp_fields['type']
-        );
+    // If the size is one of your registered custom names and has a manual mapping, return it
+    if (isset($manual_overrides[$s]) && in_array($s, $GLOBALS['sizes'], true)) {
+        return $manual_overrides[$s];
     }
 
-    $img_tag = img_create_img_tag(
-        $img_fields['urls']['thumbnail'],
-        $img_fields['sizes']['thumbnail']['width'],
-        $img_fields['sizes']['thumbnail']['height'],
-        $attrs
-    );
+    // Build a map of registered sizes => widths (when available)
+    global $_wp_additional_image_sizes;
+    $sizes_with_width = [];
 
-    return img_wrap_picture($sources, $img_tag, $attrs);
-}
-
-/**
- * Build simple cover image (no responsive variants)
- */
-function img_build_simple_cover(array $img_fields, ?array $img_webp_fields, string $size, array $attrs): string
-{
-    $sources = [];
-
-    if ($img_webp_fields) {
-        $sources[] = img_create_source_tag(
-            $img_webp_fields['urls'][$size],
-            $img_webp_fields['type']
-        );
-    }
-
-    $img_tag = img_create_img_tag(
-        $img_fields['urls'][$size],
-        $img_fields['sizes'][$size]['width'],
-        $img_fields['sizes'][$size]['height'],
-        $attrs
-    );
-
-    return img_wrap_picture($sources, $img_tag, $attrs);
-}
-
-/**
- * Build full responsive picture element with breakpoints
- */
-function img_build_responsive_picture(
-    array $img_fields,
-    ?array $img_webp_fields,
-    array|string $mobile_img,
-    array|string $tablet_img,
-    string $size,
-    bool $is_cover,
-    array $attrs
-): string {
-    $sources = [];
-
-    // Desktop sources
-    if ($size === 'full' || $is_cover) {
-        $media_breakpoint = img_determine_media_breakpoint($mobile_img, $tablet_img);
-        $sources = array_merge($sources, img_create_desktop_sources(
-            $img_fields,
-            $img_webp_fields,
-            $size,
-            $media_breakpoint
-        ));
-    }
-
-    // Tablet sources
-    if (!empty($tablet_img)) {
-        $sources = array_merge($sources, img_create_device_sources(
-            $tablet_img,
-            'tablet'
-        ));
-    }
-
-    // Mobile sources (fallback)
-    if (!empty($mobile_img)) {
-        $mobile_fields = img_get_fields($mobile_img);
-        $mobile_webp_fields = img_evaluate_webp($mobile_fields['urls']['full'])
-            ? img_get_fields($mobile_fields['urls']['full'], true)
-            : null;
-
-        if ($mobile_webp_fields) {
-            $sources[] = img_create_source_tag(
-                $mobile_webp_fields['urls']['full'],
-                $mobile_webp_fields['type']
-            );
+    foreach ($GLOBALS['sizes'] as $registered_size) {
+        $k = strtolower($registered_size);
+        if (!empty($_wp_additional_image_sizes[$registered_size]['width'])) {
+            $sizes_with_width[$k] = (int) $_wp_additional_image_sizes[$registered_size]['width'];
+            continue;
         }
 
-        $img_tag = img_create_img_tag(
-            $mobile_fields['urls']['full'],
-            $mobile_fields['sizes']['full']['width'],
-            $mobile_fields['sizes']['full']['height'],
-            $attrs
-        );
-
-        return img_wrap_picture($sources, $img_tag, $attrs);
+        // WP default sizes stored in options (may be 0 => unconstrained)
+        switch ($registered_size) {
+            case 'thumbnail':
+                $sizes_with_width[$k] = (int) get_option('thumbnail_size_w');
+                break;
+            case 'medium':
+                $sizes_with_width[$k] = (int) get_option('medium_size_w');
+                break;
+            case 'medium_large':
+                // medium_large is sometimes stored differently; try option then fallback 768
+                $sizes_with_width[$k] = (int) get_option('medium_large_size_w') ?: (int) get_option('medium_size_w');
+                break;
+            case 'large':
+                $sizes_with_width[$k] = (int) get_option('large_size_w');
+                break;
+            case 'full':
+            default:
+                // unknown/default: set 0 to indicate "no specific width"
+                $sizes_with_width[$k] = 0;
+                break;
+        }
     }
 
-    // Standard responsive sizes
-    if ($size !== 'full' && !$is_cover) {
-        $sources = array_merge($sources, img_create_size_based_sources(
-            $img_fields,
-            $img_webp_fields,
-            $size
-        ));
+    // If we have a numeric width for this size, map it to breakpoint by thresholds
+    $width = $sizes_with_width[$s] ?? 0;
+    if ($width > 0) {
+        // Thresholds chosen to match suggested breakpoints:
+        // mobile <=599, tablet <=1023, ldpi <=1199, mdpi <=1439, hdpi >=1440
+        if ($width <= 599) {
+            return 'mobile';
+        }
+        if ($width <= 1023) {
+            return 'tablet';
+        }
+        if ($width <= 1199) {
+            return 'ldpi';
+        }
+        if ($width <= 1439) {
+            return 'mdpi';
+        }
+        return 'hdpi';
     }
 
-    // Fallback img tag
-    $fallback_size = ($size === 'full' || $is_cover) ? $size : 'medium';
-    $img_tag = img_create_img_tag(
-        $img_fields['urls'][$fallback_size],
-        $img_fields['sizes'][$fallback_size]['width'],
-        $img_fields['sizes'][$fallback_size]['height'],
-        $attrs
-    );
-
-    return img_wrap_picture($sources, $img_tag, $attrs);
-}
-
-/**
- * Determine appropriate media breakpoint based on available images
- */
-function img_determine_media_breakpoint(array|string $mobile_img, array|string $tablet_img): string
-{
-    if (!empty($mobile_img) && !empty($tablet_img)) {
-        return 'mdpi';
-    } elseif (!empty($mobile_img)) {
-        return 'ldpi';
+    // Fall back to exact name matches for known WP defaults or clear names
+    $defaults = [
+        'thumbnail'    => 'mobile',
+        'medium'       => 'tablet',
+        'medium_large' => 'tablet',
+        'large'        => 'ldpi',
+        'full'         => 'hdpi',
+    ];
+    if (isset($defaults[$s])) {
+        return $defaults[$s];
     }
+
+    // Token-based boundary matching as a last resort (match whole token separated by '-' or '_')
+    // This avoids accidental matches inside other words (e.g. "automobile")
+    $token_map = [
+        'mobile'  => 'mobile',
+        'tablet'  => 'tablet',
+        'ldpi'    => 'ldpi',
+        'mdpi'    => 'mdpi',
+        'hdpi'    => 'hdpi',
+        'hero'    => 'mdpi',
+        'featured'=> 'mdpi',
+        'thumb'   => 'mobile',
+        'small'   => 'mobile',
+        'large'   => 'ldpi',
+        'desktop' => 'mdpi',
+    ];
+
+    foreach ($token_map as $token => $bp) {
+        if (preg_match('/(^|[-_])' . preg_quote($token, '/') . '($|[-_])/', $s)) {
+            return $bp;
+        }
+    }
+
+    // Final fallback
     return 'hdpi';
 }
 
-/**
- * Create desktop source tags
- */
-function img_create_desktop_sources(
-    array $img_fields,
-    ?array $img_webp_fields,
-    string $size,
-    string $breakpoint
-): array {
-    $sources = [];
-    $media = "(min-width: {$GLOBALS['breakpoints'][$breakpoint]})";
-
-    if ($img_webp_fields) {
-        $sources[] = img_create_source_tag(
-            $img_webp_fields['urls'][$size],
-            $img_webp_fields['type'],
-            $media
-        );
-    }
-
-    $sources[] = img_create_source_tag(
-        $img_fields['urls'][$size],
-        $img_fields['type'],
-        $media
-    );
-
-    return $sources;
-}
-
-/**
- * Create device-specific source tags (tablet/mobile)
- */
-function img_create_device_sources(array|string $device_img, string $device_type): array
-{
-    $sources = [];
-    $device_fields = img_get_fields($device_img);
-    $device_webp_fields = img_evaluate_webp($device_fields['urls']['full'])
-        ? img_get_fields($device_fields['urls']['full'], true)
-        : null;
-
-    $media = "(min-width: {$GLOBALS['breakpoints'][$device_type]})";
-
-    if ($device_webp_fields) {
-        $sources[] = img_create_source_tag(
-            $device_webp_fields['urls']['full'],
-            $device_webp_fields['type'],
-            $media
-        );
-    }
-
-    $sources[] = img_create_source_tag(
-        $device_fields['urls']['full'],
-        $device_fields['type'],
-        $media
-    );
-
-    return $sources;
-}
-
-/**
- * Create size-based source tags for responsive images
- */
-function img_create_size_based_sources(
-    array $img_fields,
-    ?array $img_webp_fields,
-    string $target_size
-): array {
-    $sources = [];
-    $available_sizes = array_values(array_diff($GLOBALS['sizes'], ['thumbnail', 'full']));
-    $size_index = array_search($target_size, $available_sizes, true);
-
-    if ($size_index === false) {
-        return $sources;
-    }
-
-    $breakpoint_values = array_values($GLOBALS['breakpoints']);
-
-    for ($i = $size_index; $i >= 0; $i--) {
-        $current_size = $available_sizes[$i];
-        $media = ($i !== 0) ? "(min-width: {$breakpoint_values[$i]})" : null;
-
-        if ($img_webp_fields) {
-            $sources[] = img_create_source_tag(
-                $img_webp_fields['urls'][$current_size],
-                $img_webp_fields['type'],
-                $media
-            );
+// Return preferred WP size name for a given breakpoint (searching sizes by priority)
+function po_get_preferred_size_for_breakpoint(string $breakpoint): ?string {
+    // prefer larger/custom sizes by reversing the registered list
+    $sizes = array_reverse($GLOBALS['sizes']);
+    foreach ($sizes as $size) {
+        if (po_map_size_to_breakpoint($size) === $breakpoint) {
+            return $size;
         }
-
-        $sources[] = img_create_source_tag(
-            $img_fields['urls'][$current_size],
-            $img_fields['type'],
-            $media
-        );
     }
-
-    return $sources;
+    return null;
 }
 
-/**
- * Create a source tag
- */
+// Helpers: create <source> and <img> tags
 function img_create_source_tag(string $srcset, string $type, ?string $media = null): string
 {
     $srcset_attr = "srcset='" . esc_url($srcset) . "'";
@@ -368,30 +188,26 @@ function img_create_source_tag(string $srcset, string $type, ?string $media = nu
     return "<source {$srcset_attr} {$type_attr}{$media_attr}>";
 }
 
-/**
- * Create an img tag
- */
-function img_create_img_tag(string $src, int $width, int $height, array $attrs): string
+function img_create_img_tag(string $src, int $width = 0, int $height = 0, array $attrs = []): string
 {
     $src_attr = "src='" . esc_url($src) . "'";
-    $width_attr = "width='" . (int)$width . "'";
-    $height_attr = "height='" . (int)$height . "'";
-    $alt_attr = "alt='{$attrs['alt']}'";
-    $loading_attr = "loading='{$attrs['loading']}'";
-    $fetchpriority_attr = $attrs['fetchpriority'] !== 'auto' ? " fetchpriority='{$attrs['fetchpriority']}'" : '';
-    $decoding_attr = "decoding='{$attrs['decoding']}'";
+    $width_attr = $width ? "width='" . (int)$width . "'" : '';
+    $height_attr = $height ? "height='" . (int)$height . "'" : '';
+    $alt_attr = "alt='" . esc_attr($attrs['alt'] ?? '') . "'";
+    $loading_attr = "loading='" . ($attrs['loading'] ?? 'lazy') . "'";
+    $fetchpriority_attr = (!empty($attrs['fetchpriority']) && $attrs['fetchpriority'] !== 'auto') ? " fetchpriority='{$attrs['fetchpriority']}'" : '';
+    $decoding_attr = "decoding='" . ($attrs['decoding'] ?? 'async') . "'";
+    $extra = $attrs['extra'] ?? '';
 
-    return "<img {$src_attr} {$width_attr} {$height_attr} {$alt_attr} {$loading_attr}{$fetchpriority_attr} {$decoding_attr}{$attrs['extra']}>";
+    $parts = array_filter([$src_attr, $width_attr, $height_attr, $alt_attr, $loading_attr . $fetchpriority_attr, $decoding_attr]);
+    return "<img " . implode(' ', $parts) . "{$extra}>";
 }
 
-/**
- * Wrap sources and img tag in picture element
- */
 function img_wrap_picture(array $sources, string $img_tag, array $attrs): string
 {
-    $id_attr = $attrs['id'] ? "id='{$attrs['id']}'" : '';
-    $class_attr = $attrs['class'] ? "class='{$attrs['class']}'" : '';
-    $picture_attrs = trim("{$id_attr} {$class_attr}");
+    $id_attr = !empty($attrs['id']) ? "id='" . esc_attr($attrs['id']) . "'" : '';
+    $class_attr = !empty($attrs['class']) ? "class='" . esc_attr($attrs['class']) . "'" : '';
+    $picture_attrs = trim($id_attr . ' ' . $class_attr);
 
     $picture = $picture_attrs ? "<picture {$picture_attrs}>" : "<picture>";
     $picture .= implode('', $sources);
@@ -401,31 +217,18 @@ function img_wrap_picture(array $sources, string $img_tag, array $attrs): string
     return $picture;
 }
 
-/**
- * Get image fields from various sources with caching
- */
-function img_get_fields(array|string $img, bool $is_webp = false): array
+// Keep parsing helpers (no major logic changes)
+function img_get_empty_fields(): array
 {
-    // Generate cache key
-    $cache_key = is_array($img) ? md5(serialize($img)) : md5($img . $is_webp);
-
-    if (isset($GLOBALS['img_metadata_cache'][$cache_key])) {
-        return $GLOBALS['img_metadata_cache'][$cache_key];
-    }
-
-    if (is_array($img) && isset($img['sizes'])) {
-        $result = img_parse_acf_image($img);
-    } else {
-        $result = img_parse_url_image($img, $is_webp);
-    }
-
-    $GLOBALS['img_metadata_cache'][$cache_key] = $result;
-    return $result;
+    return [
+        'sizes' => [],
+        'urls' => [],
+        'alt' => '',
+        'title' => '',
+        'type' => 'image/jpeg',
+    ];
 }
 
-/**
- * Parse ACF image array format
- */
 function img_parse_acf_image(array $img): array
 {
     $sizes_urls = [];
@@ -456,9 +259,6 @@ function img_parse_acf_image(array $img): array
     ];
 }
 
-/**
- * Parse WordPress image from URL
- */
 function img_parse_url_image(string $img_url, bool $is_webp): array
 {
     $img_id = attachment_url_to_postid($img_url);
@@ -503,23 +303,28 @@ function img_parse_url_image(string $img_url, bool $is_webp): array
     ];
 }
 
-/**
- * Return empty fields structure
- */
-function img_get_empty_fields(): array
+// In-memory cache for metadata within the same request
+$GLOBALS['img_metadata_cache'] = [];
+
+function img_get_fields(array|string $img, bool $is_webp = false): array
 {
-    return [
-        'sizes' => [],
-        'urls' => [],
-        'alt' => '',
-        'title' => '',
-        'type' => 'image/jpeg',
-    ];
+    // Generate cache key and return cached metadata when available
+    $cache_key = is_array($img) ? md5(serialize($img)) : md5($img . ($is_webp ? '_w' : ''));
+    if (isset($GLOBALS['img_metadata_cache'][$cache_key])) {
+        return $GLOBALS['img_metadata_cache'][$cache_key];
+    }
+
+    if (is_array($img) && isset($img['sizes'])) {
+        $result = img_parse_acf_image($img);
+    } else {
+        $result = img_parse_url_image($img, $is_webp);
+    }
+
+    $GLOBALS['img_metadata_cache'][$cache_key] = $result;
+    return $result;
 }
 
-/**
- * Check if WebP version exists
- */
+// WebP presence check (cache per URL)
 function img_evaluate_webp(string $img_url): bool
 {
     static $webp_cache = [];
@@ -533,4 +338,205 @@ function img_evaluate_webp(string $img_url): bool
 
     $webp_cache[$img_url] = $exists;
     return $exists;
+}
+
+/**
+ * Prepare attributes for <img>
+ */
+function img_prepare_attributes(
+    string $id,
+    string $classes,
+    string $alt_text,
+    string $fallback_alt,
+    string $img_attr,
+    bool $is_priority
+): array {
+    return [
+        'id' => $id ? esc_attr($id) : '',
+        'class' => $classes ? esc_attr($classes) : '',
+        'alt' => esc_attr($alt_text ?: $fallback_alt),
+        'loading' => $is_priority ? 'eager' : 'lazy',
+        'fetchpriority' => $is_priority ? 'high' : 'auto',
+        'decoding' => 'async',
+        'extra' => $img_attr ? ' ' . wp_kses_post($img_attr) : '',
+    ];
+}
+
+/**
+ * Main function: generates responsive <picture> tag with WebP and breakpoint support
+ * Returns HTML string (does not print directly)
+ */
+function img_generate_picture_tag(
+    array|string $img,
+    array|string $mobile_img = [],
+    array|string $tablet_img = [],
+    string $size = 'full',
+    string $classes = '',
+    string $id = '',
+    string $alt_text = '',
+    bool $is_cover = false,
+    string $img_attr = '',
+    bool $is_priority = false
+): string {
+    if (empty($img)) {
+        return '';
+    }
+
+    // Ensure sizes initialized (in case called early)
+    if (empty($GLOBALS['sizes'])) {
+        po_init_sizes();
+    }
+
+    // Validate requested size: fall back to 'full' if not registered
+    if (!in_array($size, $GLOBALS['sizes'], true)) {
+        $size = 'full';
+    }
+
+    $img_fields = img_get_fields($img);
+
+    // SVG handling (reuse image_to_svg if available)
+    if (in_array($img_fields['type'], ['image/svg+xml', 'image/svg'], true)) {
+        if (function_exists('image_to_svg')) {
+            return image_to_svg($img);
+        }
+        return '';
+    }
+
+    // WebP fields (if .webp for full exists)
+    $img_webp_fields = img_evaluate_webp($img_fields['urls']['full'])
+        ? img_get_fields($img_fields['urls']['full'], true)
+        : null;
+
+    $attrs = img_prepare_attributes($id, $classes, $alt_text, $img_fields['alt'], $img_attr, $is_priority);
+
+    // Shortcut for thumbnail size
+    if ($size === 'thumbnail') {
+        $sources = [];
+        if ($img_webp_fields) {
+            $sources[] = img_create_source_tag($img_webp_fields['urls']['thumbnail'], $img_webp_fields['type']);
+        }
+        $img_tag = img_create_img_tag(
+            $img_fields['urls']['thumbnail'],
+            $img_fields['sizes']['thumbnail']['width'] ?? 0,
+            $img_fields['sizes']['thumbnail']['height'] ?? 0,
+            $attrs
+        );
+        return img_wrap_picture($sources, $img_tag, $attrs);
+    }
+
+    // If cover and no mobile/tablet variants provided, output simple <picture>
+    if ($is_cover && empty($tablet_img) && empty($mobile_img)) {
+        $sources = [];
+        if ($img_webp_fields) {
+            $sources[] = img_create_source_tag($img_webp_fields['urls'][$size] ?? $img_webp_fields['urls']['full'], $img_webp_fields['type']);
+        }
+        $img_tag = img_create_img_tag(
+            $img_fields['urls'][$size] ?? $img_fields['urls']['full'],
+            $img_fields['sizes'][$size]['width'] ?? 0,
+            $img_fields['sizes'][$size]['height'] ?? 0,
+            $attrs
+        );
+        return img_wrap_picture($sources, $img_tag, $attrs);
+    }
+
+    // Build sources by breakpoint: iterate from largest -> smallest for progressive rules
+    $order = ['hdpi','mdpi','ldpi','tablet','mobile'];
+    $sources = [];
+
+    foreach ($order as $bp) {
+        $media = $bp === 'mobile' ? null : "(min-width: {$GLOBALS['breakpoints'][$bp]})";
+        // If user provided explicit tablet/mobile images, use them
+        if ($bp === 'tablet' && !empty($tablet_img)) {
+            $device_fields = img_get_fields($tablet_img);
+            $device_webp = img_evaluate_webp($device_fields['urls']['full']) ? img_get_fields($device_fields['urls']['full'], true) : null;
+            if ($device_webp) {
+                $sources[] = img_create_source_tag($device_webp['urls']['full'], $device_webp['type'], $media);
+            }
+            $sources[] = img_create_source_tag($device_fields['urls']['full'], $device_fields['type'], $media);
+            continue;
+        }
+        if ($bp === 'mobile' && !empty($mobile_img)) {
+            $device_fields = img_get_fields($mobile_img);
+            $device_webp = img_evaluate_webp($device_fields['urls']['full']) ? img_get_fields($device_fields['urls']['full'], true) : null;
+            if ($device_webp) {
+                $sources[] = img_create_source_tag($device_webp['urls']['full'], $device_webp['type'], $media);
+            }
+            $sources[] = img_create_source_tag($device_fields['urls']['full'], $device_fields['type'], $media);
+            continue;
+        }
+
+        // choose preferred size for this breakpoint
+        $preferred = po_get_preferred_size_for_breakpoint($bp);
+        if (!$preferred) {
+            continue;
+        }
+
+        // WebP for that preferred size
+        if ($img_webp_fields && !empty($img_webp_fields['urls'][$preferred])) {
+            $sources[] = img_create_source_tag($img_webp_fields['urls'][$preferred], $img_webp_fields['type'], $media);
+        } elseif (img_evaluate_webp($img_fields['urls'][$preferred] ?? $img_fields['urls']['full'])) {
+            $webp_fields = img_get_fields($img_fields['urls'][$preferred] ?? $img_fields['urls']['full'], true);
+            if ($webp_fields) {
+                $sources[] = img_create_source_tag($webp_fields['urls']['full'] ?? $webp_fields['urls'][$preferred], $webp_fields['type'], $media);
+            }
+        }
+
+        // original source for that preferred size
+        if (!empty($img_fields['urls'][$preferred])) {
+            $sources[] = img_create_source_tag($img_fields['urls'][$preferred], $img_fields['type'], $media);
+        }
+    }
+
+    // If user passed explicit mobile_img, use it as final <img> fallback
+    if (!empty($mobile_img)) {
+        $mobile_fields = img_get_fields($mobile_img);
+        $img_tag = img_create_img_tag(
+            $mobile_fields['urls']['full'],
+            $mobile_fields['sizes']['full']['width'] ?? 0,
+            $mobile_fields['sizes']['full']['height'] ?? 0,
+            $attrs
+        );
+        return img_wrap_picture($sources, $img_tag, $attrs);
+    }
+
+    // fallback: choose requested size or 'medium' when not full
+    $fallback_size = ($size === 'full' || $is_cover) ? $size : (in_array('medium', $GLOBALS['sizes'], true) ? 'medium' : 'full');
+
+    $img_tag = img_create_img_tag(
+        $img_fields['urls'][$fallback_size] ?? $img_fields['urls']['full'],
+        $img_fields['sizes'][$fallback_size]['width'] ?? 0,
+        $img_fields['sizes'][$fallback_size]['height'] ?? 0,
+        $attrs
+    );
+
+    return img_wrap_picture($sources, $img_tag, $attrs);
+}
+
+/**
+ * Helper function to print the picture tag directly
+ */
+function img_print_picture_tag(
+    array|string $img,
+    array|string $mobile_img = [],
+    array|string $tablet_img = [],
+    string $size = 'full',
+    string $classes = '',
+    string $id = '',
+    string $alt_text = '',
+    bool $is_cover = false,
+    string $img_attr = '',
+    bool $is_priority = false
+): void {
+    echo img_generate_picture_tag(
+        $img,
+        $mobile_img,
+        $tablet_img,
+        $size,
+        $classes,
+        $id,
+        $alt_text,
+        $is_cover,
+        $img_attr,
+        $is_priority
+    );
 }
