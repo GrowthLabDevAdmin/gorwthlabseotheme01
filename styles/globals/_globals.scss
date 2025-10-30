@@ -26,18 +26,13 @@ body {
   max-width: 100vw;
   width: 100%;
   min-height: 100vh;
-  font-size: 2rem;
-  line-height: 3.4rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
   font-family: var(--font-sans);
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
-
-  @media (min-width: v.$tablet) {
-    font-size: 1.8rem;
-    line-height: 3.2rem;
-  }
 }
 
 section {
@@ -152,6 +147,7 @@ a {
 a:hover,
 a:active,
 a:focus {
+  cursor: pointer;
   color: rgb(var(--tertiary-light));
 }
 
@@ -195,6 +191,10 @@ p {
   margin: 0 auto;
 }
 
+.shadow-box {
+  box-shadow: 8px 8px 0px rgb(var(--tertiary));
+}
+
 picture.bg-image {
   width: 100%;
   height: 100%;
@@ -206,6 +206,8 @@ picture.bg-image {
   img {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: -1;
     object-fit: cover;
     object-position: center;
   }
@@ -256,52 +258,47 @@ img.bg-image {
 }
 
 .formatted-text {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.5;
   color: rgba(var(--text), 1);
-  line-height: 3.4rem;
-  @media (min-width: v.$tablet) {
-    font-size: 1.8rem;
-    line-height: 3.2rem;
-  }
 
   p,
   span,
   li {
     margin-bottom: 1.6rem;
-    color: rgba(var(--text), 1);
-    font-size: 2rem;
-    font-family: var(--font-sans);
-    font-weight: 400;
-    line-height: 3.4rem;
     vertical-align: text-top;
-    @media (min-width: v.$tablet) {
-      font-size: 1.8rem;
-      line-height: 3.2rem;
-    }
+  }
+
+  strong {
+    font-weight: 700;
+    color: rgb(var(--tertiary));
   }
 }
 
-.section-title {
-  font-size: 2.6rem;
-  font-family: var(--font-serif);
-  font-weight: bold;
-  color: rgb(var(--primary-complement));
-  letter-spacing: 2px;
-  line-height: 3.2rem;
-  text-transform: capitalize;
+.ampersand-separator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.8rem;
 
-  @media (min-width: v.$tablet) {
-    font-size: 3rem;
-    line-height: 3.4rem;
+  svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: rgb(var(--tertiary));
   }
 
-  @media (min-width: v.$ldpi) {
-    font-size: 4rem;
-    line-height: 4.4rem;
+  hr {
+    height: 1px;
+    width: calc(50% - 2rem);
+    display: block;
+    background-color: rgb(var(--tertiary));
   }
 }
 
+/* Responsive Visibility */
 @media (max-width: 767px) {
   .hide-on-mobile {
     display: none !important;
@@ -376,7 +373,6 @@ img.bg-image {
   }
 
   &--arrow {
-    padding: 20px 30px;
     span {
       display: flex;
       justify-content: space-between;

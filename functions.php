@@ -11,24 +11,6 @@
  */
 
 /**
- * Disable the emoji's
- */
-
-if (!is_admin()) add_action('init', 'disable_emojis');
-
-function disable_emojis()
-{
-    remove_action('wp_head', 'print_emoji_detection_script', 7);
-    remove_action('admin_print_scripts', 'print_emoji_detection_script');
-    remove_action('wp_print_styles', 'print_emoji_styles');
-    remove_action('admin_print_styles', 'print_emoji_styles');
-    remove_filter('the_content_feed', 'wp_staticize_emoji');
-    remove_filter('comment_text_rss', 'wp_staticize_emoji');
-    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-    add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
-}
-
-/**
  * Filter function used to remove the tinymce emoji plugin.
  * 
  * @param    array  $plugins  
@@ -50,8 +32,24 @@ function wpdocs_dequeue_dashicon()
     }
     wp_deregister_style('guiones');
 }
-add_action('wp_enqueue_scripts', 'wpdocs_dequeue_dashicon');
 
+//Disable the emoji's
+function disable_emojis()
+{
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
+}
+
+if (!is_admin()) {
+    add_action('init', 'disable_emojis');
+    add_action('wp_enqueue_scripts', 'wpdocs_dequeue_dashicon');
+}
 
 if (!function_exists('growthlabtheme01_setup')) {
     /**
@@ -348,33 +346,36 @@ function growthlabtheme01_widgets_init()
 add_action('widgets_init', 'growthlabtheme01_widgets_init');
 
 
-// YouTube Video ID Extractor
-function get_yt_code($url = false)
-{
-    // Here is a sample of the URLs this regex matches: (there can be more content after the given URL that will be ignored)
-
-    // http://youtu.be/dQw4w9WgXcQ
-    // http://www.youtube.com/embed/dQw4w9WgXcQ
-    // http://www.youtube.com/watch?v=dQw4w9WgXcQ
-    // http://www.youtube.com/?v=dQw4w9WgXcQ
-    // http://www.youtube.com/v/dQw4w9WgXcQ
-    // http://www.youtube.com/e/dQw4w9WgXcQ
-    // http://www.youtube.com/user/username#p/u/11/dQw4w9WgXcQ
-    // http://www.youtube.com/sandalsResorts#p/c/54B8C800269D7C1B/0/dQw4w9WgXcQ
-    // http://www.youtube.com/watch?feature=player_embedded&v=dQw4w9WgXcQ
-    // http://www.youtube.com/?feature=player_embedded&v=dQw4w9WgXcQ
-
-    // It also works on the youtube-nocookie.com URL with the same above options.
-    // It will also pull the ID from the URL in an embed code (both iframe and object tags)
-    if (! $url) return false;
-    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
-    return $match[1];
-}
-
 // Gravity Forms 
 add_filter('gform_disable_css', '__return_true');
+add_filter('gform_disable_theme_editor_styles', '__return_true');
 add_filter('gform_init_scripts_footer', '__return_true');
+add_filter('gform_submit_button', function ($button, $form) {
 
+    $id = $class = $onclick = $value = '';
+
+    if (preg_match('/id=["\']([^"\']+)["\']/', $button, $m)) $id = $m[1];
+    if (preg_match('/class=["\']([^"\']+)["\']/', $button, $m)) $class = $m[1];
+    if (preg_match('/onclick=["\']([^"\']+)["\']/', $button, $m)) $onclick = $m[1];
+    if (preg_match('/value=["\']([^"\']+)["\']/', $button, $m)) $value = $m[1];
+
+    // Retornar nuevo botón con el valor dinámico y el SVG
+    return sprintf(
+        '<button type="submit" id="%s" class="%s" %s>
+            <span>%s</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.25 9.99981C1.25 9.83405 1.31585 9.67508 1.43306 9.55787C1.55027 9.44066 1.70924 9.37481 1.875 9.37481H16.6163L12.6825 5.44231C12.5651 5.32495 12.4992 5.16578 12.4992 4.99981C12.4992 4.83384 12.5651 4.67467 12.6825 4.55731C12.7999 4.43995 12.959 4.37402 13.125 4.37402C13.291 4.37402 13.4501 4.43995 13.5675 4.55731L18.5675 9.55731C18.6257 9.61537 18.6719 9.68434 18.7034 9.76027C18.7349 9.8362 18.7511 9.9176 18.7511 9.99981C18.7511 10.082 18.7349 10.1634 18.7034 10.2394C18.6719 10.3153 18.6257 10.3843 18.5675 10.4423L13.5675 15.4423C13.4501 15.5597 13.291 15.6256 13.125 15.6256C12.959 15.6256 12.7999 15.5597 12.6825 15.4423C12.5651 15.325 12.4992 15.1658 12.4992 14.9998C12.4992 14.8338 12.5651 14.6747 12.6825 14.5573L16.6163 10.6248H1.875C1.70924 10.6248 1.55027 10.559 1.43306 10.4418C1.31585 10.3245 1.25 10.1656 1.25 9.99981Z" fill="#F4F3EE"/>
+            </svg>
+        </button>',
+        esc_attr($id),
+        esc_attr($class),
+        esc_attr($onclick),
+        esc_html($value)
+    );
+}, 10, 2);
+
+
+// Include Theme Functions
 include locate_template('theme-functions/acf-functions.php');
 include locate_template('theme-functions/helpers.php');
 include locate_template('theme-functions/color-scheme.php');

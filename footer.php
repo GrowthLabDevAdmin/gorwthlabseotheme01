@@ -9,20 +9,20 @@
   if (!$form_section['hide_section']):
     foreach ($form_section as $form_field => $form_content) $$form_field = $form_content;
   ?>
-    <section class="contact-form-footer gradient-overlay">
+    <section class="contact-form-footer">
 
-      <?php if ($background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form-footer__bg bg-image"); ?>
+      <?php if ($background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form-footer__bg bg-image gradient-overlay"); ?>
 
       <div class="contact-form-footer__wrapper container">
 
-        <div class="contact-form">
+        <div class="contact-form shadow-box">
 
           <?php
-          print_title($contact_form_title_tag, $contact_form_title, "contact-form__title");
+          print_title($contact_form_title_tag, $contact_form_title, "contact-form__title txt-center");
           get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'contact-form__separator'));
           ?>
 
-          <div class="contact-form__description">
+          <div class="contact-form__description formatted-text txt-center">
             <?php echo wp_kses_post(wpautop($contact_form_description)); ?>
           </div>
 
@@ -30,7 +30,7 @@
             <?php gravity_form($contact_form, display_title: false, display_description: false); ?>
           </div>
 
-          <div class="contact-form__message">
+          <div class="contact-form__message formatted-text txt-center">
             <?= $message_before_submit ?>
           </div>
 
