@@ -24,3 +24,19 @@ function get_flat_number($phone)
     if (! $phone) return;
     return preg_replace("/[^0-9]/", '', $phone);
 }
+
+//Print title helper
+function print_title($tag = 'p', $title, $classes = '')
+{
+    if (!$title) return;
+    echo "<$tag class='$classes'>" . $title . "</$tag>";
+}
+
+//debug helper
+function dd($data)
+{
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
+    die();
+}

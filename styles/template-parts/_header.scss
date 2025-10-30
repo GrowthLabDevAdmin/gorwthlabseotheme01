@@ -4,7 +4,7 @@
 .site-header {
   width: 100%;
   max-width: 100vw;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   z-index: 9999;
@@ -169,12 +169,12 @@
   .main-nav {
     width: 100%;
     max-height: 0;
-    transition: max-height 0.3s ease;
     position: absolute;
     top: 100%;
     left: 0;
     display: flex;
     flex-direction: column;
+    transition: max-height 0.5s cubic-bezier(1, 0.355, 0.355, 1);
 
     @media (min-width: v.$tablet) {
       max-height: none;
@@ -183,7 +183,7 @@
     }
 
     &.active {
-      max-height: 10000px;
+      max-height: 5000px;
     }
 
     &__menu {
@@ -329,7 +329,7 @@
         width: fit-content;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease-out;
+        transition: max-height 0.3s cubic-bezier(1, 0.355, 0.355, 1);
 
         @media (min-width: v.$tablet) {
           background-color: rgb(var(--primary-light));

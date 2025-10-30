@@ -8,6 +8,7 @@
  * - Detects image sizes registered by WP (including custom add_image_size in functions.php)
  * - Maps sizes to breakpoints using heuristics
  * - Generates sources (including WebP if available) for each breakpoint
+ * - Auto-detects cover sizes when is_cover=true
  */
 
 /**
@@ -27,30 +28,49 @@ $GLOBALS['breakpoints'] = [
 ];
 
 // Initialize size list: read WP registered sizes and ensure 'full' exists
-function po_init_sizes() {
-    $sizes = function_exists('get_intermediate_image_sizes') ? (array) get_intermediate_image_sizes() : [];
+function po_init_sizes()
+{
+    $sizes = [];
+
+    // Get WP default sizes
+    if (function_exists('get_intermediate_image_sizes')) {
+        $sizes = (array) get_intermediate_image_sizes();
+    }
+
+    // Add custom sizes from $_wp_additional_image_sizes
+    global $_wp_additional_image_sizes;
+
+    if (is_array($_wp_additional_image_sizes)) {
+        foreach ($_wp_additional_image_sizes as $size_name => $size_data) {
+            if (!in_array($size_name, $sizes, true)) {
+                $sizes[] = $size_name;
+            }
+        }
+    }
+
     // ensure 'full' is present
     if (!in_array('full', $sizes, true)) {
         $sizes[] = 'full';
     }
+
     // normalize to indexed array
     $GLOBALS['sizes'] = array_values($sizes);
 }
-po_init_sizes();
+// Initialize sizes after WordPress loads (to ensure custom sizes are registered)
+add_action('after_setup_theme', 'po_init_sizes', 999);
 
 // Optional explicit mapping (complements heuristics)
 $GLOBALS['preferred_size_map'] = [
     // Add explicit mappings here if needed:
-    // 'hero-desktop' => 'mdpi',
-    // 'hero-tablet'  => 'ldpi',
-    // 'hero-mobile'  => 'mobile',
-    // 'featured-large'=> 'mdpi',
-    // 'featured-medium'=> 'tablet',
+    // 'cover-desktop' => 'mdpi',
+    // 'cover-tablet'  => 'ldpi',
+    // 'cover-mobile'  => 'mobile',
     // 'featured-small'=> 'mobile',
 ];
 
 // Heuristic: map a WP image size name to a breakpoint
-function po_map_size_to_breakpoint(string $size): string {
+function po_map_size_to_breakpoint(string $size): string
+{
     // Honor explicit overrides set by user first
     if (!empty($GLOBALS['preferred_size_map'][$size])) {
         return $GLOBALS['preferred_size_map'][$size];
@@ -60,13 +80,10 @@ function po_map_size_to_breakpoint(string $size): string {
 
     // Keep a small set of guaranteed manual mappings for your custom sizes
     $manual_overrides = [
-        'hero-desktop'   => 'mdpi',
-        'hero-tablet'    => 'ldpi',
-        'hero-mobile'    => 'mobile',
-        'featured-large' => 'mdpi',
-        'featured-medium'=> 'tablet',
+        'cover-desktop'   => 'mdpi',
+        'cover-tablet'    => 'ldpi',
+        'cover-mobile'    => 'mobile',
         'featured-small' => 'mobile',
-        'thumb-grid'     => 'mobile',
     ];
 
     // If the size is one of your registered custom names and has a manual mapping, return it
@@ -148,9 +165,6 @@ function po_map_size_to_breakpoint(string $size): string {
         'ldpi'    => 'ldpi',
         'mdpi'    => 'mdpi',
         'hdpi'    => 'hdpi',
-        'hero'    => 'mdpi',
-        'featured'=> 'mdpi',
-        'thumb'   => 'mobile',
         'small'   => 'mobile',
         'large'   => 'ldpi',
         'desktop' => 'mdpi',
@@ -167,7 +181,8 @@ function po_map_size_to_breakpoint(string $size): string {
 }
 
 // Return preferred WP size name for a given breakpoint (searching sizes by priority)
-function po_get_preferred_size_for_breakpoint(string $breakpoint): ?string {
+function po_get_preferred_size_for_breakpoint(string $breakpoint): ?string
+{
     // prefer larger/custom sizes by reversing the registered list
     $sizes = array_reverse($GLOBALS['sizes']);
     foreach ($sizes as $size) {
@@ -176,6 +191,46 @@ function po_get_preferred_size_for_breakpoint(string $breakpoint): ?string {
         }
     }
     return null;
+}
+
+/**
+ * Detect all cover sizes available and sort them by width (descending)
+ * Returns array of size names that contain 'cover' in their name
+ */
+function po_detect_cover_sizes(): array
+{
+    global $_wp_additional_image_sizes;
+
+    $cover_sizes = [];
+
+    foreach ($GLOBALS['sizes'] as $size) {
+        $size_lower = strtolower($size);
+
+        // Include if name contains 'cover' or if it's 'full'
+        if (strpos($size_lower, 'cover') !== false || $size === 'full') {
+            $width = 0;
+
+            if ($size === 'full') {
+                // full gets highest priority
+                $width = PHP_INT_MAX;
+            } elseif (!empty($_wp_additional_image_sizes[$size]['width'])) {
+                $width = (int) $_wp_additional_image_sizes[$size]['width'];
+            }
+
+            $cover_sizes[] = [
+                'name' => $size,
+                'width' => $width,
+                'breakpoint' => po_map_size_to_breakpoint($size)
+            ];
+        }
+    }
+
+    // Sort by width descending (largest first)
+    usort($cover_sizes, function ($a, $b) {
+        return $b['width'] - $a['width'];
+    });
+
+    return $cover_sizes;
 }
 
 // Helpers: create <source> and <img> tags
@@ -370,7 +425,7 @@ function img_generate_picture_tag(
     array|string $img,
     array|string $mobile_img = [],
     array|string $tablet_img = [],
-    string $size = 'full',
+    string $max_size = 'full',
     string $classes = '',
     string $id = '',
     string $alt_text = '',
@@ -378,6 +433,7 @@ function img_generate_picture_tag(
     string $img_attr = '',
     bool $is_priority = false
 ): string {
+
     if (empty($img)) {
         return '';
     }
@@ -388,8 +444,8 @@ function img_generate_picture_tag(
     }
 
     // Validate requested size: fall back to 'full' if not registered
-    if (!in_array($size, $GLOBALS['sizes'], true)) {
-        $size = 'full';
+    if (!in_array($max_size, $GLOBALS['sizes'], true)) {
+        $max_size = 'full';
     }
 
     $img_fields = img_get_fields($img);
@@ -410,7 +466,7 @@ function img_generate_picture_tag(
     $attrs = img_prepare_attributes($id, $classes, $alt_text, $img_fields['alt'], $img_attr, $is_priority);
 
     // Shortcut for thumbnail size
-    if ($size === 'thumbnail') {
+    if ($max_size === 'thumbnail') {
         $sources = [];
         if ($img_webp_fields) {
             $sources[] = img_create_source_tag($img_webp_fields['urls']['thumbnail'], $img_webp_fields['type']);
@@ -424,23 +480,87 @@ function img_generate_picture_tag(
         return img_wrap_picture($sources, $img_tag, $attrs);
     }
 
-    // If cover and no mobile/tablet variants provided, output simple <picture>
+    // NEW: Auto-detect cover sizes when is_cover=true and no mobile/tablet provided
     if ($is_cover && empty($tablet_img) && empty($mobile_img)) {
+        $cover_sizes = po_detect_cover_sizes();
+
+        if (!empty($cover_sizes)) {
+            $sources = [];
+            $smallest_cover = null;
+
+            // Generate sources for each cover size (from largest to smallest)
+            foreach ($cover_sizes as $index => $cover_info) {
+                $size_name = $cover_info['name'];
+                $breakpoint = $cover_info['breakpoint'];
+
+
+                // Store the smallest cover for the final <img> tag
+                if ($smallest_cover === null || $cover_info['width'] < $smallest_cover['width']) {
+                    // Ensure it's at least cover-mobile level
+                    if (strpos(strtolower($size_name), 'mobile') !== false || $breakpoint === 'mobile') {
+                        $smallest_cover = $cover_info;
+                    }
+                }
+
+                // Don't add media query for the smallest breakpoint (mobile)
+                $media = ($breakpoint === 'mobile') ? null : "(min-width: {$GLOBALS['breakpoints'][$breakpoint]})";
+
+                // Add WebP source if available
+                if (!empty($img_fields['urls'][$size_name])) {
+                    if (img_evaluate_webp($img_fields['urls'][$size_name])) {
+                        $webp_fields = img_get_fields($img_fields['urls'][$size_name], true);
+                        if ($webp_fields && !empty($webp_fields['urls'][$size_name])) {
+                            $sources[] = img_create_source_tag(
+                                $webp_fields['urls'][$size_name],
+                                $webp_fields['type'],
+                                $media
+                            );
+                        }
+                    }
+
+                    // Add original source
+                    $sources[] = img_create_source_tag(
+                        $img_fields['urls'][$size_name],
+                        $img_fields['type'],
+                        $media
+                    );
+                }
+            }
+
+            // Use smallest cover size for <img> fallback (or cover-mobile if detected)
+            $fallback_size = $smallest_cover ? $smallest_cover['name'] : 'cover-mobile';
+
+            // If fallback size doesn't exist in urls, use 'full'
+            if (empty($img_fields['urls'][$fallback_size])) {
+                $fallback_size = 'full';
+            }
+
+            $img_tag = img_create_img_tag(
+                $img_fields['urls'][$fallback_size],
+                $img_fields['sizes'][$fallback_size]['width'] ?? 0,
+                $img_fields['sizes'][$fallback_size]['height'] ?? 0,
+                $attrs
+            );
+
+            return img_wrap_picture($sources, $img_tag, $attrs);
+        }
+
+        // Fallback if no cover sizes detected: simple picture with max_size
         $sources = [];
         if ($img_webp_fields) {
-            $sources[] = img_create_source_tag($img_webp_fields['urls'][$size] ?? $img_webp_fields['urls']['full'], $img_webp_fields['type']);
+            $sources[] = img_create_source_tag($img_webp_fields['urls'][$max_size] ?? $img_webp_fields['urls']['full'], $img_webp_fields['type']);
         }
         $img_tag = img_create_img_tag(
-            $img_fields['urls'][$size] ?? $img_fields['urls']['full'],
-            $img_fields['sizes'][$size]['width'] ?? 0,
-            $img_fields['sizes'][$size]['height'] ?? 0,
+            $img_fields['urls'][$max_size] ?? $img_fields['urls']['full'],
+            $img_fields['sizes'][$max_size]['width'] ?? 0,
+            $img_fields['sizes'][$max_size]['height'] ?? 0,
             $attrs
         );
         return img_wrap_picture($sources, $img_tag, $attrs);
     }
 
     // Build sources by breakpoint: iterate from largest -> smallest for progressive rules
-    $order = ['hdpi','mdpi','ldpi','tablet','mobile'];
+    $order = ['hdpi', 'mdpi', 'ldpi', 'tablet', 'mobile'];
     $sources = [];
 
     foreach ($order as $bp) {
@@ -500,7 +620,7 @@ function img_generate_picture_tag(
     }
 
     // fallback: choose requested size or 'medium' when not full
-    $fallback_size = ($size === 'full' || $is_cover) ? $size : (in_array('medium', $GLOBALS['sizes'], true) ? 'medium' : 'full');
+    $fallback_size = ($max_size === 'full' || $is_cover) ? $max_size : (in_array('medium', $GLOBALS['sizes'], true) ? 'medium' : 'full');
 
     $img_tag = img_create_img_tag(
         $img_fields['urls'][$fallback_size] ?? $img_fields['urls']['full'],
@@ -519,7 +639,7 @@ function img_print_picture_tag(
     array|string $img,
     array|string $mobile_img = [],
     array|string $tablet_img = [],
-    string $size = 'full',
+    string $max_size = 'full',
     string $classes = '',
     string $id = '',
     string $alt_text = '',
@@ -531,7 +651,7 @@ function img_print_picture_tag(
         $img,
         $mobile_img,
         $tablet_img,
-        $size,
+        $max_size,
         $classes,
         $id,
         $alt_text,

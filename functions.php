@@ -93,13 +93,10 @@ if (!function_exists('growthlabtheme01_setup')) {
         add_theme_support('custom-logo', $defaults);
 
         //Add custom sized images
-        add_image_size('hero-desktop', 1920, 1080, true);
-        add_image_size('hero-tablet', 1280, 720, true);
-        add_image_size('hero-mobile', 768, 432, true);
-        add_image_size('featured-large', 1200, 800, true);
-        add_image_size('featured-medium', 800, 533, true);
+        add_image_size('cover-desktop', 1920, 1080, true);
+        add_image_size('cover-tablet', 1280, 720, true);
+        add_image_size('cover-mobile', 800, 533, true);
         add_image_size('featured-small', 400, 267, true);
-        add_image_size('thumb-grid', 300, 200, true);
 
         // Tipography and Color Support
         add_theme_support('appearance-tools');
@@ -379,7 +376,7 @@ add_filter('gform_disable_css', '__return_true');
 add_filter('gform_init_scripts_footer', '__return_true');
 
 include locate_template('theme-functions/acf-functions.php');
+include locate_template('theme-functions/helpers.php');
 include locate_template('theme-functions/color-scheme.php');
 include locate_template('theme-functions/svg-support.php');
 include locate_template('theme-functions/picture-optimization.php');
-include locate_template('theme-functions/helpers.php');
