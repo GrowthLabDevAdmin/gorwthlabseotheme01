@@ -1,8 +1,38 @@
+@use "globals/variables" as v;
+
 .contact-form-footer {
   position: relative;
 
   &__wrapper {
+    margin-top: calc(-1 * (var(--sp-lg) + var(--sp-sm)));
     padding: var(--sp-sm) 0;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--sp-md);
+
+    @media (min-width: v.$tablet) {
+      margin-top: calc(-1 * var(--sp-md));
+    }
+  }
+
+  &__side-pic {
+    min-width: 280px;
+    flex: 1 0 calc(50% - var(--sp-md) / 2);
+    display: flex;
+
+    @media (min-width: v.$tablet) {
+      height: 75%;
+      margin: auto 0;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   p {
@@ -12,6 +42,7 @@
   .contact-form {
     padding: var(--sp-sm);
     background-color: rgb(var(--primary));
+    flex: 1 0 calc(50% - var(--sp-md) / 2);
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -5,12 +5,13 @@
   width: 100%;
   max-width: 100vw;
   position: relative;
-  top: 0;
-  left: 0;
   z-index: 9999;
   background-color: rgb(var(--primary));
 
   &--sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
     background-color: transparent;
   }
 
@@ -234,7 +235,7 @@
         background-color: rgb(var(--primary-light));
 
         span {
-          color: rgb(var(--tertiary));
+          color: rgb(var(--tertiary-light));
         }
 
         @media (min-width: v.$tablet) {
@@ -410,7 +411,7 @@
       }
 
       &:hover {
-        color: rgb(var(--secondary-dark));
+        color: rgb(var(--tertiary-light));
       }
     }
   }

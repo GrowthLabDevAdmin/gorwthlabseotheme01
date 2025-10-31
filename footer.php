@@ -36,7 +36,7 @@
 
         </div>
 
-        <?php if ($side_picture) img_print_picture_tag(img: $side_picture,  classes: "contact-form-footer__side-pic"); ?>
+        <?php if ($side_picture) img_print_picture_tag(img: $side_picture,  classes: "contact-form-footer__side-pic shadow-box"); ?>
 
       </div>
     </section>

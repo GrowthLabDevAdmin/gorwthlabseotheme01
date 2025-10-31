@@ -13,14 +13,14 @@
 
     <?php wp_body_open(); ?>
 
-    <header class="site-header">
+    <?php
+    $es = filterContentByLanguage() ? '_es' : '';
+    $options = get_field_options('options' . $es);
+    foreach ($options as $key => $value) $$key = $value;
+    $phone_number = $contact_phone ?: $main_phone_number;
+    ?>
 
-        <?php
-        $es = filterContentByLanguage() ? '_es' : '';
-        $options = get_field_options('options' . $es);
-        foreach ($options as $key => $value) $$key = $value;
-        $phone_number = $contact_phone ?: $main_phone_number;
-        ?>
+    <header class="site-header <?= $sticky_header ? "site-header--sticky" : "" ?>">
 
         <div class="site-header__wrapper container">
 

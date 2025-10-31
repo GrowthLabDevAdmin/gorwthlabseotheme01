@@ -91,10 +91,19 @@ if (!function_exists('growthlabtheme01_setup')) {
         add_theme_support('custom-logo', $defaults);
 
         //Add custom sized images
-        add_image_size('cover-desktop', 1920, 1080, true);
-        add_image_size('cover-tablet', 1280, 720, true);
-        add_image_size('cover-mobile', 800, 533, true);
-        add_image_size('featured-small', 400, 267, true);
+        add_image_size('cover-desktop', 1920, 1080, false);
+        add_image_size('cover-tablet', 1280, 720, false);
+        add_image_size('cover-mobile', 800, 533, false);
+        add_image_size('featured-small', 400, 267, false);
+
+        // Disable Cropped Pictures
+        add_filter('intermediate_image_sizes_advanced', function ($sizes) {
+
+            foreach ($sizes as $key => &$size) {
+                update_option("{$key}_crop", 0);
+            }
+            return $sizes;
+        }, 999);
 
         // Tipography and Color Support
         add_theme_support('appearance-tools');
@@ -151,7 +160,6 @@ if (!function_exists('growthlabtheme01_setup')) {
             )
         ));
 
-
         // Color Palette support
         add_theme_support(
             'editor-color-palette',
@@ -186,7 +194,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color',
-                    'color' => get_theme_mod('secondary_color', '#F4F3EE'), // swapped -> tertiary default
+                    'color' => get_theme_mod('secondary_color', '#F4F3EE'),
                 ),
                 array(
                     'name'  => __(
@@ -194,7 +202,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color-dark',
-                    'color' => get_theme_mod('secondary_color_dark', '#E7E5DF'), // swapped -> tertiary dark
+                    'color' => get_theme_mod('secondary_color_dark', '#E7E5DF'),
                 ),
                 array(
                     'name'  => __(
@@ -202,7 +210,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'secondary-color-light',
-                    'color' => get_theme_mod('secondary_color_light', '#FFFFFF'), // swapped -> tertiary light
+                    'color' => get_theme_mod('secondary_color_light', '#FFFFFF'),
                 ),
                 array(
                     'name'  => __(
@@ -210,7 +218,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color',
-                    'color' => get_theme_mod('tertiary_color', '#BC9061'), // swapped -> secondary default
+                    'color' => get_theme_mod('tertiary_color', '#BC9061'),
                 ),
                 array(
                     'name'  => __(
@@ -238,7 +246,6 @@ if (!function_exists('growthlabtheme01_setup')) {
                 ),
             )
         );
-
 
         // Register Navigation Menus
         register_nav_menus(
@@ -374,10 +381,10 @@ add_filter('gform_submit_button', function ($button, $form) {
     );
 }, 10, 2);
 
-
 // Include Theme Functions
+include locate_template('theme-functions/color-scheme.php');
 include locate_template('theme-functions/acf-functions.php');
 include locate_template('theme-functions/helpers.php');
-include locate_template('theme-functions/color-scheme.php');
 include locate_template('theme-functions/svg-support.php');
 include locate_template('theme-functions/picture-optimization.php');
+include locate_template('theme-functions/tiny-mce.php');
