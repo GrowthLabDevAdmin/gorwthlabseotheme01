@@ -187,12 +187,34 @@ p {
 //Utilities
 .container {
   max-width: 1320px;
-  width: calc(100% - 3.2rem);
+  width: calc(100% - var(--sp-sm));
   margin: 0 auto;
+}
+
+.bg-bicolor {
+  position: relative;
+  background-color: rgb(var(--secondary-dark));
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: block;
+    background-color: rgb(var(--secondary));
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+  }
 }
 
 .shadow-box {
   box-shadow: 8px 8px 0px rgb(var(--tertiary));
+}
+
+.border-box {
+  border: 1px solid rgb(var(--tertiary));
 }
 
 picture.bg-image {
@@ -253,7 +275,7 @@ img.bg-image {
   }
 }
 
-.txt-center {
+.tx-center {
   text-align: center;
 }
 
@@ -348,10 +370,11 @@ img.bg-image {
   }
 
   &--secondary {
-    background: rgb(var(--secondary-dark));
+    background: rgb(var(--secondary-light));
+    border: 1px solid rgb(var(--tertiary));
 
     span {
-      color: rgb(var(--secondary-light));
+      color: rgb(var(--primary));
     }
 
     &:hover {
@@ -361,6 +384,7 @@ img.bg-image {
 
   &--tertiary {
     background: rgb(var(--tertiary));
+    border: 1px solid rgb(var(--tertiary));
 
     span {
       color: rgb(var(--secondary-light));

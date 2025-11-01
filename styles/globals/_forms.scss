@@ -122,12 +122,12 @@ input[type="submit"] {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--sp-sm);
+    gap: var(--sp-xsm);
   }
 
   &_footer {
     width: 100%;
-    padding: var(--sp-sm);
+    padding: var(--sp-xsm);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -137,6 +137,7 @@ input[type="submit"] {
 .gfield {
   min-width: 208px;
   flex-grow: 1;
+  
   $ancestor: &;
 
   &.hidden_label {
@@ -161,7 +162,7 @@ input[type="submit"] {
   }
 
   &--width-half {
-    flex: 1 0 calc(50% - var(--sp-sm) / 2);
+    flex: 1 0 calc(50% - var(--sp-xsm) / 2);
   }
 }
 
@@ -172,11 +173,11 @@ input[type="submit"] {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--sp-sm);
+    gap: var(--sp-xsm);
 
     & > * {
       min-width: 208px;
-      flex: 1 0 calc(50% - var(--sp-sm) / 2);
+      flex: 1 0 calc(50% - var(--sp-xsm) / 2);
     }
 
     *:has(input) {

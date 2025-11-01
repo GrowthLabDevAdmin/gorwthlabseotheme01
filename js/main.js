@@ -5,8 +5,17 @@ const parentMenuItems = document.querySelectorAll(
   ".site-header .main-nav .menu-item-has-children"
 );
 
+//Breakpoints
+const mobile = 480;
+const tablet = 768;
+const ldpi = 1024;
+const mdpi = 1200;
+const hdpi = 1440;
+
 document.addEventListener("DOMContentLoaded", () => {
   eventListeners();
+
+  splideCarousels();
 });
 
 function eventListeners() {
@@ -74,4 +83,26 @@ function removeSubmenuActiveClasses() {
   parentMenuItems.forEach((item) => {
     item.classList.remove("active");
   });
+}
+
+//Splide Carousels
+function splideCarousels() {
+  var footerLocations = new Splide(".locations-cards__carousel .splide", {
+    type: "loop",
+    perPage: 4,
+    perMove: 1,
+    gap: "1.6rem",
+    arrows: true,
+    pagination: false,
+    breakpoints: {
+      [tablet]: {
+        perPage: 1,
+      },
+      [ldpi]: {
+        perPage: 2,
+      },
+    },
+  });
+
+  footerLocations.mount();
 }

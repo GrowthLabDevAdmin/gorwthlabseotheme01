@@ -22,7 +22,7 @@ function my_acf_wysiwyg_custom_settings($init)
     $init['font_formats'] = 'Open Sans=Open Sans,sans-serif;Fraunces=Fraunces,serif;Arial=Arial,Helvetica,sans-serif;Times New Roman=Times New Roman,Times,serif';
 
     // Font sizes
-    $init['fontsize_formats'] = '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 40pt 48pt';
+    $init['fontsize_formats'] = '8px 10px 12px 14px 16px 18px 20px 24px 28px 32px 36px 40px 48px';
 
     // DO NOT configure textcolor_map here for standard WordPress
     // We'll do it only in ACF with JavaScript
