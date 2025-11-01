@@ -30,7 +30,7 @@
     }
 
     @media (min-width: v.$mdpi) {
-      grid-template-columns: 2fr 8fr 2fr 3fr;
+      grid-template-columns: 2fr 9fr 2fr 2fr;
       row-gap: 2.8rem;
       column-gap: 1.2rem;
     }
@@ -262,7 +262,7 @@
       }
 
       @media (min-width: v.$mdpi) {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
       }
     }
 
