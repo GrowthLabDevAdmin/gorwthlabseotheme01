@@ -21,7 +21,7 @@ add_filter('block_categories', 'growthlabtheme01_blocks_category', 10, 2);
 add_action('init', 'register_acf_blocks', 5);
 function register_acf_blocks()
 {
-    register_block_type(__DIR__ . '/blocks/firm-intro');
+   /*  register_block_type(__DIR__ . '/blocks/firm-intro');
     register_block_type(__DIR__ . '/blocks/trust-logos');
     register_block_type(__DIR__ . '/blocks/settlements');
     register_block_type(__DIR__ . '/blocks/practice-areas');
@@ -31,7 +31,7 @@ function register_acf_blocks()
     register_block_type(__DIR__ . '/blocks/in-the-media');
     register_block_type(__DIR__ . '/blocks/centered-video');
     register_block_type(__DIR__ . '/blocks/breaking-news');
-    register_block_type(__DIR__ . '/blocks/content-video');
+    register_block_type(__DIR__ . '/blocks/content-video'); */
 }
 
 // Add ACF Options Page
