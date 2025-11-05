@@ -103,8 +103,25 @@
         </div>
     </header>
 
-    <?php if (is_page_template('page-templates/template-homepage.php')): ?>
-        <?php get_template_part('template-parts/hero', 'homepage'); ?>
-    <?php elseif (! is_page_template('page-templates/template-default-no-hero.php') && ! is_404()): ?>
-        <?php get_template_part('template-parts/hero', 'internal'); ?>
-    <?php endif; ?>
+    <?php
+    $args = array(
+        "hero_image_desktop_default" => $hero_image_desktop,
+        "hero_image_tablet_default" => $hero_image_tablet,
+        "hero_image_mobile_default" => $hero_image_mobile,
+        "hero_cta_button_default" => $hero_cta_button,
+    );
+
+    switch (get_field('hero_style')) {
+        case 'home':
+            get_template_part('template-parts/hero', 'homepage', $args);
+            break;
+        case 'internal':
+            get_template_part('template-parts/hero', 'internal', $args);
+            break;
+        case 'nice':
+            get_template_part('template-parts/hero', 'nice', $args);
+            break;
+        default:
+            break;
+    }
+    ?>

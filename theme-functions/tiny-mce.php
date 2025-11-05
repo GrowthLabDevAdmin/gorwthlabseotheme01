@@ -105,17 +105,17 @@ function my_acf_tinymce_colors_script()
             // Custom colors from PHP
             var customColors = <?php echo $colors_json; ?>;
 
-            console.log('🎨 Colors loaded from PHP:', customColors);
+            //console.log('🎨 Colors loaded from PHP:', customColors);
 
             // Hook BEFORE ACF initializes TinyMCE
             acf.addFilter('wysiwyg_tinymce_settings', function(mceInit, id, field) {
-                console.log('🔧 Modifying configuration for:', id);
+                //console.log('🔧 Modifying configuration for:', id);
 
                 // Inject custom colors
                 mceInit.textcolor_map = customColors;
                 mceInit.textcolor_cols = 5;
 
-                console.log('✅ Colors injected:', mceInit.textcolor_map);
+                //console.log('✅ Colors injected:', mceInit.textcolor_map);
 
                 return mceInit;
             });

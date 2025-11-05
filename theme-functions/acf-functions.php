@@ -21,7 +21,7 @@ add_filter('block_categories', 'growthlabtheme01_blocks_category', 10, 2);
 add_action('init', 'register_acf_blocks', 5);
 function register_acf_blocks()
 {
-   /*  register_block_type(__DIR__ . '/blocks/firm-intro');
+    /*  register_block_type(__DIR__ . '/blocks/firm-intro');
     register_block_type(__DIR__ . '/blocks/trust-logos');
     register_block_type(__DIR__ . '/blocks/settlements');
     register_block_type(__DIR__ . '/blocks/practice-areas');
@@ -46,8 +46,8 @@ if (function_exists('acf_add_options_page')) {
     ));
 }
 
+
 // Customize ACF JSON Save and Load Points
-add_filter('acf/settings/save_json', 'my_acf_json_save_point');
 function my_acf_json_save_point($path)
 {
     // update path
@@ -57,7 +57,6 @@ function my_acf_json_save_point($path)
     return $path;
 }
 
-add_filter('acf/settings/load_json', 'my_acf_json_load_point');
 function my_acf_json_load_point($paths)
 {
     // remove original path (optional)
@@ -69,6 +68,22 @@ function my_acf_json_load_point($paths)
     // return
     return $paths;
 }
+
+add_action('init', function () {
+    add_filter('acf/settings/save_json', 'my_acf_json_save_point');
+    add_filter('acf/settings/load_json', 'my_acf_json_load_point');
+});
+
+add_action('admin_init', function () {
+    if (current_user_can('manage_options')) {
+        $path = get_stylesheet_directory() . '/acf-json';
+        error_log('=== ACF JSON DEBUG ===');
+        error_log('Path: ' . $path);
+        error_log('Exists: ' . (file_exists($path) ? 'YES' : 'NO'));
+        error_log('Writable: ' . (is_writable($path) ? 'YES' : 'NO'));
+        error_log('Current theme: ' . get_stylesheet());
+    }
+});
 
 // Allow HTML in ACF fields
 add_filter('acf/shortcode/allow_unsafe_html', function () {

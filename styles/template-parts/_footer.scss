@@ -1,11 +1,41 @@
 @use "globals/variables" as v;
 
 .site-footer {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+
   //Footer Form Section
   .contact-form-footer {
+    margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
     position: relative;
+    display: flex;
+
+    @media (min-width: v.$tablet) {
+      margin-top: calc(-1 * var(--sp-sm));
+    }
+
+    @media (min-width: v.$mdpi) {
+      margin-top: calc(-1 * var(--sp-lg));
+    }
 
     &__wrapper {
+      width: 100%;
+      margin-top: calc(var(--sp-sm) + var(--sp-xsm));
+      position: relative;
+
+      @media (min-width: v.$tablet) {
+        margin-top: calc(var(--sp-sm));
+      }
+
+      @media (min-width: v.$mdpi) {
+        margin-top: calc(var(--sp-lg));
+      }
+    }
+
+    &__inner {
       margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
       padding: var(--sp-xsm) 0;
       z-index: 5;

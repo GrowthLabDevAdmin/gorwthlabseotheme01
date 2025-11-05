@@ -29,6 +29,9 @@ function eventListeners() {
       showMenus();
     }, 250);
   });
+
+  if (document.querySelector(".site-header--sticky"))
+    window.addEventListener("scroll", fadeInHeader);
 }
 
 function showMenus() {
@@ -83,6 +86,15 @@ function removeSubmenuActiveClasses() {
   parentMenuItems.forEach((item) => {
     item.classList.remove("active");
   });
+}
+
+//Top Bar on Scroll
+function fadeInHeader() {
+  if (window.scrollY > 0) {
+    siteHeader.classList.add("scrolling");
+  } else {
+    siteHeader.classList.remove("scrolling");
+  }
 }
 
 //Splide Carousels

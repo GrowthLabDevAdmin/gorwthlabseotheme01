@@ -1,4 +1,4 @@
-  <footer class="site-footer">
+  <footer id="site-footer" class="site-footer">
 
     <?php
     $es = filterContentByLanguage() ? '_es' : '';
@@ -13,32 +13,34 @@
     ?>
       <section class="contact-form-footer">
 
-        <?php if ($background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form-footer__bg bg-image gradient-overlay"); ?>
+        <div class="contact-form-footer__wrapper">
+          <?php if ($background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form-footer__bg bg-image gradient-overlay"); ?>
 
-        <div class="contact-form-footer__wrapper container">
+          <div class="contact-form-footer__inner container">
 
-          <div class="contact-form shadow-box">
+            <div class="contact-form shadow-box">
 
-            <?php
-            print_title($contact_form_title_tag, $contact_form_title, "contact-form__title tx-center");
-            get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'contact-form__separator'));
-            ?>
+              <?php
+              print_title($contact_form_title, $contact_form_title_tag, "contact-form__title tx-center");
+              get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'contact-form__separator'));
+              ?>
 
-            <div class="contact-form__description formatted-text tx-center">
-              <?php echo wp_kses_post(wpautop($contact_form_description)); ?>
+              <div class="contact-form__description formatted-text tx-center">
+                <?php echo wp_kses_post(wpautop($contact_form_description)); ?>
+              </div>
+
+              <div class="contact-form__form">
+                <?php gravity_form($contact_form, display_title: false, display_description: false); ?>
+              </div>
+
+              <div class="contact-form__message formatted-text tx-center">
+                <?= $message_before_submit ?>
+              </div>
+
             </div>
 
-            <div class="contact-form__form">
-              <?php gravity_form($contact_form, display_title: false, display_description: false); ?>
-            </div>
-
-            <div class="contact-form__message formatted-text tx-center">
-              <?= $message_before_submit ?>
-            </div>
-
+            <?php if ($side_picture) img_print_picture_tag(img: $side_picture,  classes: "contact-form-footer__side-pic shadow-box"); ?>
           </div>
-
-          <?php if ($side_picture) img_print_picture_tag(img: $side_picture,  classes: "contact-form-footer__side-pic shadow-box"); ?>
 
         </div>
       </section>
@@ -56,7 +58,7 @@
 
           <div class="locations-footer__content tx-center">
             <?php
-            print_title($locations_title_tag, $locations_title, "locations-footer__title");
+            print_title($locations_title, $locations_title_tag, "locations-footer__title");
             get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'locations-footer__separator'));
             echo $locations_main_content;
             ?>
@@ -86,41 +88,48 @@
                       ?>
                         <div class="location-card splide__slide">
 
-                          <div class="location-card__map">
-                            <?= $location['google_maps_embed_code'] ?>
-                          </div>
+                          <?php if ($location['google_maps_embed_code']): ?>
+                            <div class="location-card__map">
+                              <?= $location['google_maps_embed_code'] ?>
+                            </div>
+                          <?php endif ?>
 
                           <div class="location-card__inner tx-center">
 
                             <?php
-                            $city = $location['target_page_url'] ? "<a href='$target_page_url' target='_blanck'>" : '';
+                            $tp_url = $location['target_page_url'];
+                            $city = $tp_url ? "<a href='$tp_url' target='_blanck'>" : '';
                             $city .= $location['city'];
-                            $city .= $location['target_page_url'] ? "</a>" : '';
+                            $city .= $tp_url ? "</a>" : '';
                             ?>
 
-                            <?= print_title($location['city_tag'], $city, "location-card__city"); ?>
+                            <?= print_title($city, $location['city_tag'], "location-card__city"); ?>
 
                             <p class="location-card__address"><?= $location['address'] ?></p>
 
-                            <a href="tel:+1<?= get_flat_number($location['phone']) ?>" class="location-card__btn btn btn--secondary">
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0_4735_5808)">
-                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M1.88498 0.511147C2.05996 0.336436 2.27006 0.200905 2.50138 0.113537C2.7327 0.0261686 2.97994 -0.0110424 3.22672 0.00436978C3.47351 0.019782 3.7142 0.0874655 3.93285 0.202935C4.15149 0.318404 4.34311 0.479023 4.49498 0.674147L6.28998 2.98015C6.61898 3.40315 6.73498 3.95415 6.60498 4.47415L6.05798 6.66415C6.0297 6.77758 6.03123 6.89639 6.06242 7.00906C6.09361 7.12172 6.1534 7.22441 6.23598 7.30715L8.69298 9.76415C8.77582 9.8469 8.87868 9.90679 8.99153 9.93798C9.10439 9.96918 9.22341 9.97061 9.33698 9.94215L11.526 9.39515C11.7826 9.33099 12.0504 9.326 12.3093 9.38057C12.5681 9.43514 12.8111 9.54784 13.02 9.71015L15.326 11.5041C16.155 12.1491 16.231 13.3741 15.489 14.1151L14.455 15.1491C13.715 15.8891 12.609 16.2141 11.578 15.8511C8.93917 14.9227 6.54325 13.412 4.56798 11.4311C2.58727 9.45616 1.07659 7.06061 0.147983 4.42215C-0.214017 3.39215 0.110983 2.28515 0.850983 1.54515L1.88498 0.511147Z" fill="#BC9061" />
-                                </g>
-                                <defs>
-                                  <clipPath id="clip0_4735_5808">
-                                    <rect width="16" height="16" fill="white" />
-                                  </clipPath>
-                                </defs>
-                              </svg>
-                              <span>
-                                <?= $location['phone'] ?>
-                              </span>
-                            </a>
+                            <?php if ($location['phone']): ?>
+                              <a href="tel:+1<?= get_flat_number($location['phone']) ?>" class="location-card__btn btn btn--secondary">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <g clip-path="url(#clip0_4735_5808)">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.88498 0.511147C2.05996 0.336436 2.27006 0.200905 2.50138 0.113537C2.7327 0.0261686 2.97994 -0.0110424 3.22672 0.00436978C3.47351 0.019782 3.7142 0.0874655 3.93285 0.202935C4.15149 0.318404 4.34311 0.479023 4.49498 0.674147L6.28998 2.98015C6.61898 3.40315 6.73498 3.95415 6.60498 4.47415L6.05798 6.66415C6.0297 6.77758 6.03123 6.89639 6.06242 7.00906C6.09361 7.12172 6.1534 7.22441 6.23598 7.30715L8.69298 9.76415C8.77582 9.8469 8.87868 9.90679 8.99153 9.93798C9.10439 9.96918 9.22341 9.97061 9.33698 9.94215L11.526 9.39515C11.7826 9.33099 12.0504 9.326 12.3093 9.38057C12.5681 9.43514 12.8111 9.54784 13.02 9.71015L15.326 11.5041C16.155 12.1491 16.231 13.3741 15.489 14.1151L14.455 15.1491C13.715 15.8891 12.609 16.2141 11.578 15.8511C8.93917 14.9227 6.54325 13.412 4.56798 11.4311C2.58727 9.45616 1.07659 7.06061 0.147983 4.42215C-0.214017 3.39215 0.110983 2.28515 0.850983 1.54515L1.88498 0.511147Z" fill="#BC9061" />
+                                  </g>
+                                  <defs>
+                                    <clipPath id="clip0_4735_5808">
+                                      <rect width="16" height="16" fill="white" />
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                                <span>
+                                  <?= $location['phone'] ?>
+                                </span>
+                              </a>
+                            <?php endif ?>
 
-                            <a href="<?= $location['google_map_url'] ?>" class="location-card__cta">
-                              <?= filterContentByLanguage() ? "Obetner Direcciones" : "Get Directions" ?>
-                            </a>
+                            <?php if ($location['google_map_url']): ?>
+                              <a href="<?= $location['google_map_url'] ?>" class="location-card__cta">
+                                <?= filterContentByLanguage() ? "Obetner Direcciones" : "Get Directions" ?>
+                              </a>
+                            <?php endif ?>
 
                           </div>
                         </div>
@@ -137,9 +146,13 @@
                       </svg>
                       <span class="arrow__placeholder">Prev</span>
                     </button>
-                    <a href="<?= $locations_page_link['url'] ?>" class="cta-btn btn btn--secondary">
-                      <span><?= $locations_page_link['title'] ?></span>
-                    </a>
+
+                    <?php if ($locations_page_link['url']): ?>
+                      <a href="<?= $locations_page_link['url'] ?>" class="cta-btn btn btn--secondary">
+                        <span><?= $locations_page_link['title'] ?></span>
+                      </a>
+                    <?php endif ?>
+
                     <button class="splide__arrow splide__arrow--next arrow arrow--next btn btn--secondary">
                       <svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.220588 0.220341C0.150743 0.290009 0.0953293 0.372773 0.057519 0.46389C0.0197096 0.555008 0.000247002 0.65269 0.000247002 0.751341C0.000247002 0.849992 0.0197096 0.947674 0.057519 1.03879C0.0953293 1.12991 0.150743 1.21267 0.220588 1.28234L8.69109 9.75134L0.220588 18.2203C0.0797577 18.3612 0.000640869 18.5522 0.000640869 18.7513C0.000640869 18.9505 0.0797577 19.1415 0.220588 19.2823C0.361418 19.4232 0.552424 19.5023 0.751588 19.5023C0.950751 19.5023 1.14176 19.4232 1.28259 19.2823L10.2826 10.2823C10.3524 10.2127 10.4078 10.1299 10.4457 10.0388C10.4835 9.94767 10.5029 9.84999 10.5029 9.75134C10.5029 9.65269 10.4835 9.55501 10.4457 9.46389C10.4078 9.37277 10.3524 9.29001 10.2826 9.22034L1.28259 0.220341C1.21292 0.150496 1.13016 0.0950816 1.03904 0.057272C0.94792 0.0194623 0.850239 0 0.751588 0C0.652937 0 0.555256 0.0194623 0.464138 0.057272C0.37302 0.0950816 0.290257 0.150496 0.220588 0.220341Z" fill="#BC9061" />
