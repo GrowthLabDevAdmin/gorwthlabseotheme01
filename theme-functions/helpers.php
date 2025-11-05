@@ -29,6 +29,7 @@ function get_flat_number($phone)
 function print_title($title, $tag = 'p', $classes = '')
 {
     if (!$title) return;
+    $tag = $tag ?? 'p';
     echo "<$tag class='$classes'>" . $title . "</$tag>";
 }
 

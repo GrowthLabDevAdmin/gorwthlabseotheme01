@@ -115,13 +115,16 @@
         case 'home':
             get_template_part('template-parts/hero', 'homepage', $args);
             break;
-        case 'internal':
-            get_template_part('template-parts/hero', 'internal', $args);
+        case 'default':
+            get_template_part('template-parts/hero', 'default', $args);
             break;
         case 'nice':
             get_template_part('template-parts/hero', 'nice', $args);
             break;
+        case 'nohero':
+            break;
         default:
+            get_template_part('template-parts/hero', 'default', $args);
             break;
     }
     ?>

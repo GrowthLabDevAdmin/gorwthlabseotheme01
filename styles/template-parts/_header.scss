@@ -7,6 +7,9 @@
   position: relative;
   z-index: 9999;
   background-color: rgb(var(--primary));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &--sticky {
     position: fixed;
@@ -21,9 +24,9 @@
   }
 
   &__wrapper {
-    padding: 1.6rem 0;
+    padding: var(--sp-xsm) 0;
     display: grid;
-    grid-template-columns: 10% 30% auto 10%;
+    grid-template-columns: 10% 25% auto 10%;
     column-gap: 2rem;
     align-items: center;
     justify-content: space-between;
@@ -35,6 +38,7 @@
     }
 
     @media (min-width: v.$mdpi) {
+      padding: var(--sp-sm) 0;
       grid-template-columns: 2fr 9fr 2fr 2fr;
       row-gap: 2.8rem;
       column-gap: 1.2rem;

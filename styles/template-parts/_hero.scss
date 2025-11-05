@@ -1,18 +1,26 @@
 @use "globals/variables" as v;
 
 .hero {
-  padding-top: 15rem;
+  min-height: 35rem;
+  padding: 15rem 0 var(--sp-xsm);
 
   @media (min-width: v.$tablet) {
-    padding-top: 20rem;
+    padding: 26rem 0 var(--sp-xsm);
   }
 
-  @media (min-width: v.$ldpi) {
-    padding-top: 10rem;
+  @media (min-width: v.$mdpi) {
+    padding: 14rem 0 var(--sp-xsm);
+  }
+
+  strong {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: rgb(var(--tertiary));
   }
 
   &__wrapper {
-    min-height: 56rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -24,6 +32,19 @@
   &__side-portrait {
     min-width: 280px;
     flex: 1 0 calc(50% - (var(--sp-xsm) / 2));
+  }
+
+  &__content {
+    padding: var(--sp-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-xsm);
+
+    @media (min-width: v.$tablet) {
+      max-width: 70%;
+    }
   }
 
   &__side-portrait {
@@ -48,9 +69,20 @@
       object-position: bottom center;
     }
   }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(4rem, 2.5vw, 4.8rem);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    line-height: 1.25;
+    color: rgb(var(--secondary));
+  }
 }
 
 .hero--homepage {
+  padding-bottom: 0;
+
   .content-box {
     padding: var(--sp-xsm);
     background-color: rgb(var(--primary));
@@ -80,18 +112,9 @@
     }
 
     &__title {
-      margin: 0;
-      font-family: var(--font-serif);
+      @extend .hero__title;
       font-size: clamp(4rem, 6.5vw, 9rem);
-      font-weight: 600;
       line-height: 1;
-      color: rgb(var(--secondary));
-
-      strong {
-        margin: 0;
-        line-height: 1;
-        color: rgb(var(--tertiary));
-      }
     }
 
     &__btn {

@@ -36,11 +36,11 @@
             },
             "choices": {
                 "home": "Homepage Hero",
-                "internal": "Internal Hero",
+                "default": "Default Hero",
                 "nice": "Nice Hero",
                 "nohero": "No Hero"
             },
-            "default_value": "internal: Internal Hero",
+            "default_value": "default",
             "return_format": "value",
             "multiple": 0,
             "allow_null": 0,
@@ -535,5 +535,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1762213637
+    "modified": 1762318834
 }
