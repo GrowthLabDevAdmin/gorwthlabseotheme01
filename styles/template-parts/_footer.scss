@@ -1,5 +1,10 @@
 @use "globals/variables" as v;
 
+section:has(+ .site-footer .contact-form-footer),
+main:has(+ .site-footer .contact-form-footer) {
+  padding-bottom: var(--sp-lg);
+}
+
 .site-footer {
   position: relative;
   z-index: 5;

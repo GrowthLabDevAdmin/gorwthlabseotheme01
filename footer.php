@@ -98,7 +98,7 @@
 
                             <?php
                             $tp_url = $location['target_page_url'];
-                            $city = $tp_url ? "<a href='$tp_url' target='_blanck'>" : '';
+                            $city = $tp_url ? "<a href='$tp_url' target='_blank'>" : '';
                             $city .= $location['city'];
                             $city .= $tp_url ? "</a>" : '';
                             ?>

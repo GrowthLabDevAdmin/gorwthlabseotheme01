@@ -4,6 +4,12 @@ const mainMenu = document.querySelector(".site-header .main-nav");
 const parentMenuItems = document.querySelectorAll(
   ".site-header .main-nav .menu-item-has-children"
 );
+const mainContent = document.querySelectorAll(
+  ".page-template-default .main-content"
+);
+const blocksInContent = document.querySelectorAll(
+  ".page-template-default .main-content .block[data-extract]"
+);
 
 //Breakpoints
 const mobile = 480;
@@ -14,6 +20,8 @@ const hdpi = 1440;
 
 document.addEventListener("DOMContentLoaded", () => {
   eventListeners();
+
+  blocksInContent && extractBlocks();
 
   splideCarousels();
 });
@@ -45,7 +53,7 @@ function showMenus() {
   // always remove listener using the same reference before adding
   mobileBtn.removeEventListener("click", handleMenuClick);
 
-  if (window.screen.width > 768) {
+  if (window.screen.width > tablet) {
     mobileBtn.classList.remove("active");
     mainMenu.classList.remove("active");
 
@@ -103,7 +111,7 @@ function splideCarousels() {
     type: "loop",
     perPage: 4,
     perMove: 1,
-    gap: "1.6rem",
+    gap: "16px",
     arrows: true,
     pagination: false,
     breakpoints: {
@@ -117,4 +125,16 @@ function splideCarousels() {
   });
 
   footerLocations.mount();
+}
+
+//Blocks
+function extractBlocks() {
+  blocksInContent.forEach((item) => {
+    if (item.getAttribute("data-extract") === "before") {
+      mainContent.insertAdjacentHTML("beforebegin", item.outerHTML);
+    } else {
+      mainContent.insertAdjacentHTML("afterend", item.outerHTML);
+    }
+    item.remove();
+  });
 }
