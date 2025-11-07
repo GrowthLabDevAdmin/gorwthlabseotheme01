@@ -1,3 +1,5 @@
+@use "mixins" as m;
+
 form {
   max-width: 100%;
   display: flex;
@@ -128,16 +130,14 @@ input[type="submit"] {
   &_footer {
     width: 100%;
     padding: var(--sp-xsm);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include m.flex-center;
   }
 }
 
 .gfield {
   min-width: 208px;
   flex-grow: 1;
-  
+
   $ancestor: &;
 
   &.hidden_label {

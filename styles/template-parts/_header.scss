@@ -1,4 +1,5 @@
 @use "globals/variables" as v;
+@use "globals/mixins" as m;
 
 // Header Styles
 .site-header {
@@ -7,9 +8,7 @@
   position: relative;
   z-index: 9999;
   background-color: rgb(var(--primary));
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include m.flex-center;
 
   &--sticky {
     position: fixed;
@@ -122,9 +121,7 @@
     height: auto;
     position: relative;
     aspect-ratio: 1/1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include m.flex-center;
     background-color: rgb(var(--secondary-light));
     border-radius: 50%;
     border: 1px solid rgb(var(--tertiary));
@@ -215,18 +212,14 @@
 
     @media (min-width: v.$tablet) {
       width: fit-content;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include m.flex-center;
     }
 
     a {
       width: 100%;
       height: 100%;
       padding: 1.6rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include m.flex-center;
       background-color: rgb(var(--secondary-light));
       border: 0.5px solid rgb(var(--tertiary));
       border-top: none;
@@ -301,9 +294,7 @@
         width: 2.5rem;
         height: 2.5rem;
         position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include m.flex-center;
         top: 1.8rem;
         right: 1.6rem;
         z-index: 10;
@@ -389,11 +380,9 @@
   }
 
   .callout {
-    display: flex;
+     @include m.flex-center;
     flex-direction: column;
     row-gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
     text-align: center;
 
     span {
@@ -432,9 +421,7 @@
     height: auto;
     aspect-ratio: 1/1;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @include m.flex-center;
     border-radius: 50%;
     border: 1px solid rgb(var(--tertiary));
 

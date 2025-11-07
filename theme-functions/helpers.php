@@ -33,13 +33,26 @@ function print_title($title, $tag = 'p', $classes = '')
     echo "<$tag class='$classes'>" . $title . "</$tag>";
 }
 
-//debug helper
+//Debug helper
 function dd($data)
 {
     echo '<pre>';
     var_dump($data);
     echo '</pre>';
     die();
+}
+
+//Format Numerical Amount
+function format_number_abbreviated($number)
+{
+    if ($number >= 1000000000) {
+        return round($number / 1000000000, 1) . 'B';
+    } elseif ($number >= 1000000) {
+        return round($number / 1000000, 1) . 'M';
+    } elseif ($number >= 1000) {
+        return round($number / 1000, 1) . 'K';
+    }
+    return $number;
 }
 
 // YouTube Video ID Extractor

@@ -1,4 +1,5 @@
 @use "variables" as v;
+@use "mixins" as m;
 
 * {
   margin: 0;
@@ -310,9 +311,7 @@ img.bg-image {
 
 .ampersand-separator {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include m.flex-center;
   column-gap: 0.8rem;
 
   svg {
@@ -422,24 +421,60 @@ img.bg-image {
   }
 }
 
-.post-pagination {
-  width: 100%;
-  flex: 0 0 100%;
-  grid-column: 1/4;
+//Pagination
+.pagination-buttons {
   display: flex;
-  gap: 15px;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
 
-  a,
-  span {
-    padding: 1rem;
-    font-size: 2rem;
-    line-height: 2.4rem;
-    font-weight: bold;
-    @media (min-width: v.$tablet) {
-      font-size: 1.8rem;
-      line-height: 3.2rem;
+  .arrow,
+  .btn {
+    height: auto;
+    position: relative;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+
+    &:has(a) {
+      padding: 0;
+      border-left: none;
+    }
+
+    a {
+      padding: 1.6rem 2.4rem;
+      @include m.flex-center;
+    }
+
+    &--prev {
+      border-right: none;
+      border-top-left-radius: 32px;
+      border-bottom-left-radius: 32px;
+
+      & + .pagination__item--number {
+        border-left: 1px solid rgb(var(--tertiary));
+      }
+    }
+
+    &--next {
+      border-left: none;
+      border-top-right-radius: 32px;
+      border-bottom-right-radius: 32px;
+    }
+
+    &__placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: -1;
+      opacity: 0;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      path {
+        fill: rgb(var(--tertiary));
+      }
     }
   }
 }

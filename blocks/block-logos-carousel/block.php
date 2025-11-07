@@ -6,8 +6,10 @@ if (get_field('toggle_block')):
     <section
         id="<?= $block_id ?? "" ?>"
         class="block logos-carousel<?= !$background_color ? ' bg-bicolor' : '' ?>"
-        <?= $extract_block_from_content ? 'data-extract' . $place : ''; ?>
-        <?= $background_color ? "style='background-color: $background_color'" : ""; ?>>
+        <?php
+        echo isset($extract_block_from_content) && $extract_block_from_content ? "data-extract='$place'" : '';
+        if ($background_color) "style='background-color: $background_color'";
+        ?>>
 
         <div class="logos-carousel__wrapper container tx-center">
             <?php print_title($title, $title_tag, "logos-carousel__title") ?>

@@ -1,4 +1,5 @@
 @use "globals/variables" as v;
+@use "globals/mixins" as m;
 
 .hero {
   min-height: 35rem;
@@ -12,19 +13,9 @@
     padding: 14rem 0 var(--sp-xsm);
   }
 
-  strong {
-    margin: 0;
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    color: rgb(var(--tertiary));
-  }
-
   &__wrapper {
-    display: flex;
+    @include m.flex-center;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
     gap: var(--sp-xsm);
   }
 
@@ -36,10 +27,8 @@
 
   &__content {
     padding: var(--sp-sm);
-    display: flex;
+    @include m.flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: var(--sp-xsm);
 
     @media (min-width: v.$tablet) {
@@ -72,11 +61,7 @@
 
   &__title {
     margin: 0;
-    font-size: clamp(4rem, 2.5vw, 4.8rem);
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.25;
-    color: rgb(var(--secondary));
+    @include m.title(rgb(var(--secondary)), 4rem, 2.5vw, 4.8rem);
   }
 }
 
@@ -89,10 +74,8 @@
 
     &__inner {
       padding: var(--sp-xsm);
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: var(--sp-xsm);
 
       @media (min-width: v.$ldpi) {
@@ -112,16 +95,13 @@
     }
 
     &__title {
-      @extend .hero__title;
-      font-size: clamp(4rem, 6.5vw, 9rem);
-      line-height: 1;
+      margin: 0;
+      @include m.title(rgb(var(--secondary)), 4rem, 6.5vw, 9rem, null, 1);
     }
 
     &__btn {
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include m.flex-center;
       flex-wrap: nowrap;
       gap: var(--sp-xsm);
 

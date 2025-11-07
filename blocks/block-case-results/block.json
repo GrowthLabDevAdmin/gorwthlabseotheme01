@@ -1,0 +1,17 @@
+{
+  "name": "acf/case-results",
+  "title": "Case Results",
+  "style": ["splide-style", "file:./block-min.css"],
+  "script": ["splide-js", "file:./block-min.js"],
+  "category": "growthlabtheme01-blocks",
+  "icon": "block-default",
+  "keywords": ["growthlabseo", "carousel", "case results", "post type"],
+  "acf": {
+    "mode": "edit",
+    "renderTemplate": "block.php"
+  },
+  "supports": {
+    "mode": false
+  },
+  "align": "full"
+}

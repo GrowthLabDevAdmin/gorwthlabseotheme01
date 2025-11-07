@@ -22,7 +22,7 @@
 
               <?php
               print_title($contact_form_title, $contact_form_title_tag, "contact-form__title tx-center");
-              get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'contact-form__separator'));
+              get_template_part('template-parts/ampersand', 'separator', array('classes' => 'contact-form__separator'));
               ?>
 
               <div class="contact-form__description formatted-text tx-center">
@@ -33,7 +33,7 @@
                 <?php gravity_form($contact_form, display_title: false, display_description: false); ?>
               </div>
 
-              <div class="contact-form__message formatted-text tx-center">
+              <div class="contact-form__message formatted-text tx-center flex-center">
                 <?= $message_before_submit ?>
               </div>
 
@@ -59,7 +59,7 @@
           <div class="locations-footer__content tx-center">
             <?php
             print_title($locations_title, $locations_title_tag, "locations-footer__title");
-            get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'locations-footer__separator'));
+            get_template_part('template-parts/ampersand', 'separator', array('classes' => 'locations-footer__separator'));
             echo $locations_main_content;
             ?>
           </div>
@@ -67,7 +67,7 @@
           <div class="locations-cards">
 
             <div class="location-card location-card--first">
-              <div class="location-card__inner">
+              <div class="location-card__inner flex-center">
                 <?php if ($first_card['logo']) img_print_picture_tag(img: $first_card['logo'], max_size: "thumbnail",  classes: "location-card__logo"); ?>
                 <div class="location-card__content tx-center">
                   <?= $first_card['content'] ?>
@@ -139,7 +139,7 @@
                     </div>
                   </div>
 
-                  <div class="splide__arrows locations-cards__arrows">
+                  <div class="splide__arrows pagination-buttons locations-cards__arrows">
                     <button class="splide__arrow splide__arrow--prev arrow arrow--prev btn btn--secondary">
                       <svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2823 0.220341C10.3522 0.290009 10.4076 0.372773 10.4454 0.46389C10.4832 0.555008 10.5027 0.65269 10.5027 0.751341C10.5027 0.849992 10.4832 0.947674 10.4454 1.03879C10.4076 1.12991 10.3522 1.21267 10.2823 1.28234L1.81184 9.75134L10.2823 18.2203C10.4232 18.3612 10.5023 18.5522 10.5023 18.7513C10.5023 18.9505 10.4232 19.1415 10.2823 19.2823C10.1415 19.4232 9.95051 19.5023 9.75134 19.5023C9.55218 19.5023 9.36117 19.4232 9.22034 19.2823L0.22034 10.2823C0.150495 10.2127 0.0950809 10.1299 0.0572712 10.0388C0.0194616 9.94767 0 9.84999 0 9.75134C0 9.65269 0.0194616 9.55501 0.0572712 9.46389C0.0950809 9.37277 0.150495 9.29001 0.22034 9.22034L9.22034 0.220341C9.29001 0.150496 9.37277 0.0950816 9.46389 0.057272C9.55501 0.0194623 9.65269 0 9.75134 0C9.84999 0 9.94767 0.0194623 10.0388 0.057272C10.1299 0.0950816 10.2127 0.150496 10.2823 0.220341Z" fill="#BC9061" />
@@ -148,7 +148,7 @@
                     </button>
 
                     <?php if ($locations_page_link['url']): ?>
-                      <a href="<?= $locations_page_link['url'] ?>" class="cta-btn btn btn--secondary">
+                      <a href="<?= $locations_page_link['url'] ?>" target="<?= $locations_page_link['target'] ?>" class="cta-btn btn btn--secondary">
                         <span><?= $locations_page_link['title'] ?></span>
                       </a>
                     <?php endif ?>
@@ -194,7 +194,7 @@
               'link_after'              => '</span>'
             )
           );
-          get_template_part('template-parts/ampersand', 'separator', $args = array('classes' => 'copyright-footer__separator'));
+          get_template_part('template-parts/ampersand', 'separator', array('classes' => 'copyright-footer__separator'));
           ?>
 
           <a href="https://growthlabseo.com/" target="_blank" class="copyright-footer__logo">

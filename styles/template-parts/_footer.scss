@@ -1,4 +1,5 @@
 @use "globals/variables" as v;
+@use "globals/mixins" as m;
 
 section:has(+ .site-footer .contact-form-footer),
 main:has(+ .site-footer .contact-form-footer) {
@@ -86,21 +87,12 @@ main:has(+ .site-footer .contact-form-footer) {
     padding: var(--sp-xsm);
     background-color: rgb(var(--primary));
     flex: 1 0 calc(50% - var(--sp-sm) / 2);
-    display: flex;
+    @include m.flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: var(--sp-xsm);
 
     &__title {
-      font-size: 3.6rem;
-      font-family: var(--font-serif);
-      font-weight: 600;
-
-      strong {
-        font-weight: inherit;
-        color: rgb(var(--tertiary));
-      }
+      @include m.title(rgb(var(--secondary)), 3.6rem, 3.33vw, 3.6rem);
     }
 
     &__form {
@@ -110,9 +102,7 @@ main:has(+ .site-footer .contact-form-footer) {
 
     &__message {
       padding: var(--sp-xsm);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include m.flex-center;
       border: 1px solid rgb(var(--tertiary));
 
       & > *:last-child {
@@ -132,10 +122,8 @@ main:has(+ .site-footer .contact-form-footer) {
 
     &__wrapper {
       padding: var(--sp-xsm);
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: var(--sp-xsm);
 
       @media (min-width: v.$mdpi) {
@@ -145,10 +133,8 @@ main:has(+ .site-footer .contact-form-footer) {
     }
 
     &__content {
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: calc(var(--sp-xsm) / 2);
 
       @media (min-width: v.$mdpi) {
@@ -157,19 +143,11 @@ main:has(+ .site-footer .contact-form-footer) {
     }
 
     &__title {
-      font-size: 4rem;
-      font-family: var(--font-serif);
-      font-weight: 600;
-      line-height: 1.25;
+      @include m.title(rgb(var(--primary)), 4rem, 4.16vw, 4.6rem);
+    }
 
-      @media (min-width: v.$mdpi) {
-        font-size: 4.6rem;
-      }
-
-      strong {
-        font-weight: inherit;
-        color: rgb(var(--tertiary));
-      }
+    &__separator {
+      max-width: 70%;
     }
   }
 
@@ -207,9 +185,6 @@ main:has(+ .site-footer .contact-form-footer) {
       position: absolute;
       top: calc(100% + var(--sp-xsm));
       right: 0;
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
 
       @media (min-width: v.$tablet) {
         width: calc((3 * (100% / 2)) + var(--sp-xsm) / 2);
@@ -220,43 +195,6 @@ main:has(+ .site-footer .contact-form-footer) {
         width: calc((5 * (100% / 4)) + var(--sp-xsm) / 2);
         flex: 0 0 calc((5 * (100% / 4)) + var(--sp-xsm) / 2);
         top: calc(100% + var(--sp-sm));
-      }
-    }
-
-    .arrow,
-    .cta-btn {
-      height: auto;
-      position: relative;
-      border-radius: 0;
-      display: flex;
-      align-items: center;
-
-      &--prev {
-        border-right: none;
-        border-top-left-radius: 32px;
-        border-bottom-left-radius: 32px;
-      }
-
-      &--next {
-        border-left: none;
-        border-top-right-radius: 32px;
-        border-bottom-right-radius: 32px;
-      }
-
-      &__placeholder {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: -1;
-        opacity: 0;
-      }
-
-      svg {
-        width: 24px;
-        height: 24px;
-        path {
-          fill: rgb(var(--tertiary));
-        }
       }
     }
   }
@@ -272,10 +210,8 @@ main:has(+ .site-footer .contact-form-footer) {
     &__inner {
       height: 100%;
       padding: var(--sp-sm) var(--sp-xsm);
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
       gap: var(--sp-xsm);
     }
 
@@ -291,10 +227,8 @@ main:has(+ .site-footer .contact-form-footer) {
     }
 
     &__city {
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       font-size: 1.6rem;
       font-family: var(--font-sans);
       font-weight: 700;
@@ -326,11 +260,9 @@ main:has(+ .site-footer .contact-form-footer) {
     }
 
     &__btn {
-      display: flex;
+      @include m.flex-center;
       flex-wrap: nowrap;
       gap: 8px;
-      align-items: center;
-      justify-content: center;
     }
 
     &__cta {
@@ -386,10 +318,8 @@ main:has(+ .site-footer .contact-form-footer) {
     }
 
     &__wrapper {
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: var(--sp-xsm);
     }
   }
@@ -398,10 +328,8 @@ main:has(+ .site-footer .contact-form-footer) {
     padding: var(--sp-xsm) 0;
 
     &__menu {
-      display: flex;
+      @include m.flex-center;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
       gap: var(--sp-xsm);
 
       @media (min-width: v.$tablet) {
