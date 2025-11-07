@@ -104,6 +104,7 @@
   .site-logo {
     width: 100%;
     height: auto;
+    position: relative;
     display: flex;
     cursor: pointer;
 
@@ -111,6 +112,15 @@
       width: 100%;
       height: auto;
       object-fit: contain;
+    }
+
+    span {
+      width: 20%;
+      height: 20%;
+      position: absolute;
+      z-index: -1;
+      font-size: 1px;
+      opacity: 0;
     }
   }
 
@@ -134,6 +144,15 @@
     &:hover {
       cursor: pointer;
       background-color: rgb(var(--secondary));
+    }
+
+    span {
+      width: 20%;
+      height: 20%;
+      position: absolute;
+      z-index: -1;
+      font-size: 1px;
+      opacity: 0;
     }
 
     svg {
@@ -380,7 +399,7 @@
   }
 
   .callout {
-     @include m.flex-center;
+    @include m.flex-center;
     flex-direction: column;
     row-gap: 0.5rem;
     text-align: center;
@@ -421,7 +440,7 @@
     height: auto;
     aspect-ratio: 1/1;
     padding: 0;
-  @include m.flex-center;
+    @include m.flex-center;
     border-radius: 50%;
     border: 1px solid rgb(var(--tertiary));
 

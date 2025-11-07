@@ -263,6 +263,22 @@ if (!function_exists('growthlabtheme01_setup')) {
 add_action('after_setup_theme', 'growthlabtheme01_setup');
 
 /**
+ * Remove link from custom logo
+ */
+function growthlabtheme01_remove_custom_logo_link($html)
+{
+    // Extract just the <img> tag from the logo HTML
+    preg_match('/<img[^>]+>/', $html, $matches);
+
+    if (!empty($matches[0])) {
+        return $matches[0];
+    }
+
+    return $html;
+}
+add_filter('get_custom_logo', 'growthlabtheme01_remove_custom_logo_link');
+
+/**
  * Enqueue scripts and styles.
  *
  *

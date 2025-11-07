@@ -29,6 +29,7 @@
                     <?php
                     if (function_exists('the_custom_logo') && has_custom_logo()) the_custom_logo();
                     ?>
+                    <span>Site Logo</span>
                 </a>
             </div>
 
@@ -39,6 +40,7 @@
                         <line x1="2" y1="12" x2="22" y2="12" />
                         <line x1="2" y1="20" x2="22" y2="20" />
                     </svg>
+                    <span>Mobile Menu Button</span>
                 </button>
 
                 <?php

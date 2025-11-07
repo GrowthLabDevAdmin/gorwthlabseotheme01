@@ -38,7 +38,11 @@ if (get_field('toggle_block')):
                                                 classes: "logo__pic"
                                             ); ?>
 
-                                            <?php if ($has_link): ?></a><?php endif; ?>
+
+                                            <?php if ($has_link): ?>
+                                                <span><?= $logo['link']['title'] ?></span>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
