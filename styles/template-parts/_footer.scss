@@ -157,26 +157,26 @@ main:has(+ .site-footer .contact-form-footer) {
     display: flex;
     align-items: stretch;
     justify-content: center;
-    gap: var(--sp-xsm);
+    gap: calc(var(--sp-xsm) / 2);
 
     @media (min-width: v.$mdpi) {
       margin-bottom: 9rem;
     }
 
     & > * {
-      width: calc(50% - var(--sp-xsm) / 2);
-      flex: 0 0 calc(50% - var(--sp-xsm) / 2);
+      width: calc(50% - var(--sp-xsm) / 4);
+      flex: 0 0 calc(50% - var(--sp-xsm) / 4);
     }
 
     &__carousel {
       @media (min-width: v.$tablet) {
-        width: calc((2 * (100% / 3)) - var(--sp-xsm) / 2);
-        flex: 0 0 calc((2 * (100% / 3)) - var(--sp-xsm) / 2);
+        width: calc((2 * (100% / 3)) - var(--sp-xsm) / 4);
+        flex: 0 0 calc((2 * (100% / 3)) - var(--sp-xsm) / 4);
       }
 
       @media (min-width: v.$mdpi) {
-        width: calc((4 * (100% / 5)) - var(--sp-xsm) / 2);
-        flex: 0 0 calc((4 * (100% / 5)) - var(--sp-xsm) / 2);
+        width: calc((4 * (100% / 5)) - var(--sp-xsm) / 4);
+        flex: 0 0 calc((4 * (100% / 5)) - var(--sp-xsm) / 4);
       }
     }
 
@@ -187,13 +187,13 @@ main:has(+ .site-footer .contact-form-footer) {
       right: 0;
 
       @media (min-width: v.$tablet) {
-        width: calc((3 * (100% / 2)) + var(--sp-xsm) / 2);
-        flex: 0 0 calc((3 * (100% / 2)) + var(--sp-xsm) / 2);
+        width: calc((3 * (100% / 2)) + var(--sp-xsm) / 4);
+        flex: 0 0 calc((3 * (100% / 2)) + var(--sp-xsm) / 4);
       }
 
       @media (min-width: v.$mdpi) {
-        width: calc((5 * (100% / 4)) + var(--sp-xsm) / 2);
-        flex: 0 0 calc((5 * (100% / 4)) + var(--sp-xsm) / 2);
+        width: calc((5 * (100% / 4)) + var(--sp-xsm) / 4);
+        flex: 0 0 calc((5 * (100% / 4)) + var(--sp-xsm) / 4);
         top: calc(100% + var(--sp-sm));
       }
     }
@@ -292,13 +292,13 @@ main:has(+ .site-footer .contact-form-footer) {
       }
 
       @media (min-width: v.$tablet) {
-        width: calc((100% / 3) - var(--sp-xsm) / 2);
-        flex: 0 0 calc((100% / 3) - var(--sp-xsm) / 2);
+        width: calc((100% / 3) - var(--sp-xsm) / 4);
+        flex: 0 0 calc((100% / 3) - var(--sp-xsm) / 4);
       }
 
       @media (min-width: v.$mdpi) {
-        width: calc((100% / 5) - var(--sp-xsm) / 2);
-        flex: 0 0 calc((100% / 5) - var(--sp-xsm) / 2);
+        width: calc((100% / 5) - var(--sp-xsm) / 4);
+        flex: 0 0 calc((100% / 5) - var(--sp-xsm) / 4);
 
         p {
           font-size: 1.6rem;
