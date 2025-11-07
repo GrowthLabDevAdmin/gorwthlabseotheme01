@@ -111,7 +111,6 @@ function splideCarousels() {
     type: "loop",
     perPage: 4,
     perMove: 1,
-    gap: "16px",
     arrows: true,
     pagination: false,
     breakpoints: {

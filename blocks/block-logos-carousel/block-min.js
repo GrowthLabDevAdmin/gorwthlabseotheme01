@@ -1,2 +1,2 @@
-document.addEventListener("DOMContentLoaded",()=>{new Splide(".case-results__carousel .splide",{type:"loop",perPage:3,perMove:1,gap:"16px",arrows:!0,pagination:!1,breakpoints:{[tablet]:{perPage:1},[ldpi]:{perPage:2}}}).mount()});
+document.addEventListener("DOMContentLoaded",()=>{new Splide(".logos-carousel__carousel .splide",{type:"loop",perPage:7,perMove:1,arrows:!1,pagination:!1,breakpoints:{[tablet]:{perPage:3},[ldpi]:{perPage:5}}}).mount()});
 //# sourceMappingURL=block-min.js.map

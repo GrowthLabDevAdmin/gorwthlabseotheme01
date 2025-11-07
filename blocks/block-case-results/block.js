@@ -1,20 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
-  var logosCarousel = new Splide(".logos-carousel__carousel .splide", {
+  var resultsCarousel = new Splide(".case-results__carousel .splide", {
     type: "loop",
-    perPage: 7,
+    perPage: 3,
     perMove: 1,
-    gap: "32px",
-    arrows: false,
+    arrows: true,
     pagination: false,
     breakpoints: {
       [tablet]: {
-        perPage: 3,
+        perPage: 1,
       },
       [ldpi]: {
-        perPage: 5,
+        perPage: 2,
       },
     },
   });
 
-  logosCarousel.mount();
+  resultsCarousel.mount();
 });
