@@ -1,50 +1,53 @@
-const ctaBox = document.querySelectorAll(".cta-box.float");
-const ctaBoxWrapper = document.querySelectorAll(
-  ".cta-box.float .cta-box__wrapper"
-);
+const ctaBoxes = document.querySelectorAll(".cta-box.float");
 const contactFormFooterWrapper = document.querySelector(
   ".contact-form-footer__wrapper"
 );
 
-document.addEventListener("DOMContentLoaded", () => {
-  setBoxPosition();
+function setBoxPosition() {
+  ctaBoxes.forEach((element) => {
+    const box = element.querySelector(".cta-box__box");
+    if (!box) return;
 
-  window.addEventListener("resize", () => {
-    setBoxPosition();
+    const boxHeight = box.offsetHeight;
+    const topPosition = boxHeight * 0.55;
+    const bottomPosition = boxHeight * 0.45;
+
+    const firstChild = element.firstElementChild;
+    const prevSibling = element.previousElementSibling;
+    const nextSibling = element.nextElementSibling;
+
+    if (firstChild) {
+      firstChild.style.marginTop = `${-topPosition}px`;
+      firstChild.style.paddingBottom = `${topPosition}px`;
+    }
+
+    if (prevSibling) {
+      prevSibling.style.paddingBottom = `${topPosition + 70}px`;
+      prevSibling.style.borderBottom = "8px solid rgb(var(--tertiary))";
+    }
+
+    if (nextSibling) {
+      nextSibling.style.marginTop = `${-boxHeight}px`;
+
+      const isFooter = nextSibling.classList.contains("site-footer");
+      const paddingTop = `${bottomPosition + 60}px`;
+
+      if (isFooter && contactFormFooterWrapper) {
+        contactFormFooterWrapper.style.paddingTop = paddingTop;
+      } else {
+        nextSibling.style.paddingTop = paddingTop;
+      }
+    }
   });
+}
+
+// ResizeObserver watches specific elements instead of entire window
+const resizeObserver = new ResizeObserver(() => {
+  setBoxPosition();
 });
 
-function setBoxPosition() {
-  let resizeTimer;
-  clearTimeout(resizeTimer);
+// Observe each cta-box
+ctaBoxes.forEach((box) => resizeObserver.observe(box));
 
-  resizeTimer = setTimeout(() => {
-    ctaBox.forEach((element) => {
-      let boxHeight = element.querySelector(".cta-box__box").offsetHeight;
-
-      let topPosition = boxHeight * 0.55;
-      let bottomPosition = boxHeight * 0.45;
-
-      element.firstElementChild.style.marginTop = -topPosition + "px";
-      element.firstElementChild.style.paddingBottom = topPosition + "px";
-
-      element.previousElementSibling.style.paddingBottom =
-        topPosition + 70 + "px";
-      element.previousElementSibling.style.borderBottom =
-        "8px solid rgb(var(--tertiary))";
-
-      element.nextElementSibling.style.marginTop = -boxHeight + "px";
-
-      if (
-        element.nextElementSibling.classList.contains("site-footer") &&
-        contactFormFooterWrapper &&
-        ctaBox
-      ) {
-        contactFormFooterWrapper.style.paddingTop = bottomPosition + 60 + "px";
-      } else {
-        element.nextElementSibling.style.paddingTop =
-          bottomPosition + 60 + "px";
-      }
-    });
-  }, 250);
-}
+// Initial call
+setBoxPosition();
