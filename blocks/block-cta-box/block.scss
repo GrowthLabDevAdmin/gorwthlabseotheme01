@@ -12,7 +12,6 @@
   &.float {
     padding: 0 !important;
     z-index: 20;
-    content-visibility: visible;
 
     & + * {
       &.site-footer {

@@ -9,41 +9,43 @@ const contactFormFooterWrapper = document.querySelector(
 document.addEventListener("DOMContentLoaded", () => {
   setBoxPosition();
 
-  //let resizeTimer;
   window.addEventListener("resize", () => {
-    /*   clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { */
     setBoxPosition();
-    /* }, 250); */
   });
 });
 
 function setBoxPosition() {
-  ctaBox.forEach((element) => {
-    let boxHeight = element.querySelector(".cta-box__box").offsetHeight;
+  let resizeTimer;
+  clearTimeout(resizeTimer);
 
-    let topPosition = boxHeight * 0.55;
-    let bottomPosition = boxHeight * 0.45;
-    console.log(boxHeight);
+  resizeTimer = setTimeout(() => {
+    ctaBox.forEach((element) => {
+      let boxHeight = element.querySelector(".cta-box__box").offsetHeight;
 
-    element.firstElementChild.style.marginTop = -topPosition + "px";
-    element.firstElementChild.style.paddingBottom = topPosition + "px";
+      let topPosition = boxHeight * 0.55;
+      let bottomPosition = boxHeight * 0.45;
+      console.log(boxHeight);
 
-    element.previousElementSibling.style.paddingBottom =
-      topPosition + 70 + "px";
-    element.previousElementSibling.style.borderBottom =
-      "8px solid rgb(var(--tertiary))";
+      element.firstElementChild.style.marginTop = -topPosition + "px";
+      element.firstElementChild.style.paddingBottom = topPosition + "px";
 
-    element.nextElementSibling.style.marginTop = -boxHeight + "px";
+      element.previousElementSibling.style.paddingBottom =
+        topPosition + 70 + "px";
+      element.previousElementSibling.style.borderBottom =
+        "8px solid rgb(var(--tertiary))";
 
-    if (
-      element.nextElementSibling.classList.contains("site-footer") &&
-      contactFormFooterWrapper &&
-      ctaBox
-    ) {
-      contactFormFooterWrapper.style.paddingTop = bottomPosition + 60 + "px";
-    } else {
-      element.nextElementSibling.style.paddingTop = bottomPosition + 60 + "px";
-    }
-  });
+      element.nextElementSibling.style.marginTop = -boxHeight + "px";
+
+      if (
+        element.nextElementSibling.classList.contains("site-footer") &&
+        contactFormFooterWrapper &&
+        ctaBox
+      ) {
+        contactFormFooterWrapper.style.paddingTop = bottomPosition + 60 + "px";
+      } else {
+        element.nextElementSibling.style.paddingTop =
+          bottomPosition + 60 + "px";
+      }
+    });
+  }, 250);
 }
