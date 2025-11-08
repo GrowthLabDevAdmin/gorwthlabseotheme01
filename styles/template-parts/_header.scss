@@ -89,7 +89,7 @@
     grid-column: 4/5;
     grid-row: 1/2;
     display: flex;
-    
+
     @media (min-width: v.$tablet) {
       grid-column: 3/4;
       grid-row: 2/3;
@@ -439,6 +439,7 @@
     width: 100%;
     max-height: 5.6rem;
     height: auto;
+    position: relative;
     aspect-ratio: 1/1;
     padding: 0;
     @include m.flex-center;
@@ -453,10 +454,19 @@
     }
 
     &__text {
-      display: none;
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      z-index: -1;
+      display: flex;
+      opacity: 0;
 
       @media (min-width: v.$tablet) {
-        display: flex;
+        width: auto;
+        height: auto;
+        position: static;
+        z-index: auto;
+        opacity: 1;
       }
     }
 
