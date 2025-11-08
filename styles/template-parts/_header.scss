@@ -38,7 +38,7 @@
 
     @media (min-width: v.$mdpi) {
       padding: var(--sp-sm) 0;
-      grid-template-columns: 2fr 9fr 2fr 2fr;
+      grid-template-columns: auto;
       row-gap: 2.8rem;
       column-gap: 1.2rem;
     }
@@ -75,7 +75,7 @@
   &__callout {
     grid-column: 3/4;
     grid-row: 1/2;
-    @media (min-width: v.$mdpi) {
+    @media (min-width: v.$tablet) {
       grid-column: 3/4;
       grid-row: 1/2;
     }
@@ -89,13 +89,14 @@
     grid-column: 4/5;
     grid-row: 1/2;
     display: flex;
-
+    
     @media (min-width: v.$tablet) {
       grid-column: 3/4;
       grid-row: 2/3;
       justify-content: center;
     }
     @media (min-width: v.$mdpi) {
+      min-width: max-content;
       grid-column: 3/4;
       grid-row: 1/2;
     }
@@ -445,6 +446,7 @@
     border: 1px solid rgb(var(--tertiary));
 
     @media (min-width: v.$tablet) {
+      min-width: max-content;
       padding: 1.6rem 2.4rem;
       aspect-ratio: unset;
       border-radius: 32px;
