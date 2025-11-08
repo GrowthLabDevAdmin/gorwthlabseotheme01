@@ -24,7 +24,6 @@ function setBoxPosition() {
 
       let topPosition = boxHeight * 0.55;
       let bottomPosition = boxHeight * 0.45;
-      console.log(boxHeight);
 
       element.firstElementChild.style.marginTop = -topPosition + "px";
       element.firstElementChild.style.paddingBottom = topPosition + "px";

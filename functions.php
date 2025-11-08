@@ -375,7 +375,13 @@ function growthlabtheme01_scripts()
     wp_register_script('splide-js', get_template_directory_uri() . '/js/vendor/splide/splide-min.js', array(), '4.1.4', ['strategy' => 'defer', 'in_footer' => true]);
 
     // Main JS scripts.
-    wp_enqueue_script('growthlabtheme01-main-scripts', get_template_directory_uri() . '/js/main-min.js', array('splide-js'), '1.0', ['strategy' => 'defer', 'in_footer' => true]);
+    wp_enqueue_script(
+        'growthlabtheme01-main-scripts',
+        get_template_directory_uri() . '/js/main-min.js',
+        array('splide-js'),
+        filemtime(get_template_directory() . '/js/main-min.js'),
+        ['strategy' => 'defer', 'in_footer' => true]
+    );
 
     // Load specific template stylesheet
     /* if (is_page()) {
