@@ -202,7 +202,7 @@
           ?>
 
           <a href="https://growthlabseo.com/" target="_blank" class="copyright-footer__logo">
-            <img src="<?= get_stylesheet_directory_uri() . "/assets/img/Growth-Lab-Logo.png" ?>" alt="Growth Lab SEO Logo">
+            <img src="<?= get_stylesheet_directory_uri() . "/assets/img/Growth-Lab-Logo.png" ?>" alt="Growth Lab SEO Logo" width="270" height="50">
           </a>
 
           <p class="copyright-footer__advertisement">

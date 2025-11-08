@@ -10,6 +10,47 @@
  * 
  */
 
+// Include Theme Functions
+$includes = [
+    'theme-functions/color-scheme.php',
+    'theme-functions/acf-functions.php',
+    'theme-functions/helpers.php',
+    'theme-functions/svg-support.php',
+    'theme-functions/picture-optimization.php',
+    'theme-functions/tiny-mce.php',
+];
+
+foreach ($includes as $file) {
+    if (file_exists(get_template_directory() . '/' . $file)) {
+        require_once get_template_directory() . '/' . $file;
+    }
+}
+
+// Disable unnecessary features
+function cleanup_wordpress()
+{
+    // Remove RSD link
+    remove_action('wp_head', 'rsd_link');
+
+    // Remove wlwmanifest link
+    remove_action('wp_head', 'wlwmanifest_link');
+
+    // Remove shortlink
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+
+    // Remove REST API links if not needed
+    remove_action('wp_head', 'rest_output_link_wp_head');
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+
+    // Remove feed links if not using them
+    remove_action('wp_head', 'feed_links', 2);
+    remove_action('wp_head', 'feed_links_extra', 3);
+
+    // Disable embeds if not needed
+    remove_action('wp_head', 'wp_oembed_add_host_js');
+}
+add_action('init', 'cleanup_wordpress');
+
 /**
  * Filter function used to remove the tinymce emoji plugin.
  * 
@@ -30,7 +71,7 @@ function wpdocs_dequeue_dashicon()
     if (current_user_can('update_core')) {
         return;
     }
-    wp_deregister_style('guiones');
+    wp_deregister_style('dashicons');
 }
 
 //Disable the emoji's
@@ -299,20 +340,42 @@ add_filter('get_custom_logo', 'growthlabtheme01_remove_custom_logo_link');
  *
  * @return void
  */
-function growthlabtheme01_scripts()
+
+// Inline critical CSS
+
+// Comment this function while working on Dev Environment
+function inline_main_critical_css()
 {
 
-    // Third party stylesheet
-    wp_register_style('splide-style', get_template_directory_uri() . '/styles/vendor/splide/splide-core.min.css', array(), '4.1.4', 'all');
+    // Dynamic Color Scheme
+    $color_scheme = theme_get_customizer_css();
 
+    $critical_css = file_get_contents(get_template_directory() . "/styles/main-min.css");
+    $critical_css = preg_replace('/\{theme-path\}/', get_template_directory_uri(), $critical_css);
+    $critical_css =  $color_scheme . $critical_css;
+
+    echo '<style id="main-css">' . $critical_css . '</style>';
+}
+add_action('wp_head', 'inline_main_critical_css', 1);
+
+
+function growthlabtheme01_scripts()
+{
     // Global stylesheet.
-    wp_enqueue_style('growthlabtheme01-main-stylesheet', get_template_directory_uri() . "/styles/main-min.css", array('splide-style'), '1.0');
+
+    // Uncomment this while working on Dev Environment
+    /* wp_enqueue_style(
+        'growthlabtheme01-main-stylesheet',
+        get_template_directory_uri() . "/styles/main-min.css",
+        array(),
+        filemtime(get_template_directory() . '/styles/main-min.css') 
+    ); */
 
     // Third party JS scripts.
-    wp_register_script('splide-js', get_template_directory_uri() . '/js/vendor/splide/splide-min.js', array(), '4.1.4', ['in_footer' => true]);
+    wp_register_script('splide-js', get_template_directory_uri() . '/js/vendor/splide/splide-min.js', array(), '4.1.4', ['strategy' => 'defer', 'in_footer' => true]);
 
     // Main JS scripts.
-    wp_enqueue_script('growthlabtheme01-main-scripts', get_template_directory_uri() . '/js/main-min.js', array('splide-js'), '1.0', true);
+    wp_enqueue_script('growthlabtheme01-main-scripts', get_template_directory_uri() . '/js/main-min.js', array('splide-js'), '1.0', ['strategy' => 'defer', 'in_footer' => true]);
 
     // Load specific template stylesheet
     /* if (is_page()) {
@@ -382,6 +445,7 @@ add_action('widgets_init', 'growthlabtheme01_widgets_init');
 add_filter('gform_disable_css', '__return_true');
 add_filter('gform_disable_theme_editor_styles', '__return_true');
 add_filter('gform_init_scripts_footer', '__return_true');
+
 add_filter('gform_submit_button', function ($button, $form) {
 
     $id = $class = $onclick = $value = '';
@@ -405,12 +469,3 @@ add_filter('gform_submit_button', function ($button, $form) {
         esc_html($value)
     );
 }, 10, 2);
-
-
-// Include Theme Functions
-include locate_template('theme-functions/color-scheme.php');
-include locate_template('theme-functions/acf-functions.php');
-include locate_template('theme-functions/helpers.php');
-include locate_template('theme-functions/svg-support.php');
-include locate_template('theme-functions/picture-optimization.php');
-include locate_template('theme-functions/tiny-mce.php');
