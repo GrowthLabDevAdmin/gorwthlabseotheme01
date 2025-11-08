@@ -58,12 +58,11 @@ if (get_field('toggle_block')):
 
     <section
         id="<?= $block_id ?? "" ?>"
-        class="block case-results<?= ($background_type === "bg_color" && !$background_color) ? ' bg-bicolor' : '' ?>"
-        <?= ($background_type === "bg_color" && isset($background_color))
-            ? "style='background-color: $background_color'"
-            : "";
-        ?>
-        <?= isset($extract_block_from_content) && $extract_block_from_content ? "data-extract='$place'" : ''; ?>>
+        class="block case-results <?php if ($background_type === "bg_color" && !$background_color) echo "bg-bicolor"; ?>"
+        <?php
+        if ($background_type === "bg_color" && isset($background_color)) echo "style='background-color: $background_color'";
+        if (isset($extract_block_from_content) && $extract_block_from_content) echo "data-extract='$place'";
+        ?>>
 
         <?php if ($background_type === "bg_image" && $background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "case-results__bg bg-image gradient-overlay"); ?>
 

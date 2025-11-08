@@ -34,7 +34,7 @@
             </div>
 
             <div class="site-header__navigation">
-                <button class="mobile-menu-button">
+                <button class="mobile-menu-button" role="button" aria-label="Mobile Menu Button">
                     <svg viewBox="0 0 24 24" width="24" height="24">
                         <line x1="2" y1="4" x2="22" y2="4" />
                         <line x1="2" y1="12" x2="22" y2="12" />

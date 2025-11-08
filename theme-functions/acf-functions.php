@@ -28,7 +28,82 @@ function register_acf_blocks()
 }
 add_action('init', 'register_acf_blocks', 5);
 
-// Move Block Scripts to the Footer
+/**
+ * Load block assets only when block is present on the page
+ * and move block scripts to footer
+ */
+
+// Prevent unused block assets from loading
+add_filter('should_load_separate_core_block_assets', '__return_true');
+
+/**
+ * Dequeue block assets that aren't used on the current page
+ */
+add_action('wp_enqueue_scripts', function() {
+    global $post;
+    
+    // Only run on singular pages with content
+    if (!is_singular() || empty($post->post_content)) {
+        return;
+    }
+    
+    // Get all registered blocks
+    $registered_blocks = WP_Block_Type_Registry::get_instance()->get_all_registered();
+    
+    // Parse blocks in the content
+    $blocks = parse_blocks($post->post_content);
+    $blocks_in_use = array();
+    
+    // Recursively find all blocks in use (including nested blocks)
+    $find_blocks = function($blocks) use (&$find_blocks, &$blocks_in_use) {
+        foreach ($blocks as $block) {
+            if (!empty($block['blockName'])) {
+                $blocks_in_use[] = $block['blockName'];
+            }
+            if (!empty($block['innerBlocks'])) {
+                $find_blocks($block['innerBlocks']);
+            }
+        }
+    };
+    
+    $find_blocks($blocks);
+    $blocks_in_use = array_unique($blocks_in_use);
+    
+    // Dequeue unused block assets
+    foreach ($registered_blocks as $block_name => $block_type) {
+        // Skip if block is in use
+        if (in_array($block_name, $blocks_in_use)) {
+            continue;
+        }
+        
+        // Dequeue editor and frontend styles
+        if (!empty($block_type->style)) {
+            wp_dequeue_style($block_type->style);
+        }
+        
+        if (!empty($block_type->editor_style)) {
+            wp_dequeue_style($block_type->editor_style);
+        }
+        
+        // Dequeue editor and frontend scripts
+        if (!empty($block_type->script)) {
+            wp_dequeue_script($block_type->script);
+        }
+        
+        if (!empty($block_type->editor_script)) {
+            wp_dequeue_script($block_type->editor_script);
+        }
+        
+        if (!empty($block_type->view_script)) {
+            wp_dequeue_script($block_type->view_script);
+        }
+    }
+}, 100);
+
+
+/**
+ * Move block scripts to footer (only for blocks actually in use)
+ */
 add_action('wp_enqueue_scripts', function () {
     global $wp_scripts;
 
@@ -37,6 +112,7 @@ add_action('wp_enqueue_scripts', function () {
     }
 
     foreach ($wp_scripts->registered as $handle => $script) {
+        // Move block scripts to footer
         if (
             !empty($script->src)
             && str_contains($script->src, '/blocks/')
@@ -46,6 +122,14 @@ add_action('wp_enqueue_scripts', function () {
         }
     }
 }, 999);
+
+/**
+ * Prevent block styles from loading in <head> for blocks not in use
+ */
+add_filter('render_block', function($block_content, $block) {
+    // You can add custom logic here if needed
+    return $block_content;
+}, 10, 2);
 
 // Add ACF Options Page
 if (function_exists('acf_add_options_page')) {

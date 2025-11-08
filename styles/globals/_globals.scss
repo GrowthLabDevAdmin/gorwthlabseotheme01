@@ -39,6 +39,8 @@ body {
 
 section {
   max-width: 100vw;
+  position: relative;
+  z-index: 1;
   content-visibility: auto;
 }
 
@@ -306,25 +308,6 @@ img.bg-image {
 
   strong {
     font-weight: 700;
-  }
-}
-
-.ampersand-separator {
-  width: 100%;
-  @include m.flex-center;
-  column-gap: 0.8rem;
-
-  svg {
-    width: 3.2rem;
-    height: 3.2rem;
-    color: rgb(var(--tertiary));
-  }
-
-  hr {
-    height: 1px;
-    width: calc(50% - 2rem);
-    display: block;
-    background-color: rgb(var(--tertiary));
   }
 }
 

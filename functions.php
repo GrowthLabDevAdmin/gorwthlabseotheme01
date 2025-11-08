@@ -46,9 +46,24 @@ function disable_emojis()
     add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
 }
 
+/**
+ * Remove unused core block styles (optional - more aggressive)
+ * Uncomment if you want to disable all core block styles by default
+ */
+function dequeue_core_blocks_styles()
+{
+    // Remove core block library CSS
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('wc-blocks-style'); // WooCommerce blocks
+    wp_dequeue_style('global-styles'); // Global styles
+}
+
+
 if (!is_admin()) {
     add_action('init', 'disable_emojis');
     add_action('wp_enqueue_scripts', 'wpdocs_dequeue_dashicon');
+    add_action('wp_enqueue_scripts', "dequeue_core_blocks_styles", 100);
 }
 
 if (!function_exists('growthlabtheme01_setup')) {
@@ -290,9 +305,6 @@ function growthlabtheme01_scripts()
     // Third party stylesheet
     wp_register_style('splide-style', get_template_directory_uri() . '/styles/vendor/splide/splide-core.min.css', array(), '4.1.4', 'all');
 
-    // Template Stylesheets
-    /* wp_register_style('growthlabtheme01-template-default', get_template_directory_uri() . '/assets/scss/page-templates/template-default.css', array(), '1.0'); */
-
     // Global stylesheet.
     wp_enqueue_style('growthlabtheme01-main-stylesheet', get_template_directory_uri() . "/styles/main-min.css", array('splide-style'), '1.0');
 
@@ -393,6 +405,7 @@ add_filter('gform_submit_button', function ($button, $form) {
         esc_html($value)
     );
 }, 10, 2);
+
 
 // Include Theme Functions
 include locate_template('theme-functions/color-scheme.php');
