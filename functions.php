@@ -368,14 +368,36 @@ function growthlabtheme01_remove_custom_logo_link($html)
 add_filter('get_custom_logo', 'growthlabtheme01_remove_custom_logo_link');
 
 /**
- * Enqueue scripts and styles.
+ * Add scripts and styles.
  *
  *
  * @return void
  */
 
-// Inline critical CSS
+/**
+ * Preload all fonts (WARNING: This may hurt performance!)
+ */
+add_action('wp_head', function () {
+    $theme_uri = get_template_directory_uri();
 
+    $fonts = array(
+        // Fraunces fonts
+        'fonts/fraunces-v38-latin/fraunces-v38-latin-regular.woff2',
+        'fonts/fraunces-v38-latin/fraunces-v38-latin-600.woff2',
+        'fonts/fraunces-v38-latin/fraunces-v38-latin-700.woff2',
+        // Open Sans fonts
+        'fonts/open-sans-v44-latin/open-sans-v44-latin-regular.woff2',
+        'fonts/open-sans-v44-latin/open-sans-v44-latin-600.woff2',
+        'fonts/open-sans-v44-latin/open-sans-v44-latin-700.woff2',
+    );
+
+    foreach ($fonts as $font) {
+        echo '<link rel="preload" href="' . esc_url($theme_uri . '/' . $font) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+    }
+}, 1);
+
+
+// Inline critical CSS
 // Comment this function while working on Dev Environment
 function inline_main_critical_css()
 {
