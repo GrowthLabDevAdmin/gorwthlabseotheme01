@@ -51,6 +51,39 @@ function cleanup_wordpress()
 }
 add_action('init', 'cleanup_wordpress');
 
+// Remove Translation Scripts
+add_action('wp_enqueue_scripts', function () {
+    global $post;
+
+    // Only load if page actually has blocks that need i18n
+    $needs_i18n = false;
+
+    if (is_singular() && has_blocks($post->post_content)) {
+        // Parse blocks and check if any need translation
+        $blocks = parse_blocks($post->post_content);
+
+        foreach ($blocks as $block) {
+            // Check if block is a dynamic/interactive block that needs i18n
+            if (in_array($block['blockName'], [
+                'core/search',
+                'core/query',
+                'core/navigation',
+                // Add your custom blocks that need translation
+            ])) {
+                $needs_i18n = true;
+                break;
+            }
+        }
+    }
+
+    // Remove if not needed
+    if (!$needs_i18n && !is_admin()) {
+        wp_dequeue_script('wp-i18n');
+        wp_deregister_script('wp-i18n');
+    }
+}, 100);
+
+
 /**
  * Filter function used to remove the tinymce emoji plugin.
  * 
@@ -359,8 +392,11 @@ function inline_main_critical_css()
 add_action('wp_head', 'inline_main_critical_css', 1);
 
 
+
 function growthlabtheme01_scripts()
 {
+    if (is_admin()) return;
+
     // Global stylesheet.
 
     // Uncomment this while working on Dev Environment
@@ -370,6 +406,13 @@ function growthlabtheme01_scripts()
         array(),
         filemtime(get_template_directory() . '/styles/main-min.css') 
     ); */
+
+    // Move jQuery to footer (safe for GF)
+    wp_scripts()->add_data('jquery', 'group', 1);
+    wp_scripts()->add_data('jquery-core', 'group', 1);
+
+    // Remove jQuery Migrate (not needed for modern GF)
+    wp_deregister_script('jquery-migrate');
 
     // Third party JS scripts.
     wp_register_script('splide-js', get_template_directory_uri() . '/js/vendor/splide/splide-min.js', array(), '4.1.4', ['strategy' => 'defer', 'in_footer' => true]);

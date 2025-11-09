@@ -1,7 +1,7 @@
 {
   "name": "acf/case-results",
   "title": "Case Results",
-  "style": ["file:./block-min.css", "splide-style"],
+  "style": ["file:./block-min.css"],
   "script": ["file:./block-min.js", "splide-js"],
   "category": "growthlabtheme01-blocks",
   "icon": "block-default",
