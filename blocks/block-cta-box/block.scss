@@ -14,6 +14,8 @@
     z-index: 20;
 
     & + * {
+      transition: margin-top 0.2s ease, padding-top 0.2s ease;
+
       &.site-footer {
         margin-top: 0;
         padding-top: 0;
@@ -21,6 +23,7 @@
         .contact-form-footer {
           &__wrapper {
             margin-top: 0;
+            transition: padding-top 0.2s ease;
           }
 
           &__inner {
@@ -32,6 +35,9 @@
 
     #{$parent}__wrapper {
       padding: 0;
+      // Prevent layout shifts during JS calculations
+      contain: layout style;
+      transition: margin-top 0.2s ease, padding-bottom 0.2s ease;
     }
 
     #{$parent}__inner {
@@ -70,6 +76,12 @@
     }
   }
 
+  * + &.float {
+    ~ * {
+      transition: padding-bottom 0.2s ease, border-bottom 0.2s ease;
+    }
+  }
+
   &__sidebg {
     height: 120%;
     position: absolute;
@@ -100,6 +112,7 @@
   &__box {
     padding: var(--sp-xsm);
     background-color: rgb(var(--primary));
+    contain: layout;
   }
 
   &__inner {
