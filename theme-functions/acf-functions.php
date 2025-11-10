@@ -132,13 +132,13 @@ add_filter('render_block', function($block_content, $block) {
 }, 10, 2);
 
 // Add ACF Options Page
-if (function_exists('acf_add_options_page')) {
+if (function_exists('acf_add_options_page') && current_user_can('manage_options')) {
     acf_add_options_page(array(
         'page_title' => 'Site Options',
         'menu_title' => 'Site Options',
         'menu_slug' => 'site_options',
         'position' => 70,
-        'capability' => 'edit_posts',
+        'capability' => 'manage_options',
         'redirect' => false
     ));
 }
@@ -171,16 +171,6 @@ add_action('init', function () {
     add_filter('acf/settings/load_json', 'my_acf_json_load_point');
 });
 
-add_action('admin_init', function () {
-    if (current_user_can('manage_options')) {
-        $path = get_stylesheet_directory() . '/acf-json';
-        error_log('=== ACF JSON DEBUG ===');
-        error_log('Path: ' . $path);
-        error_log('Exists: ' . (file_exists($path) ? 'YES' : 'NO'));
-        error_log('Writable: ' . (is_writable($path) ? 'YES' : 'NO'));
-        error_log('Current theme: ' . get_stylesheet());
-    }
-});
 
 // Allow HTML in ACF fields
 add_filter('acf/shortcode/allow_unsafe_html', function () {

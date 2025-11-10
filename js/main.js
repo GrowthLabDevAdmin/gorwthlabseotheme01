@@ -109,6 +109,7 @@ function fadeInHeader() {
 function splideCarousels() {
   var footerLocations = new Splide(".locations-cards__carousel .splide", {
     type: "loop",
+    perMove: 1,
     perPage: 4,
     arrows: true,
     pagination: false,
@@ -146,33 +147,104 @@ function extractBlocks() {
 
   let pageLoaded = false;
   const loadedMaps = new WeakSet();
+  const loadedCarousels = new WeakSet();
 
   window.addEventListener("load", () => {
     pageLoaded = true;
+    initMaps();
   });
 
-  // Intersection Observer handles both initial load and carousel navigation
+  function initMaps() {
+    const spliceMaps = [];
+    const nonSpliceMaps = [];
+
+    embeddedMaps.forEach((map) => {
+      if (map.closest(".splide")) {
+        spliceMaps.push(map);
+      } else {
+        nonSpliceMaps.push(map);
+      }
+    });
+
+    if (spliceMaps.length) {
+      observeSplideCarousels();
+    }
+
+    nonSpliceMaps.forEach((map) => observer.observe(map));
+  }
+
+  // Intersection Observer for non-carousel maps
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (
-          entry.isIntersecting &&
-          pageLoaded &&
-          !loadedMaps.has(entry.target)
-        ) {
+        if (entry.isIntersecting && pageLoaded) {
           loadEmbeddedMaps(entry.target);
+          observer.unobserve(entry.target);
         }
       });
     },
     {
-      rootMargin: "50px", // Smaller margin since carousel slides into view quickly
-      threshold: 0.1, // Load when 10% visible
+      rootMargin: "100px",
     }
   );
 
-  embeddedMaps.forEach((map) => observer.observe(map));
+  // Intersection Observer for entire carousels
+  const carouselObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && pageLoaded) {
+          loadCarouselMaps(entry.target);
+          carouselObserver.unobserve(entry.target); // Unobserve after first trigger
+        }
+      });
+    },
+    {
+      rootMargin: "200px",
+    }
+  );
+
+  function observeSplideCarousels() {
+    const splideElements = document.querySelectorAll(".splide:has(.gmap-lazy)");
+
+    splideElements.forEach((splideEl) => {
+      carouselObserver.observe(splideEl);
+    });
+  }
+
+  function loadCarouselMaps(splideEl) {
+    // Check and add in one step
+    if (loadedCarousels.has(splideEl)) {
+      console.log("Carousel already loaded, skipping");
+      return;
+    }
+
+    console.log("Loading carousel maps for the first time");
+    loadedCarousels.add(splideEl); // Add it IMMEDIATELY to prevent duplicates
+
+    const checkSplide = setInterval(() => {
+      const splide = splideEl.classList.contains("is-initialized");
+
+      if (!splide) return;
+
+      clearInterval(checkSplide);
+
+      // Load all maps at once
+      const slides = splideEl.querySelectorAll(".gmap-lazy");
+      console.log(slides);
+
+      slides.forEach((slide) => {
+        const map = slide;
+        if (map && map.dataset.src) {
+          loadEmbeddedMaps(map);
+        }
+      });
+    }, 50);
+
+    setTimeout(() => clearInterval(checkSplide), 5000);
+  }
 
   function loadEmbeddedMaps(container) {
+    // CRITICAL: Check and mark as loaded IMMEDIATELY
     if (loadedMaps.has(container)) return;
     loadedMaps.add(container);
 

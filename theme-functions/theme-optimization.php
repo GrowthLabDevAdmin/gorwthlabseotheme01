@@ -140,6 +140,8 @@ add_action('wp_head', function () {
  * Find and remove Google Maps JS API if accidentally loaded
  */
 add_action('wp_enqueue_scripts', function () {
+    if (is_admin()) return;
+
     // Check for common Google Maps script handles
     $gmap_handles = array(
         'google-maps',
