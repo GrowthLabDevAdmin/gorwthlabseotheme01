@@ -7,7 +7,7 @@ if (get_field('hero_properties') !== null && !empty(get_field('hero_properties')
 $cta_button = isset($hero_cta_button) && $hero_cta_button ? $hero_cta_button : $hero_cta_button_default;
 
 //Hero pictures
-foreach ($hero_pictures as $type => $picture) $$type = $picture;
+if (isset($hero_pictures)) foreach ($hero_pictures as $type => $picture) $$type = $picture;
 
 $bg_desktop = isset($background_desktop) && $background_desktop ? $background_desktop :  $hero_image_desktop_default;
 $bg_tablet = isset($background_tablet) && $background_tablet ? $background_tablet :  $hero_image_tablet_default;

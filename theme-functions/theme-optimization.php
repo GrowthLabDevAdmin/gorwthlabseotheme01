@@ -1,4 +1,42 @@
 <?php
+
+/**
+ * Google Maps IFrame Lazy Loading
+ */
+add_filter('the_content', function ($content) {
+    static $map_counter = 0;
+
+    $content = preg_replace_callback(
+        '/<iframe([^>]*src=["\']https:\/\/(www\.)?google\.com\/maps\/embed[^"\']*["\'][^>]*)>.*?<\/iframe>/is',
+        function ($matches) use (&$map_counter) {
+            $iframe = $matches[0];
+            $map_id = 'gmap-' . ++$map_counter;
+
+            preg_match('/src=["\']([^"\']*)["\']/', $iframe, $src_match);
+            preg_match('/width=["\']([^"\']*)["\']/', $iframe, $width_match);
+            preg_match('/height=["\']([^"\']*)["\']/', $iframe, $height_match);
+
+            $src = $src_match[1] ?? '';
+            $width = $width_match[1] ?? '100%';
+            $height = $height_match[1] ?? '450';
+
+            return sprintf(
+                '<div id="%s" class="gmap-lazy" data-src="%s" style="width:%s;height:%s;"></div>',
+                $map_id,
+                esc_attr($src),
+                esc_attr($width),
+                esc_attr($height)
+            );
+        },
+        $content
+    );
+
+    return $content;
+}, 20);
+
+
+
+
 // Disable unnecessary features
 function cleanup_wordpress()
 {
@@ -156,3 +194,16 @@ add_action('wp_enqueue_scripts', function () {
         }
     }
 }, 100);
+
+/**
+ * Defer Google Maps loading
+ */
+add_filter('script_loader_tag', function ($tag, $handle, $src) {
+    if (
+        strpos($src, 'maps.googleapis.com') !== false ||
+        strpos($src, 'maps.google') !== false
+    ) {
+        return str_replace(' src', ' defer src', $tag);
+    }
+    return $tag;
+}, 10, 3);

@@ -92,10 +92,17 @@
                           <div class="location-card__wrapper">
 
                             <?php if ($location['google_maps_embed_code']): ?>
-                              <div class="location-card__map">
-                                <?= $location['google_maps_embed_code'] ?>
-                              </div>
-                            <?php endif ?>
+                              <?php
+                              $args = array(
+                                "iframe_code" => $location['google_maps_embed_code'],
+                                "name" => $location['city'],
+                                "classes" => "location-card__map"
+                              );
+                              get_template_part("template-parts/google", "maps", $args);
+                              ?>
+                            <?php
+                            endif
+                            ?>
 
                             <div class="location-card__inner tx-center">
 

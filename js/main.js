@@ -110,7 +110,6 @@ function splideCarousels() {
   var footerLocations = new Splide(".locations-cards__carousel .splide", {
     type: "loop",
     perPage: 4,
-    perMove: 1,
     arrows: true,
     pagination: false,
     breakpoints: {
@@ -137,3 +136,75 @@ function extractBlocks() {
     item.remove();
   });
 }
+
+//Delay Google Maps Rendering
+(function () {
+  "use strict";
+
+  const embeddedMaps = document.querySelectorAll(".gmap-lazy");
+  if (!embeddedMaps.length) return;
+
+  let pageLoaded = false;
+  const loadedMaps = new WeakSet();
+
+  window.addEventListener("load", () => {
+    pageLoaded = true;
+  });
+
+  // Intersection Observer handles both initial load and carousel navigation
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (
+          entry.isIntersecting &&
+          pageLoaded &&
+          !loadedMaps.has(entry.target)
+        ) {
+          loadEmbeddedMaps(entry.target);
+        }
+      });
+    },
+    {
+      rootMargin: "50px", // Smaller margin since carousel slides into view quickly
+      threshold: 0.1, // Load when 10% visible
+    }
+  );
+
+  embeddedMaps.forEach((map) => observer.observe(map));
+
+  function loadEmbeddedMaps(container) {
+    if (loadedMaps.has(container)) return;
+    loadedMaps.add(container);
+
+    const src = container.dataset.src;
+    if (!src) return;
+
+    const iframe = document.createElement("iframe");
+    iframe.src = src;
+    iframe.width = "100%";
+    iframe.height = "100%";
+    iframe.style.cssText = `
+      border: 0;
+      border-radius: 8px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    `;
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "no-referrer-when-downgrade";
+    iframe.loading = "eager";
+
+    container.innerHTML = "";
+    container.appendChild(iframe);
+
+    iframe.onload = () => {
+      iframe.style.opacity = "1";
+    };
+
+    setTimeout(() => {
+      iframe.style.opacity = "1";
+    }, 300);
+  }
+})();
