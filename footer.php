@@ -94,7 +94,7 @@
                             <?php if ($location['google_maps_embed_code']): ?>
                               <?php
                               $args = array(
-                                "iframe_code" => $location['google_maps_embed_code'],
+                                "iframe_src" => $location['google_maps_embed_code'],
                                 "name" => $location['city'],
                                 "classes" => "location-card__map"
                               );

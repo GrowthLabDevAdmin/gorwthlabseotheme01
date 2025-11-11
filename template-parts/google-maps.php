@@ -1,11 +1,7 @@
-<?php if ($args['iframe_code']):
-    // Extract iframe src from the embed code
-    preg_match('/src=["\']([^"\']+)["\']/', $args['iframe_code'], $matches);
-    $map_src = $matches[1] ?? '';
-
-    if ($map_src): ?>
+<?php if ($args['iframe_src']):
+    if ($args['iframe_src']): ?>
         <div class="<?= $args["classes"] ?> gmap-lazy"
-            data-src="<?= esc_url($map_src) ?>"
+            data-src="<?= esc_url($args['iframe_src']) ?>"
             data-city="<?= esc_attr($args['name']) ?>"
             style="width:100%;height:300px;background:linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);position:relative;border-radius:8px;overflow:hidden;">
             <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#999;text-align:center;">
