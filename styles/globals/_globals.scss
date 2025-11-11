@@ -39,6 +39,7 @@ body {
 
 section {
   max-width: 100vw;
+  width: 100%;
   position: relative;
   z-index: 1;
   content-visibility: auto;
@@ -211,6 +212,10 @@ p {
     background-color: rgb(var(--secondary));
     clip-path: polygon(100% 0, 0 0, 100% 100%);
   }
+
+  .bg-bicolor::after {
+    content: none;
+  }
 }
 
 .shadow-box {
@@ -301,7 +306,10 @@ img.bg-image {
 
   p,
   span,
+  blockquote,
   li {
+    font-size: inherit;
+    line-height: inherit;
     margin-bottom: 1.6rem;
     vertical-align: text-top;
   }

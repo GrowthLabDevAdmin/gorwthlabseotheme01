@@ -179,7 +179,7 @@
     #{$card}__title {
       animation-name: descriptionOpacity;
       animation-timing-function: ease-in-out;
-      animation-duration: 1.4s;
+      animation-duration: 1.2s;
     }
 
     #{$card}__description {
@@ -188,7 +188,7 @@
       -webkit-line-clamp: unset;
       animation-name: descriptionOpacity;
       animation-timing-function: ease-in-out;
-      animation-duration: 1.4s;
+      animation-duration: 1.2s;
     }
   }
 }

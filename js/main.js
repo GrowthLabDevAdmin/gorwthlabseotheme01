@@ -10,6 +10,7 @@ const mainContent = document.querySelectorAll(
 const blocksInContent = document.querySelectorAll(
   ".page-template-default .main-content .block[data-extract]"
 );
+const blocksBgBicolor = document.querySelectorAll(".bg-bicolor");
 
 //Breakpoints
 const mobile = 480;
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   blocksInContent && extractBlocks();
 
   splideCarousels();
+
+  if (blocksBgBicolor.length > 1) findConsecutiveGroups(blocksBgBicolor);
 });
 
 function eventListeners() {
@@ -135,6 +138,32 @@ function extractBlocks() {
       mainContent.insertAdjacentHTML("afterend", item.outerHTML);
     }
     item.remove();
+  });
+}
+
+//Find Blocks with Bg-BiColor class
+function findConsecutiveGroups(blocks) {
+  const groups = [];
+  let currentGroup = [blocks[0]];
+
+  for (let i = 1; i < blocks.length; i++) {
+    if (blocks[i].class === blocks[i - 1].class) {
+      currentGroup.push(blocks[i]);
+    } else {
+      if (currentGroup.length > 1) groups.push(currentGroup);
+      currentGroup = [blocks[i]];
+    }
+  }
+
+  if (currentGroup.length > 1) groups.push(currentGroup);
+
+  groups.forEach((group) => {
+    firstEl = group[0];
+    lastEl = group[group.length - 1];
+
+    firstEl.insertAdjacentHTML("beforebegin", "<section class='bg-bicolor'>");
+
+    lastEl.insertAdjacentHTML("afterend", "</section>");
   });
 }
 
