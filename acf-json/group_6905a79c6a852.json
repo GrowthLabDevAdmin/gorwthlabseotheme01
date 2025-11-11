@@ -362,7 +362,7 @@
                             "label": "Google Map URL",
                             "name": "google_map_url",
                             "aria-label": "",
-                            "type": "text",
+                            "type": "url",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -372,11 +372,8 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "maxlength": "",
                             "allow_in_bindings": 0,
                             "placeholder": "",
-                            "prepend": "",
-                            "append": "",
                             "parent_repeater": "field_68f9a918e6eae"
                         },
                         {
@@ -1743,7 +1740,7 @@
                             "label": "Google Map URL",
                             "name": "google_map_url",
                             "aria-label": "",
-                            "type": "text",
+                            "type": "url",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1753,11 +1750,8 @@
                                 "id": ""
                             },
                             "default_value": "",
-                            "maxlength": "",
                             "allow_in_bindings": 0,
                             "placeholder": "",
-                            "prepend": "",
-                            "append": "",
                             "parent_repeater": "field_6905a78aebead"
                         },
                         {
@@ -2638,5 +2632,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1762827629
+    "modified": 1762828154
 }
