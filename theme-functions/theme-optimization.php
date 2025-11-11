@@ -121,9 +121,7 @@ add_action('wp_head', function () {
 
     $fonts = array(
         // Fraunces fonts
-        'fonts/fraunces-v38-latin/fraunces-v38-latin-regular.woff2',
         'fonts/fraunces-v38-latin/fraunces-v38-latin-600.woff2',
-        'fonts/fraunces-v38-latin/fraunces-v38-latin-700.woff2',
         // Open Sans fonts
         'fonts/open-sans-v44-latin/open-sans-v44-latin-regular.woff2',
         'fonts/open-sans-v44-latin/open-sans-v44-latin-600.woff2',

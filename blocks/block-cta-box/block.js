@@ -3,6 +3,8 @@ const contactFormFooterWrapper = document.querySelector(
   ".contact-form-footer__wrapper"
 );
 
+let isPositioned = false; // Prevent multiple executions
+
 function setBoxPosition() {
   // Batch all measurements (single reflow)
   const measurements = Array.from(ctaBoxes).map((element) => {
@@ -48,31 +50,33 @@ function setBoxPosition() {
             nextSibling.style.paddingTop = paddingTop;
           }
         }
+
+        // Mark as positioned
+        element.classList.add("positioned");
       }
     );
+
+    isPositioned = true;
   });
 }
 
-// CRITICAL: Run immediately - don't wait for anything
-setBoxPosition();
-
-// Also run when DOM is ready (in case elements weren't available yet)
+// CRITICAL: Only run ONCE on initial load
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setBoxPosition);
+  document.addEventListener("DOMContentLoaded", setBoxPosition, { once: true });
 } else {
-  setBoxPosition();
+  // If DOM already loaded, wait for next frame to ensure styles are applied
+  requestAnimationFrame(setBoxPosition);
 }
 
-// Run after all resources load (images may affect height)
-window.addEventListener("load", setBoxPosition);
-
-// Debounced resize handler
+// Debounced resize handler - only if already positioned
 let resizeTimer;
 window.addEventListener(
   "resize",
   () => {
+    if (!isPositioned) return; // Don't run if initial positioning hasn't happened
+
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(setBoxPosition, 100);
+    resizeTimer = setTimeout(setBoxPosition, 150);
   },
   { passive: true }
 );

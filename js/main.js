@@ -214,12 +214,12 @@ function extractBlocks() {
   function loadCarouselMaps(splideEl) {
     // Check and add in one step
     if (loadedCarousels.has(splideEl)) {
-      console.log("Carousel already loaded, skipping");
+      //console.log("Carousel already loaded, skipping");
       return;
     }
 
-    console.log("Loading carousel maps for the first time");
-    loadedCarousels.add(splideEl); // Add it IMMEDIATELY to prevent duplicates
+    //console.log("Loading carousel maps for the first time");
+    loadedCarousels.add(splideEl);
 
     const checkSplide = setInterval(() => {
       const splide = splideEl.classList.contains("is-initialized");
@@ -230,7 +230,6 @@ function extractBlocks() {
 
       // Load all maps at once
       const slides = splideEl.querySelectorAll(".gmap-lazy");
-      console.log(slides);
 
       slides.forEach((slide) => {
         const map = slide;

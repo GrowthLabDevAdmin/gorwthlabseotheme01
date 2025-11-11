@@ -35,9 +35,17 @@
 
     #{$parent}__wrapper {
       padding: 0;
-      // Prevent layout shifts during JS calculations
       contain: layout style;
-      transition: margin-top 0.2s ease, padding-bottom 0.2s ease;
+      transition: margin-top 0.15s ease, padding-bottom 0.15s ease;
+      // Hide until positioned by JS
+      opacity: 0;
+    }
+
+    // Show after JS positions it
+    &.positioned #{$parent}__wrapper {
+      opacity: 1;
+      transition: opacity 0.2s ease, margin-top 0.15s ease,
+        padding-bottom 0.15s ease;
     }
 
     #{$parent}__inner {
