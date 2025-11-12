@@ -14,13 +14,16 @@ if (get_field('toggle_block')):
 
         <div class="content-intro__wrapper container">
             <div class="content-intro__inner">
-                <div class="content-intro__heading border-box tx-center">
-                    <?php
-                    print_title($title, $title_tag, "content-intro__title");
-                    get_template_part('template-parts/ampersand', 'separator', array('classes' => 'content-intro__separator'));
-                    echo $first_paragraph;
-                    ?>
-                </div>
+
+                <?php if ($title || $first_paragraph): ?>
+                    <div class="content-intro__heading border-box tx-center">
+                        <?php
+                        print_title($title, $title_tag, "content-intro__title");
+                        get_template_part('template-parts/ampersand', 'separator', array('classes' => 'content-intro__separator'));
+                        echo $first_paragraph;
+                        ?>
+                    </div>
+                <?php endif ?>
 
 
                 <div class="content-intro__content formatted-text">

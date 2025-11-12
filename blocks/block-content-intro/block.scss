@@ -2,6 +2,27 @@
 @use "../../styles/globals/mixins" as m;
 
 .content-intro {
+  padding-block: var(--sp-sm);
+
+  @media (min-width: v.$tablet) {
+    padding-block: var(--sp-md);
+  }
+
+  $parent: &;
+
+  &:not(.bg-bicolor) {
+    #{$parent}__inner {
+      display: block;
+      border: 1px solid rgb(var(--tertiary));
+    }
+
+    #{$parent}__content {
+      & > * {
+        color: rgb(var(--secondary));
+      }
+    }
+  }
+
   &__inner,
   &__heading {
     @include m.flex-center;
@@ -9,6 +30,7 @@
   }
 
   &__inner {
+    padding: var(--sp-sm);
     gap: var(--sp-md);
   }
 

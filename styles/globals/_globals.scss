@@ -308,10 +308,20 @@ img.bg-image {
   span,
   blockquote,
   li {
-    font-size: inherit;
-    line-height: inherit;
     margin-bottom: 1.6rem;
+    font-size: inherit;
+    line-height: 1.5;
     vertical-align: text-top;
+  }
+
+  p {
+    span,
+    strong,
+    a {
+      height: 100%;
+      margin-bottom: 0;
+      vertical-align: initial;
+    }
   }
 
   strong {
