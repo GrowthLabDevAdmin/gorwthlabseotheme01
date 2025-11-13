@@ -16,6 +16,10 @@
     & + * {
       transition: margin-top 0.2s ease, padding-top 0.2s ease;
 
+      & > section:first-child {
+        padding-top: 0;
+      }
+
       &.site-footer {
         margin-top: 0;
         padding-top: 0;

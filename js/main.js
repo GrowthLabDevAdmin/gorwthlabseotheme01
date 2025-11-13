@@ -10,7 +10,6 @@ const mainContent = document.querySelectorAll(
 const blocksInContent = document.querySelectorAll(
   ".page-template-default .main-content .block[data-extract]"
 );
-const blocksBgBicolor = document.querySelectorAll(".bg-bicolor");
 
 //Breakpoints
 const mobile = 480;
@@ -25,8 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   blocksInContent && extractBlocks();
 
   splideCarousels();
-
-  if (blocksBgBicolor.length > 1) findConsecutiveGroups(blocksBgBicolor);
 });
 
 function eventListeners() {
@@ -142,33 +139,46 @@ function extractBlocks() {
 }
 
 //Find Blocks with Bg-BiColor class
-function findConsecutiveGroups(blocks) {
-  const groups = [];
-  let currentGroup = [blocks[0]];
+(function findConsecutiveGroups() {
+  const blocks = document.querySelectorAll("body>section");
 
-  for (let i = 1; i < blocks.length; i++) {
-    if (blocks[i].class === blocks[i - 1].class) {
+  if (!blocks) return;
+
+  const groups = [];
+  let currentGroup = [];
+
+  for (let i = 0; i < blocks.length; i++) {
+    if (blocks[i].classList.contains("bg-bicolor")) {
       currentGroup.push(blocks[i]);
     } else {
-      if (currentGroup.length > 1) groups.push(currentGroup);
-      currentGroup = [blocks[i]];
+      // Non-bg-bicolor element breaks the sequence
+      if (currentGroup.length > 1) {
+        groups.push([...currentGroup]);
+      }
+      currentGroup = []; // Reset for next potential group
     }
   }
 
-  if (currentGroup.length > 1) groups.push(currentGroup);
+  // Don't forget the last group
+  if (currentGroup.length > 1) {
+    groups.push(currentGroup);
+  }
 
   groups.forEach((group) => {
-    firstEl = group[0];
-    lastEl = group[group.length - 1];
+    const firstEl = group[0];
+    const wrapper = document.createElement("section");
+    wrapper.classList.add("bg-bicolor");
 
-    firstEl.insertAdjacentHTML("beforebegin", "<section class='bg-bicolor'>");
+    firstEl.parentNode.insertBefore(wrapper, firstEl);
 
-    lastEl.insertAdjacentHTML("afterend", "</section>");
+    group.forEach((el) => {
+      wrapper.appendChild(el);
+    });
   });
-}
+})();
 
 //Delay Google Maps Rendering
-(function () {
+(function googleMapsLazyLoading() {
   "use strict";
 
   const embeddedMaps = document.querySelectorAll(".gmap-lazy");

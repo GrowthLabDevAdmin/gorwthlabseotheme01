@@ -408,3 +408,68 @@ add_filter('gform_submit_button', function ($button, $form) {
         esc_html($value)
     );
 }, 10, 2);
+
+//Import All Theme Icons to the Media Library
+//Run only once after theme installation
+function import_theme_images_to_folder()
+{
+    // Path to your theme's images folder
+    $image_folder = get_template_directory() . '/assets/icons/';
+
+    // Create custom folder in uploads
+    $upload_dir = wp_upload_dir();
+    $custom_folder = $upload_dir['basedir'] . '/theme-icons/';
+    $custom_url = $upload_dir['baseurl'] . '/theme-icons/';
+
+    // Create folder if it doesn't exist
+    if (!file_exists($custom_folder)) {
+        wp_mkdir_p($custom_folder);
+    }
+
+    // Get all image files
+    $images = glob($image_folder . '*.{svg}', GLOB_BRACE);
+
+    foreach ($images as $image_path) {
+        $filename = basename($image_path);
+
+        // Check if file already exists
+        $existing = get_posts([
+            'post_type' => 'attachment',
+            'meta_query' => [[
+                'key' => '_wp_attached_file',
+                'value' => 'theme-icons/' . $filename,
+                'compare' => '='
+            ]]
+        ]);
+
+        if (!empty($existing)) continue;
+
+        // Copy file to custom folder
+        $new_file = $custom_folder . $filename;
+        copy($image_path, $new_file);
+
+        // Create attachment
+        $attachment = [
+            'post_mime_type' => mime_content_type($new_file),
+            'post_title' => sanitize_file_name(pathinfo($filename, PATHINFO_FILENAME)),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        ];
+
+        $attach_id = wp_insert_attachment($attachment, $new_file);
+
+        // Update attachment metadata with correct path
+        update_attached_file($attach_id, 'theme-icons/' . $filename);
+
+        // Generate metadata
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        $attach_data = wp_generate_attachment_metadata($attach_id, $new_file);
+        wp_update_attachment_metadata($attach_id, $attach_data);
+    }
+}
+
+// Run once by visiting: yoursite.com/?import_theme_images=1
+/* if (isset($_GET['import_theme_images']) && current_user_can('manage_options')) {
+    import_theme_images_to_folder();
+    wp_die('Images imported to /uploads/theme-icons/!');
+} */

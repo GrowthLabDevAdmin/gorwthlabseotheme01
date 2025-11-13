@@ -213,8 +213,11 @@ p {
     clip-path: polygon(100% 0, 0 0, 100% 100%);
   }
 
-  .bg-bicolor::after {
-    content: none;
+  .bg-bicolor {
+    background-color: transparent;
+    &::after {
+      content: none;
+    }
   }
 }
 

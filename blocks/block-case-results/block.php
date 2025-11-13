@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Case Results Block Template
  * Displays case results either as a carousel (filtered) or grid (all results with pagination)
  */
@@ -8,27 +8,13 @@
 if (get_field('toggle_block')):
     foreach (get_fields() as $key => $value) $$key = $value;
 
-    $prev_arrow = '
-            <svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2823 0.220341C10.3522 0.290009 10.4076 0.372773 10.4454 0.46389C10.4832 0.555008 10.5027 0.65269 10.5027 0.751341C10.5027 0.849992 10.4832 0.947674 10.4454 1.03879C10.4076 1.12991 10.3522 1.21267 10.2823 1.28234L1.81184 9.75134L10.2823 18.2203C10.4232 18.3612 10.5023 18.5522 10.5023 18.7513C10.5023 18.9505 10.4232 19.1415 10.2823 19.2823C10.1415 19.4232 9.95051 19.5023 9.75134 19.5023C9.55218 19.5023 9.36117 19.4232 9.22034 19.2823L0.22034 10.2823C0.150495 10.2127 0.0950809 10.1299 0.0572712 10.0388C0.0194616 9.94767 0 9.84999 0 9.75134C0 9.65269 0.0194616 9.55501 0.0572712 9.46389C0.0950809 9.37277 0.150495 9.29001 0.22034 9.22034L9.22034 0.220341C9.29001 0.150496 9.37277 0.0950816 9.46389 0.057272C9.55501 0.0194623 9.65269 0 9.75134 0C9.84999 0 9.94767 0.0194623 10.0388 0.057272C10.1299 0.0950816 10.2127 0.150496 10.2823 0.220341Z" fill="#BC9061" />
-            </svg>
-            <span class="arrow__placeholder">Prev</span>
-        ';
-
-    $next_arrow = '
-            <svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.220588 0.220341C0.150743 0.290009 0.0953293 0.372773 0.057519 0.46389C0.0197096 0.555008 0.000247002 0.65269 0.000247002 0.751341C0.000247002 0.849992 0.0197096 0.947674 0.057519 1.03879C0.0953293 1.12991 0.150743 1.21267 0.220588 1.28234L8.69109 9.75134L0.220588 18.2203C0.0797577 18.3612 0.000640869 18.5522 0.000640869 18.7513C0.000640869 18.9505 0.0797577 19.1415 0.220588 19.2823C0.361418 19.4232 0.552424 19.5023 0.751588 19.5023C0.950751 19.5023 1.14176 19.4232 1.28259 19.2823L10.2826 10.2823C10.3524 10.2127 10.4078 10.1299 10.4457 10.0388C10.4835 9.94767 10.5029 9.84999 10.5029 9.75134C10.5029 9.65269 10.4835 9.55501 10.4457 9.46389C10.4078 9.37277 10.3524 9.29001 10.2826 9.22034L1.28259 0.220341C1.21292 0.150496 1.13016 0.0950816 1.03904 0.057272C0.94792 0.0194623 0.850239 0 0.751588 0C0.652937 0 0.555256 0.0194623 0.464138 0.057272C0.37302 0.0950816 0.290257 0.150496 0.220588 0.220341Z" fill="#BC9061" />
-            </svg>
-            <span class="arrow__placeholder">Next</span>
-        ';
-
     // Get current page number
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     if (is_front_page()) {
         $paged = (get_query_var('page')) ? get_query_var('page') : 1;
     }
 
-    /**
+    /*
      * Setup WP_Query arguments
      * Base query configuration for case results
      */
@@ -42,7 +28,7 @@ if (get_field('toggle_block')):
         'paged' => $paged,
     );
 
-    /**
+    /*
      * Conditional filtering: Carousel mode with specific posts
      * If NOT showing all results AND specific posts are selected
      */
@@ -83,7 +69,7 @@ if (get_field('toggle_block')):
                 <div class="<?= $show_all_results ? "case-results__grid"  : "case-results__carousel"; ?>">
 
                     <?php
-                    /**
+                    /*
                      * Carousel wrapper (Splide.js)
                      * Only used when showing filtered results
                      */
@@ -119,7 +105,7 @@ if (get_field('toggle_block')):
                                 <?php endwhile; ?>
 
                                 <?php
-                                /**
+                                /*
                                  * Carousel controls (Splide.js)
                                  * Navigation arrows and optional link to locations page
                                  */
@@ -128,21 +114,12 @@ if (get_field('toggle_block')):
                                 </div>
                             </div>
 
-                            <div class="splide__arrows pagination-buttons case-results__arrows">
-                                <button class="splide__arrow splide__arrow--prev arrow arrow--prev btn btn--secondary">
-                                    <?= $prev_arrow ?>
-                                </button>
-
-                                <?php if ($all_results_link['url']): ?>
-                                    <a href="<?= $all_results_link['url'] ?>" target="<?= $all_results_link['target'] ?>" class="cta-btn btn btn--secondary">
-                                        <span><?= $all_results_link['title'] ?></span>
-                                    </a>
-                                <?php endif ?>
-
-                                <button class="splide__arrow splide__arrow--next arrow arrow--next btn btn--secondary">
-                                    <?= $next_arrow ?>
-                                </button>
-                            </div>
+                            <?php
+                                    get_template_part('template-parts/splide', 'navigation', array(
+                                        'nav_link' => $all_results_link,
+                                        'classes' => 'case-results__arrows'
+                                    ));
+                            ?>
 
                         </div>
                     <?php endif ?>
@@ -150,76 +127,25 @@ if (get_field('toggle_block')):
                 </div>
 
                 <?php
-                /**
+                /*
                  * Pagination Navigation
                  * Only displays when:
                  * - Showing all results ($show_all_results = true)
                  * - More than one page exists
                  */
-                if ($show_all_results && $query->max_num_pages > 1):
+                if ($show_all_results && $query->max_num_pages > 1) {
+                    get_template_part('template-parts/posts', 'pagination', array(
+                        'paged' => $paged,
+                        'query' => $query,
+                        'classes' => 'case-results__pagination'
+                    ));
+                }
                 ?>
-                    <div class="case-results__pagination">
-                        <?php
-                        /**
-                         * Generate pagination links as an array
-                         * Returns array of link HTML for custom markup
-                         */
-                        $pagination = paginate_links(array(
-                            'format'    => '?paged=%#%',
-                            'current'   => max(1, $paged),
-                            'total'     => $query->max_num_pages,
-                            'prev_text' => $prev_arrow,
-                            'next_text' => $next_arrow,
-                            'type'      => 'array',
-                            'add_args'  => array(), // Ensure no extra query args are added
-                            'mid_size'  => 2,
-                            'end_size'  => 1,
-                        ));
-
-                        if (!empty($pagination)):
-                        ?>
-                            <ul class="pagination pagination-buttons">
-                                <?php
-                                foreach ($pagination as $page_link):
-                                    // Add general pagination link class
-                                    $page_link = str_replace('page-numbers', 'page-numbers pagination__link', $page_link);
-
-                                    // Determine li class based on link type
-                                    $li_class = 'pagination__item btn btn--secondary';
-
-                                    if (strpos($page_link, 'prev') !== false) {
-                                        $li_class .= ' pagination__item--prev arrow arrow--prev';
-                                        $page_link = str_replace('prev', 'prev pagination__link--nav', $page_link);
-                                    } elseif (strpos($page_link, 'next') !== false) {
-                                        $li_class .= ' pagination__item--next arrow arrow--next';
-                                        $page_link = str_replace('next', 'next pagination__link--nav', $page_link);
-                                    } elseif (strpos($page_link, 'current') !== false) {
-                                        $li_class .= ' pagination__item--current is-active';
-                                        $page_link = str_replace('current', 'current pagination__link--active', $page_link);
-                                    } elseif (strpos($page_link, 'dots') !== false) {
-                                        $li_class .= ' pagination__item--dots';
-                                        $page_link = str_replace('dots', 'dots pagination__link--dots', $page_link);
-                                    } else {
-                                        $li_class .= ' pagination__item--number';
-                                    }
-                                ?>
-                                    <li class="<?= esc_attr($li_class) ?>">
-                                        <?= $page_link ?>
-                                    </li>
-                                <?php
-                                endforeach;
-                                ?>
-                            </ul>
-                        <?php
-                        endif;
-                        ?>
-                    </div>
-                <?php endif; ?>
 
             <?php endif; ?>
 
             <?php
-            /**
+            /*
              * Reset post data to restore global $post variable
              * CRITICAL: Always call after custom WP_Query loops
              */
