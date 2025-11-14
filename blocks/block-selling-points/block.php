@@ -37,22 +37,26 @@ if (get_field('toggle_block')):
 
                                 <?php
                                 foreach ($items as $item) :
-                                    foreach ($item as $field => $content) $$field = $content;
+                                    if (!empty($item)):
+                                        foreach ($item as $field => $content) $$field = $content;
                                 ?>
 
-                                    <div class="item-card splide__slide">
-                                        <div class="item-card__inner">
-                                            <div class="item-card__icon">
-                                                <?= image_to_svg($icon) ?>
+                                        <div class="item-card splide__slide">
+                                            <div class="item-card__inner">
+                                                <div class="item-card__icon">
+                                                    <?= image_to_svg($icon) ?>
+                                                </div>
+
+                                                <p class="item-card__title"><?= $title ?></p>
+
+                                                <p class="item-card__description"><?= $content ?></p>
                                             </div>
-
-                                            <p class="item-card__title"><?= $title ?></p>
-
-                                            <p class="item-card__description"><?= $content ?></p>
                                         </div>
-                                    </div>
 
-                                <?php endforeach; ?>
+                                <?php
+                                    endif;
+                                endforeach;
+                                ?>
 
                             </div>
                         </div>

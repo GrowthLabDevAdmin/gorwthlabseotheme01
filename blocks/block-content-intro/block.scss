@@ -121,7 +121,7 @@
         margin: 0;
         position: relative;
         z-index: 1;
-        @include m.title(rgb(var(--tertiary)), 2.4rem, 3.3vw, 3.6rem);
+        @include m.title(rgb(var(--tertiary-dark)), 2.4rem, 3.3vw, 3.6rem);
       }
 
       &::before {
