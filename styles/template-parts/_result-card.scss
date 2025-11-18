@@ -1,79 +1,8 @@
-@use "../../styles/globals/variables" as v;
-@use "../../styles/globals/mixins" as m;
-
-.case-results {
-  padding: var(--sp-xsm) 0;
-
-  @media (min-width: v.$ldpi) {
-    padding: var(--sp-lg) 0;
-  }
-
-  $parent: &;
-
-  &:has(#{$parent}__carousel) {
-    #{$parent}__title {
-      @include m.title(null, 4rem, 4.2vw, 4.8rem);
-    }
-  }
-
-  &:has(.bg-image) {
-    #{$parent}__title,
-    #{$parent}__content > * {
-      color: rgb(var(--secondary));
-    }
-  }
-
-  &__wrapper {
-    padding: var(--sp-xsm);
-    @include m.flex-center;
-    flex-direction: column;
-    gap: var(--sp-xsm);
-
-    @media (min-width: v.$ldpi) {
-      padding: var(--sp-sm);
-    }
-  }
-
-  &__title {
-    @include m.title();
-  }
-
-  &__separator {
-    max-width: 70%;
-    margin-bottom: var(--sp-xsm);
-  }
-
-  &__grid {
-    padding: var(--sp-xsm);
-    display: flex;
-    align-items: stretch;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: var(--sp-xsm);
-
-    .result-card {
-      min-width: 28rem;
-      max-width: 40.8rem;
-      flex: 1 0 calc((100% / 3) - (var(--sp-xsm) * 2 / 3));
-    }
-  }
-
-  &__carousel {
-    width: 100%;
-
-    .result-card {
-      padding: 0 calc(var(--sp-xsm) / 2);
-    }
-  }
-
-  &__arrows {
-    margin-top: var(--sp-xsm);
-  }
-}
+@use "../globals/variables" as v;
+@use "../globals/mixins" as m;
 
 .result-card {
   height: auto;
-
   $card: &;
 
   @keyframes descriptionOpacity {

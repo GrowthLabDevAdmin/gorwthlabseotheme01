@@ -1,11 +1,18 @@
 {
-  "name": "acf/case-results",
-  "title": "Case Results",
+  "name": "acf/posts-carousel",
+  "title": "Posts Carousel",
   "style": ["file:./block-min.css"],
   "script": ["file:./block-min.js", "splide-js"],
   "category": "growthlabtheme01-blocks",
   "icon": "block-default",
-  "keywords": ["growthlabseo", "carousel", "case results", "post type"],
+  "keywords": [
+    "growthlabseo",
+    "carousel",
+    "case results",
+    "post type",
+    "posts",
+    "custom carousel"
+  ],
   "acf": {
     "mode": "edit",
     "renderTemplate": "block.php"

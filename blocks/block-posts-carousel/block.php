@@ -1,0 +1,151 @@
+<?php
+if (get_field('toggle_block')):
+    foreach (get_fields() as $key => $value) $$key = $value;
+
+
+
+    switch ($carousel_type) {
+        case 'case-result':
+            $posts = $select_results_posts;
+            break;
+
+        case 'team':
+            $posts = $select_team_members_posts;
+            break;
+
+        case 'post':
+            $posts = $select_blog_posts;
+            break;
+
+        case 'testimonial':
+            $posts = $select_testimonials_posts;
+            break;
+
+        default:
+            $posts = isset($select_or_create_items) && $select_or_create_items ? $select_posts : [];
+            break;
+    }
+
+    $args = array(
+        'post_type' => $carousel_type,
+        'posts_per_page' => -1,
+        'post__in' => $posts,
+        'post_status' => 'publish',
+        'orderby' => 'post__in',
+    );
+
+    $query = new WP_Query($args);
+?>
+
+    <section
+        class="block posts-carousel <?php if (!$background_image) echo "bg-bicolor"; ?>"
+        <?php if (isset($extract_block_from_content) && $extract_block_from_content) echo "data-extract='$place'"; ?>>
+
+        <?php
+        if (isset($background_image) && $background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "posts-carousel__bg bg-image gradient-overlay");
+        ?>
+
+        <div class="posts-carousel__wrapper container tx-center border-box">
+
+            <?php
+            print_title($title, $title_tag, "posts-carousel__title");
+            get_template_part('template-parts/ampersand', 'separator', array('classes' => 'posts-carousel__separator'));
+            ?>
+
+            <?php if ($text_content): ?>
+                <div class="posts-carousel__content formatted-text">
+                    <?= $text_content ?>
+                </div>
+            <?php endif ?>
+
+            <div class="posts-carousel__carousel" data-type=<?= $carousel_type ?>>
+
+                <div class="splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+
+                            <?php
+                            if (isset($query) && $query->have_posts()) {
+                                while ($query->have_posts()) {
+                                    $query->the_post();
+
+                                    foreach (get_fields(get_the_ID()) as $field => $content) $$field = $content;
+
+                                    switch ($carousel_type) {
+                                        case 'case-result':
+                                            get_template_part('template-parts/result', 'card', array(
+                                                "classes" => "splide__slide",
+                                                "numerical_amount" => $numerical_amount,
+                                                "case_title" => $case_title,
+                                                "case_description" => $case_description,
+                                            ));
+                                            break;
+
+                                        case 'team':
+                                            $posts = $select_team_members_posts;
+                                            break;
+
+                                        case 'post':
+                                            $posts = $select_blog_posts;
+                                            break;
+
+                                        case 'testimonial':
+                                            get_template_part('template-parts/testimonial', 'card', array(
+                                                "classes" => "splide__slide",
+                                                "picture" => $author_picture,
+                                                "author" => $author_name,
+                                                "role" => $author_role,
+                                                "content" => $testimonial_content,
+                                                "source" => $testimonial_source,
+                                                "link_url" => $testimonial_source_link,
+                                            ));
+                                            break;
+
+                                        default:
+                                            get_template_part('template-parts/default', 'card', array(
+                                                "classes" => "splide__slide",
+                                                "picture" => get_the_post_thumbnail_url(),
+                                                "title" => get_the_title(),
+                                                "content" => get_the_excerpt(),
+                                                "link_url" => get_the_permalink(),
+                                                "link_target" => '_blank',
+                                            ));
+                                            break;
+                                    }
+                                }
+                            } elseif (isset($custom_carousel) && !empty($custom_carousel)) {
+                                foreach ($custom_carousel as $item) {
+                                    foreach ($item as $field => $data) $$field = $data;
+
+                                    get_template_part('template-parts/default', 'card', array(
+                                        "classes" => "splide__slide",
+                                        "picture" => $picture,
+                                        "title" => $title,
+                                        "content" => $content,
+                                        "link_url" => $link['url'],
+                                        "link_target" => $link['target'],
+                                    ));
+                                }
+                            }
+                            ?>
+
+                        </div>
+                    </div>
+
+                    <?php
+                    get_template_part('template-parts/splide', 'navigation', array(
+                        'nav_link' => $cta_link,
+                        'classes' => 'posts-carousel__arrows'
+                    ));
+                    ?>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+<?php
+    wp_reset_postdata();
+endif;
+?>

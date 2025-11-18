@@ -7,7 +7,7 @@ const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 
 const paths = {
-  scss_globals: ["./styles/**/*.scss", "!./styles/page-templates/**"],
+  scss_globals: ["./styles/**/*.scss"],
   scss_blocks: "./blocks/**/*.scss",
   js: ["./js/**/*.js", "!./js/**/*-min.js", "!./js/**/*.min.js"],
   js_blocks: [
@@ -72,6 +72,7 @@ function buildScriptsBlocks() {
 
 function watchFiles() {
   watch(paths.scss_globals, buildStyles);
+  watch(paths.scss_globals, buildStylesBlocks);
   watch(paths.scss_blocks, buildStylesBlocks);
   watch(paths.js, buildScripts);
   watch(paths.js_blocks, buildScriptsBlocks);

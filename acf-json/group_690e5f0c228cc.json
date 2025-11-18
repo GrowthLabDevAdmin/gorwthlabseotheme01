@@ -194,7 +194,20 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_690e5f0c291e5",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_690e5f0c3bae6",
+                        "operator": "==",
+                        "value": "within"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -469,5 +482,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1763096956
+    "modified": 1763394848
 }
