@@ -51,6 +51,19 @@
       transition: opacity 0.2s ease, margin-top 0.15s ease,
         padding-bottom 0.15s ease;
     }
+  }
+
+  * + &.float {
+    ~ * {
+      transition: padding-bottom 0.2s ease, border-bottom 0.2s ease;
+    }
+  }
+
+  &.within,
+  &.float {
+    #{$parent}__wrapper {
+      padding: var(--sp-sm) 0;
+    }
 
     #{$parent}__inner {
       gap: var(--sp-xsm);
@@ -58,11 +71,13 @@
 
     #{$parent}__heading {
       flex-flow: row nowrap;
+      justify-content: space-between;
       text-align: left;
     }
 
     #{$parent}__main {
       flex-flow: row wrap;
+      justify-content: flex-start;
       text-align: left;
     }
 
@@ -86,11 +101,54 @@
         content: none;
       }
     }
-  }
 
-  * + &.float {
-    ~ * {
-      transition: padding-bottom 0.2s ease, border-bottom 0.2s ease;
+    &.light {
+      #{$parent}__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--sp-sm);
+      }
+
+      #{$parent}__decoration {
+        width: 24rem;
+        height: 24rem;
+        @include m.flex-center;
+        box-shadow: 8px 8px 0px rgb(var(--tertiary));
+        background-color: rgb(var(--primary));
+
+        svg {
+          width: 10rem;
+          height: 10rem;
+          display: block;
+          path {
+            fill: rgb(var(--secondary-light));
+          }
+        }
+      }
+
+      #{$parent}__box {
+        flex: 1 0 calc(100% - 24rem - var(--sp-sm));
+        background-color: rgb(var(--secondary-light));
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+      }
+
+      #{$parent}__inner {
+        min-height: 24rem;
+        justify-content: center;
+      }
+
+      #{$parent}__title {
+        color: rgb(var(--primary));
+      }
+
+      #{$parent}__content p {
+        color: rgb(var(--text-color)) x;
+      }
+
+      #{$parent}__separator {
+        display: none;
+      }
     }
   }
 

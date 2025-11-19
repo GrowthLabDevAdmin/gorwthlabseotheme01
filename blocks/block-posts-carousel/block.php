@@ -45,15 +45,15 @@ if (get_field('toggle_block')):
         if (isset($background_image) && $background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "posts-carousel__bg bg-image gradient-overlay");
         ?>
 
-        <div class="posts-carousel__wrapper container tx-center border-box">
+        <div class="posts-carousel__wrapper container border-box">
 
             <?php
-            print_title($title, $title_tag, "posts-carousel__title");
+            print_title($title, $title_tag, "posts-carousel__title tx-center");
             get_template_part('template-parts/ampersand', 'separator', array('classes' => 'posts-carousel__separator'));
             ?>
 
             <?php if ($text_content): ?>
-                <div class="posts-carousel__content formatted-text">
+                <div class="posts-carousel__content formatted-text tx-center">
                     <?= $text_content ?>
                 </div>
             <?php endif ?>
@@ -69,7 +69,7 @@ if (get_field('toggle_block')):
                                 while ($query->have_posts()) {
                                     $query->the_post();
 
-                                    foreach (get_fields(get_the_ID()) as $field => $content) $$field = $content;
+                                    if (!empty(get_fields(get_the_ID()))) foreach (get_fields(get_the_ID()) as $field => $content) $$field = $content;
 
                                     switch ($carousel_type) {
                                         case 'case-result':
@@ -93,7 +93,15 @@ if (get_field('toggle_block')):
                                             break;
 
                                         case 'post':
-                                            $posts = $select_blog_posts;
+                                            get_template_part('template-parts/post', 'card', array(
+                                                "classes" => "splide__slide",
+                                                "picture" => get_the_post_thumbnail_url(),
+                                                "meta" => get_the_date(),
+                                                "title" => get_the_title(),
+                                                "excerpt" => get_the_excerpt(),
+                                                "link_url" => get_the_permalink(),
+                                                "link_target" => '_blank',
+                                            ));
                                             break;
 
                                         case 'testimonial':

@@ -5,7 +5,7 @@ if (get_field('toggle_block')):
 
     <section
         id="<?= $block_id ?? "" ?>"
-        class="block cta-box <?= $box_position ?>"
+        class="block cta-box <?= $box_position ?? "" ?> <?= $block_style ?? "" ?>  <?php if ($box_position === "within") echo "bg-bicolor"; ?>"
         <?php if (isset($extract_block_from_content) && $extract_block_from_content) echo "data-extract='$place'"; ?>>
 
         <?php
@@ -14,6 +14,15 @@ if (get_field('toggle_block')):
         ?>
 
         <div class="cta-box__wrapper container">
+
+            <?php if ($box_position === "within" && $block_style === "light"): ?>
+
+                <div class="cta-box__decoration">
+                    <?php include get_stylesheet_directory() . "/assets/img/ampersand-symbol.svg" ?>
+                </div>
+
+            <?php endif ?>
+
             <div class="cta-box__box shadow-box <?php if ($box_position === "full") echo "border-box" ?>">
                 <div class="cta-box__inner border-box">
 

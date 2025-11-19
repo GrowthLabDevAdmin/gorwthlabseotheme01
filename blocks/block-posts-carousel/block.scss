@@ -1,6 +1,7 @@
 @use "../../styles/globals/variables" as v;
 @use "../../styles/globals/mixins" as m;
 @use "../../styles/template-parts/result-card";
+@use "../../styles/template-parts/post-card";
 @use "../../styles/template-parts/default-card";
 @use "../../styles/template-parts/testimonial-card";
 
@@ -64,6 +65,7 @@
     width: 100%;
 
     .default-card,
+    .post-card,
     .result-card,
     .testimonial-card {
       padding: 0 calc(var(--sp-xsm) / 2);

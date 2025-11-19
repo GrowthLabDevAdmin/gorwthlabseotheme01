@@ -255,6 +255,13 @@ function growthlabtheme01_remove_custom_logo_link($html)
 }
 add_filter('get_custom_logo', 'growthlabtheme01_remove_custom_logo_link');
 
+/*Custom Excerpt Size*/
+function growthlabtheme01_custom_excerpt_length($length)
+{
+    return 15;
+}
+add_filter('excerpt_length', 'growthlabtheme01_custom_excerpt_length', 999);
+
 /**
  * Add scripts and styles.
  *
@@ -266,7 +273,6 @@ add_filter('get_custom_logo', 'growthlabtheme01_remove_custom_logo_link');
 // Comment this function while working on Dev Environment
 function inline_main_critical_css()
 {
-
     // Dynamic Color Scheme
     $color_scheme = theme_get_customizer_css();
 

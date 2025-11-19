@@ -172,7 +172,7 @@
             },
             "choices": {
                 "float": "Floating Between Two Sections",
-                "within: Within the Content": "within: Within the Content",
+                "within": "Within the Content",
                 "full": "Full Height Section"
             },
             "default_value": "float",
@@ -482,5 +482,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1763394848
+    "modified": 1763512553
 }
