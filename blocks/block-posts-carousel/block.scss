@@ -41,6 +41,10 @@
     margin-bottom: var(--sp-xsm);
   }
 
+  &__content {
+    max-width: 96rem;
+  }
+
   &__grid {
     padding: var(--sp-xsm);
     display: flex;

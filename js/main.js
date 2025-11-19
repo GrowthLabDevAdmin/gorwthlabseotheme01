@@ -11,6 +11,8 @@ const blocksInContent = document.querySelectorAll(
   ".page-template-default .main-content .block[data-extract]"
 );
 
+const accordeonItems = document.querySelectorAll(".accordeon");
+
 //Breakpoints
 const mobile = 480;
 const tablet = 768;
@@ -40,6 +42,16 @@ function eventListeners() {
 
   if (document.querySelector(".site-header--sticky"))
     window.addEventListener("scroll", fadeInHeader);
+
+  if (accordeonItems) {
+    accordeonItems.forEach((item) => {
+      item
+        .querySelector(".accordeon__heading")
+        .addEventListener("click", (e) => {
+          item.classList.toggle("open");
+        });
+    });
+  }
 }
 
 function showMenus() {

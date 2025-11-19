@@ -82,7 +82,14 @@ if (get_field('toggle_block')):
                                             break;
 
                                         case 'team':
-                                            $posts = $select_team_members_posts;
+                                            get_template_part('template-parts/default', 'card', array(
+                                                "classes" => "splide__slide",
+                                                "picture" => get_the_post_thumbnail_url(),
+                                                "title" => get_the_title(),
+                                                "content" => $role,
+                                                "link_url" => get_the_permalink(),
+                                                "link_target" => '_blank',
+                                            ));
                                             break;
 
                                         case 'post':
