@@ -5,7 +5,7 @@
 @use "../../styles/template-parts/default-card";
 @use "../../styles/template-parts/testimonial-card";
 
-.posts-carousel {
+.posts-grid {
   padding: var(--sp-xsm) 0;
 
   @media (min-width: v.$ldpi) {
@@ -45,12 +45,42 @@
     max-width: 96rem;
   }
 
-  &__carousel {
+  &__feed {
     width: 100%;
+    @include m.flex-center;
+    flex-direction: column;
+    gap: var(--sp-sm);
+  }
+
+  &__grid {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: var(--sp-xsm);
   }
 
   &__card {
-    padding: 0 calc(var(--sp-xsm) / 2);
+    &.case-result {
+      min-width: 28rem;
+      max-width: 40.8rem;
+      flex: 1 0 calc((100% / 3) - (var(--sp-xsm) * 2 / 3));
+    }
+
+    &.post,
+    &.testimonial {
+      min-width: 28rem;
+      max-width: 62rem;
+      flex: 1 0 calc(50% - (var(--sp-xsm) / 2));
+    }
+
+    &.team,
+    &.custom {
+      min-width: 28rem;
+      max-width: 30.15rem;
+      flex: 1 0 calc(25% - (var(--sp-xsm) * 3 / 4));
+    }
   }
 
   &__arrows {

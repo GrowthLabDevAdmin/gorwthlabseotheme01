@@ -2,8 +2,6 @@
 if (get_field('toggle_block')):
     foreach (get_fields() as $key => $value) $$key = $value;
 
-
-
     switch ($carousel_type) {
         case 'case-result':
             $posts = $select_results_posts;
@@ -74,7 +72,7 @@ if (get_field('toggle_block')):
                                     switch ($carousel_type) {
                                         case 'case-result':
                                             get_template_part('template-parts/result', 'card', array(
-                                                "classes" => "splide__slide",
+                                                "classes" => "splide__slide posts-carousel__card",
                                                 "numerical_amount" => $numerical_amount,
                                                 "case_title" => $case_title,
                                                 "case_description" => $case_description,
@@ -83,7 +81,7 @@ if (get_field('toggle_block')):
 
                                         case 'team':
                                             get_template_part('template-parts/default', 'card', array(
-                                                "classes" => "splide__slide",
+                                                "classes" => "splide__slide posts-carousel__card",
                                                 "picture" => get_the_post_thumbnail_url(),
                                                 "title" => get_the_title(),
                                                 "content" => $role,
@@ -94,7 +92,7 @@ if (get_field('toggle_block')):
 
                                         case 'post':
                                             get_template_part('template-parts/post', 'card', array(
-                                                "classes" => "splide__slide",
+                                                "classes" => "splide__slide posts-carousel__card",
                                                 "picture" => get_the_post_thumbnail_url(),
                                                 "meta" => get_the_date(),
                                                 "title" => get_the_title(),
@@ -106,7 +104,7 @@ if (get_field('toggle_block')):
 
                                         case 'testimonial':
                                             get_template_part('template-parts/testimonial', 'card', array(
-                                                "classes" => "splide__slide",
+                                                "classes" => "splide__slide posts-carousel__card",
                                                 "picture" => $author_picture,
                                                 "author" => $author_name,
                                                 "role" => $author_role,
@@ -118,7 +116,7 @@ if (get_field('toggle_block')):
 
                                         default:
                                             get_template_part('template-parts/default', 'card', array(
-                                                "classes" => "splide__slide",
+                                                "classes" => "splide__slide posts-carousel__card",
                                                 "picture" => get_the_post_thumbnail_url(),
                                                 "title" => get_the_title(),
                                                 "content" => get_the_excerpt(),
@@ -133,7 +131,7 @@ if (get_field('toggle_block')):
                                     foreach ($item as $field => $data) $$field = $data;
 
                                     get_template_part('template-parts/default', 'card', array(
-                                        "classes" => "splide__slide",
+                                        "classes" => "splide__slide posts-carousel__card",
                                         "picture" => $picture,
                                         "title" => $title,
                                         "content" => $content,

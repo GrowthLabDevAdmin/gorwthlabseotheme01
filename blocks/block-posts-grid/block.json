@@ -1,13 +1,13 @@
 {
-  "name": "acf/posts-carousel",
-  "title": "Posts Carousel",
+  "name": "acf/posts-grid",
+  "title": "Posts Grid",
   "style": ["file:./block-min.css"],
   "script": ["file:./block-min.js", "splide-js"],
   "category": "growthlabtheme01-blocks",
   "icon": "block-default",
   "keywords": [
     "growthlabseo",
-    "carousel",
+    "grid",
     "case results",
     "team",
     "testimonials",
@@ -15,7 +15,7 @@
     "posts",
     "posts",
     "pages",
-    "custom carousel"
+    "custom grid"
   ],
   "acf": {
     "mode": "edit",
