@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_691e5173d64ab",
-            "label": "POSTS CAROUSEL",
+            "label": "POSTS GRID",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -550,5 +550,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1763599448
+    "modified": 1763606501
 }

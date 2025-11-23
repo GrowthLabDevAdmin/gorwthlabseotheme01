@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_691cb854bb941",
-            "label": "CONTENT INTRO",
+            "label": "FAQ",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -545,5 +545,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1763491514
+    "modified": 1763606510
 }

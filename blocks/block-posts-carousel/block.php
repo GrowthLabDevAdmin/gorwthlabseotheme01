@@ -20,6 +20,7 @@ if (get_field('toggle_block')):
             break;
 
         default:
+            $carousel_type = isset($select_or_create_items) && $select_or_create_items ? "any" : "";
             $posts = isset($select_or_create_items) && $select_or_create_items ? $select_posts : [];
             break;
     }

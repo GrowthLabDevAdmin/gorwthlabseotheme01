@@ -21,7 +21,8 @@ if (get_field('toggle_block')):
         $args['orderby'] = 'meta_value_num';
     }
 
-    if ($grid_type === "custom" && !$select_or_create_items) {
+    if ($grid_type === "custom" && $select_or_create_items) {
+        $args['post_type'] = "any";
         $args['post__in'] = $select_posts;
         $args['orderby'] = 'post__in';
     }
