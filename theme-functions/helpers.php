@@ -26,10 +26,10 @@ function get_flat_number($phone)
 }
 
 //Print title helper
-function print_title($title, $tag = 'p', $classes = '')
+function print_title($title, $tag = 'p', $classes = '', $is_hero = false)
 {
     if (!$title) return;
-    $tag = $tag ?? 'p';
+    $tag = $tag ?? ($is_hero ? 'h1' : 'p');
     echo "<$tag class='$classes'>" . $title . "</$tag>";
 }
 

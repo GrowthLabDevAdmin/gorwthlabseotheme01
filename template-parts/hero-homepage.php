@@ -26,7 +26,7 @@ if (!$bg_mobile) $bg_mobile = [];
             <div class="content-box__inner border-box tx-center">
                 <?php
                 print_title($hero_tagline, $hero_tagline_tag, "content-box__tagline");
-                print_title($hero_title, $hero_title_tag, "content-box__title");
+                print_title($hero_title, $hero_title_tag, "content-box__title", true);
                 ?>
 
                 <?php if ($cta_button): ?>
@@ -44,6 +44,6 @@ if (!$bg_mobile) $bg_mobile = [];
                 <?php endif ?>
             </div>
         </div>
-        <?php if ($side_portrait) img_print_picture_tag(img: $side_portrait, classes: "hero__side-portrait", is_priority: true); ?>
+        <?php if ($side_portrait) img_print_picture_tag(img: $side_portrait, classes: "hero__side-portrait", is_priority: false); ?>
     </div>
 </section>

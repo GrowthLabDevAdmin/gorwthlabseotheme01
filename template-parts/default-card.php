@@ -5,7 +5,7 @@
         if (isset($args['picture']) && $args['picture']):
             if ($args['link_url']) echo "<a href=" . $args['link_url'] . " class='default-card__pic-link' target=" . $args['link_target'] . ">";
             img_print_picture_tag(img: $args["picture"], max_size: "medium", classes: "default-card__pic");
-            if ($args['link_url']) echo "</a>";
+            if ($args['link_url']) echo "<span>". $args['title'] ."</span></a>";
         endif;
         ?>
 

@@ -16,7 +16,7 @@ if (get_field('toggle_block')):
             <div class="content-intro__inner">
 
                 <?php if ($title || $first_paragraph): ?>
-                    <div class="content-intro__heading border-box tx-center">
+                    <div class="content-intro__heading tx-center <?php if ($first_paragraph) echo "border-box"; ?>">
                         <?php
                         print_title($title, $title_tag, "content-intro__title");
                         get_template_part('template-parts/ampersand', 'separator', array('classes' => 'content-intro__separator'));
@@ -28,19 +28,24 @@ if (get_field('toggle_block')):
 
                 <div class="content-intro__content formatted-text">
 
-                    <div class="content-intro__pic-wrapper">
-                        <?php
-                        if (isset($side_picture) && $side_picture) img_print_picture_tag(img: $side_picture, max_size: "medium", classes: "content-intro__pic shadow-box");
-                        if (isset($side_picture_caption) && $side_picture_caption):
-                        ?>
+                    <?php if (
+                        isset($featured_image['picture']) && $featured_image['picture']
+                        && $featured_image['position'] !== "below"
+                    ): ?>
+                        <div class="content-intro__pic-wrapper content-intro__pic-wrapper--<?= $featured_image['position'] ?>">
+                            <?php
+                            img_print_picture_tag(img: $featured_image['picture'], max_size: "medium", classes: "content-intro__pic shadow-box");
+                            if (isset($featured_image['picture_caption']) && $featured_image['picture_caption']):
+                            ?>
 
-                            <div class="content-intro__caption">
-                                <?php include get_stylesheet_directory() . '/assets/img/ampersand-symbol.svg'; ?>
-                                <p><?= $side_picture_caption ?></p>
-                            </div>
+                                <div class="content-intro__caption">
+                                    <?php include get_stylesheet_directory() . '/assets/img/ampersand-symbol.svg'; ?>
+                                    <p><?= $featured_image['picture_caption'] ?></p>
+                                </div>
 
-                        <?php endif ?>
-                    </div>
+                            <?php endif ?>
+                        </div>
+                    <?php endif ?>
 
                     <?= $text_content ?>
 
@@ -49,6 +54,25 @@ if (get_field('toggle_block')):
                             <a href="<?= $cta_link['url'] ?>" target="<?= $cta_link['target'] ?>" class="btn btn--secondary">
                                 <span><?= $cta_link['title'] ?></span>
                             </a>
+                        </div>
+                    <?php endif ?>
+
+                    <?php if (
+                        isset($featured_image['picture']) && $featured_image['picture']
+                        && $featured_image['position'] === "below"
+                    ): ?>
+                        <div class="content-intro__pic-wrapper content-intro__pic-wrapper--<?= $featured_image['position'] ?>">
+                            <?php
+                            img_print_picture_tag(img: $featured_image['picture'], max_size: "medium", classes: "content-intro__pic shadow-box");
+                            if (isset($featured_image['picture_caption']) && $featured_image['picture_caption']):
+                            ?>
+
+                                <div class="content-intro__caption">
+                                    <?php include get_stylesheet_directory() . '/assets/img/ampersand-symbol.svg'; ?>
+                                    <p><?= $featured_image['picture_caption'] ?></p>
+                                </div>
+
+                            <?php endif ?>
                         </div>
                     <?php endif ?>
 

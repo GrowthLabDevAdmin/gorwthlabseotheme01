@@ -38,6 +38,7 @@
   }
 
   strong {
+    all: unset;
     font-weight: inherit;
     line-height: inherit;
     color: rgb(var(--tertiary));

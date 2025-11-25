@@ -330,3 +330,17 @@ function extractBlocks() {
     }, 300);
   }
 })();
+
+//Unwrap Elements
+window.addEventListener('load', () => {
+  const wrappedImages = document.querySelectorAll('p:has(img), p:has(picture), p:has(figure)');
+  wrappedImages.forEach(paragraph => {
+    const elementsToUnwrap = paragraph.querySelectorAll('img, picture, figure');
+    elementsToUnwrap.forEach(element => {
+      paragraph.insertAdjacentElement('beforebegin', element);
+    });
+    if (paragraph.textContent.trim() === '') {
+      paragraph.remove();
+    }
+  });
+});

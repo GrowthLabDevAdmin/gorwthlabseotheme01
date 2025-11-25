@@ -8,7 +8,7 @@
     ?>
 
     <?php
-    if (!$form_section['hide_section']):
+    if (!$form_section['hide_section'] && !get_field('hide_form_section')):
       foreach ($form_section as $form_field => $form_content) $$form_field = $form_content;
     ?>
       <section class="contact-form-footer">
@@ -49,7 +49,7 @@
     ?>
 
     <?php
-    if (!$locations_section['hide_section']):
+    if (!$locations_section['hide_section'] && !get_field('hide_locations_section')):
       foreach ($locations_section as $form_field => $form_content) $$form_field = $form_content;
     ?>
 
@@ -156,7 +156,7 @@
                     'classes' => 'locations-cards__arrows'
                   ));
                   ?>
-                  
+
                 </div>
               </div>
             <?php
@@ -173,7 +173,7 @@
     ?>
 
     <?php
-    if (!$copyright_section['hide_section']):
+    if (!$copyright_section['hide_section'] && !get_field("hide_copyright_section")):
       foreach ($copyright_section as $form_field => $form_content) $$form_field = $form_content;
     ?>
       <section class="copyright-footer">

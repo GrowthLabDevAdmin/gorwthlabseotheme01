@@ -1,14 +1,14 @@
 {
     "key": "group_6908d5b864b10",
-    "title": "Page - Hero Options",
+    "title": "Page - Options",
     "fields": [
         {
             "key": "field_6908d5b8c0fd7",
             "label": "HERO OPTIONS",
             "name": "",
             "aria-label": "",
-            "type": "accordion",
-            "instructions": "Enclose text in \"strong\" HTML tags to highlight it.",
+            "type": "tab",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -16,9 +16,9 @@
                 "class": "",
                 "id": ""
             },
-            "open": 0,
-            "multi_expand": 0,
-            "endpoint": 0
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
         },
         {
             "key": "field_6908d895c0fe4",
@@ -507,6 +507,87 @@
                     ]
                 }
             ]
+        },
+        {
+            "key": "field_69252d90e0541",
+            "label": "FOOTER OPTIONS",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_6925302b0aaba",
+            "label": "Hide Form Section",
+            "name": "hide_form_section",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_692530510aabb",
+            "label": "Hide Locations Section",
+            "name": "hide_locations_section",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6925307f0aabc",
+            "label": "Hide Copyright Section",
+            "name": "hide_copyright_section",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
         }
     ],
     "location": [
@@ -526,8 +607,8 @@
         ]
     ],
     "menu_order": 0,
-    "position": "side",
-    "style": "default",
+    "position": "normal",
+    "style": "seamless",
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
@@ -535,5 +616,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1762387100
+    "modified": 1764052039
 }

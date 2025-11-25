@@ -41,7 +41,7 @@ if ($hero_title === null || $hero_title === "") {
     <div class="hero__wrapper container border-box">
         <div class="hero__content tx-center">
             <?php
-            print_title($hero_title, $hero_title_tag, "hero__title");
+            print_title($hero_title, $hero_title_tag, "hero__title", true);
             get_template_part('template-parts/ampersand', 'separator', array('classes' => 'hero__separator'));
             ?>
 

@@ -10,12 +10,19 @@
 
   $parent: &;
 
+  &:not(:has(#{$parent}__separator + *)),
   &:not(.bg-bicolor) {
     #{$parent}__inner {
       display: block;
       border: 1px solid rgb(var(--tertiary));
     }
 
+    #{$parent}__content {
+      padding: var(--sp-xsm);
+    }
+  }
+
+  &:not(.bg-bicolor) {
     #{$parent}__content {
       & > * {
         color: rgb(var(--secondary));
@@ -34,6 +41,7 @@
   }
 
   &__heading {
+    width: 100%;
     padding: var(--sp-xsm);
     gap: var(--sp-xsm);
   }
@@ -56,7 +64,20 @@
       min-width: 465px;
       width: 40%;
       margin: 5px 20px 20px 0px;
-      float: left;
+
+      &--left {
+        float: left;
+      }
+
+      &--right {
+        float: right;
+      }
+
+      &--above,
+      &--below {
+        width: 100%;
+        display: block;
+      }
     }
   }
 
@@ -70,10 +91,16 @@
       width: 100%;
       height: auto;
       margin: 0;
+
+      @media (min-width: v.$tablet) {
+        min-height: 50rem;
+        object-fit: cover;
+      }
     }
   }
 
   &__caption {
+    max-width: 56rem;
     width: 90%;
     padding: var(--sp-sm);
     position: absolute;
