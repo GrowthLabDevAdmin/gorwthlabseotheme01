@@ -6,6 +6,14 @@ main:has(+ .site-footer .contact-form-footer) {
   padding-bottom: var(--sp-lg);
 }
 
+section.contact-form--side-pic:has(+ .site-footer .contact-form-footer) {
+  padding-bottom: 0;
+
+  .contact-form__wrapper {
+    padding-bottom: var(--sp-lg);
+  }
+}
+
 .site-footer {
   position: relative;
   z-index: 5;

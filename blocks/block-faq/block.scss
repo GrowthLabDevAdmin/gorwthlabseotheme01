@@ -36,7 +36,6 @@
   }
 
   &__title {
-    //@include m.title();
     @include m.title(null, 4rem, 4.2vw, 4.8rem);
   }
 
