@@ -10,6 +10,9 @@ const mainContent = document.querySelectorAll(
 const blocksInContent = document.querySelectorAll(
   ".page-template-default .main-content .block[data-extract]"
 );
+const footerLocations = document.querySelector(
+  ".locations-footer .locations-cards__carousel .splide"
+);
 
 const accordeonItems = document.querySelectorAll(".accordeon");
 
@@ -25,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   blocksInContent && extractBlocks();
 
-  splideCarousels();
+  footerLocations && footerLocationsCarousel();
 });
 
 function eventListeners() {
@@ -118,8 +121,8 @@ function fadeInHeader() {
 }
 
 //Splide Carousels
-function splideCarousels() {
-  var footerLocations = new Splide(".locations-cards__carousel .splide", {
+function footerLocationsCarousel() {
+  new Splide(footerLocations, {
     type: "loop",
     perMove: 1,
     perPage: 4,
@@ -133,9 +136,7 @@ function splideCarousels() {
         perPage: 2,
       },
     },
-  });
-
-  footerLocations.mount();
+  }).mount();
 }
 
 //Blocks
@@ -332,14 +333,16 @@ function extractBlocks() {
 })();
 
 //Unwrap Elements
-window.addEventListener('load', () => {
-  const wrappedImages = document.querySelectorAll('p:has(img), p:has(picture), p:has(figure)');
-  wrappedImages.forEach(paragraph => {
-    const elementsToUnwrap = paragraph.querySelectorAll('img, picture, figure');
-    elementsToUnwrap.forEach(element => {
-      paragraph.insertAdjacentElement('beforebegin', element);
+window.addEventListener("load", () => {
+  const wrappedImages = document.querySelectorAll(
+    "p:has(img), p:has(picture), p:has(figure)"
+  );
+  wrappedImages.forEach((paragraph) => {
+    const elementsToUnwrap = paragraph.querySelectorAll("img, picture, figure");
+    elementsToUnwrap.forEach((element) => {
+      paragraph.insertAdjacentElement("beforebegin", element);
     });
-    if (paragraph.textContent.trim() === '') {
+    if (paragraph.textContent.trim() === "") {
       paragraph.remove();
     }
   });
