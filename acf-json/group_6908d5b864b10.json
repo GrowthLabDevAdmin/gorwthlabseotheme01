@@ -37,7 +37,6 @@
             "choices": {
                 "home": "Homepage Hero",
                 "default": "Default Hero",
-                "nice": "Nice Hero",
                 "nohero": "No Hero"
             },
             "default_value": "default",
@@ -616,5 +615,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764052039
+    "modified": 1764567062
 }

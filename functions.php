@@ -322,26 +322,24 @@ function growthlabtheme01_scripts()
     );
 
     // Load specific template stylesheet
-    /* if (is_page()) {
-        if (is_page_template('page-templates/template-homepage.php')) {
-            wp_enqueue_style('growthlabtheme01-template-homepage', get_template_directory_uri() . '/assets/scss/page-templates/template-homepage.css', array(), '1.0.9');
-        } else {
-            wp_enqueue_style('growthlabtheme01-template-default');
+    if (is_page() || is_single()) {
+        if (!is_page_template('page-templates/template-full-width.php')) {
+            wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
         }
 
-        switch (get_page_template_slug()) {
+        /* switch (get_page_template_slug()) {
             case 'page-templates/template-about.php':
                 wp_enqueue_style('growthlabtheme01-template-about', get_template_directory_uri() . '/assets/scss/page-templates/template-about.css', array(), '1.0.1');
                 break;
-        }
+                } */
     }
-    if (is_home() || is_archive() || is_single()) {
-        wp_enqueue_style('growthlabtheme01-template-default');
-        wp_enqueue_style('growthlabtheme01-blog', get_template_directory_uri() . '/assets/scss/page-templates/template-blog.css', array(), '1.0.0');
+    if (is_home() || is_archive()) {
+        wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
+        wp_enqueue_style('growthlabtheme01-blog', get_template_directory_uri() . '/styles/page-templates/template-blog-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-blog-min.css'));
     }
     if (is_404()) {
-        wp_enqueue_style('growthlabtheme01-template-default');
-    } */
+        //wp_enqueue_style('growthlabtheme01-template-default');
+    }
 }
 
 add_action('wp_enqueue_scripts', 'growthlabtheme01_scripts');
@@ -362,8 +360,8 @@ function growthlabtheme01_widgets_init()
             'name'          => esc_html__('Default Sidebar', 'growthlabtheme01'),
             'id'            => 'sidebar-default',
             'description'   => esc_html__('Add widgets here to appear in the page sidebar.', 'growthlabtheme01'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</section>',
+            'before_widget' => '<div id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</div>',
             'before_title'  => '<p class="widget-title">',
             'after_title'   => '</p>',
         )
@@ -374,8 +372,8 @@ function growthlabtheme01_widgets_init()
             'name'          => esc_html__('Blog Sidebar', 'growthlabtheme01'),
             'id'            => 'sidebar-blog',
             'description'   => esc_html__('Add widgets here to appear in the Blog sidebar.', 'growthlabtheme01'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</section>',
+            'before_widget' => '<div id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</div>',
             'before_title'  => '<p class="widget-title">',
             'after_title'   => '</p>',
         )

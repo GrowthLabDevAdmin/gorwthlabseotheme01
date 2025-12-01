@@ -1,20 +1,23 @@
-<div class="post-card <?= $args["classes"] ?>">
+<article class="post-card <?= $args["classes"] ?>">
     <div class="post-card__wrapper">
 
         <?php
-        if (isset($args['picture']) && $args['picture']):
-            if ($args['link_url']) {
-                echo "<a href=" . $args['link_url'] . " class='post-card__pic-wrapper' target=" . $args['link_target'] . ">";
-            } else {
-                echo "<div class='post-card__pic-wrapper'>";
-            }
+        if ($args['link_url']) {
+            echo "<a href=" . $args['link_url'] . " class='post-card__pic-wrapper' target=" . $args['link_target'] . ">";
+        } else {
+            echo "<div class='post-card__pic-wrapper'>";
+        }
+        if (isset($args['picture']) && $args['picture']) {
             img_print_picture_tag(img: $args["picture"], max_size: "medium", classes: "post-card__pic");
-            if ($args['link_url']) {
-                echo "</a>";
-            } else {
-                echo "</div>";
-            }
-        endif;
+        } else {
+            include get_stylesheet_directory() . '/assets/icons/icon-file-image.svg';
+        }
+        if ($args['link_url']) {
+            echo "</a>";
+        } else {
+            echo "</div>";
+        }
+
         ?>
 
         <div class="post-card__inner">
@@ -33,4 +36,4 @@
             <?php endif ?>
         </div>
     </div>
-</div>
+</article>

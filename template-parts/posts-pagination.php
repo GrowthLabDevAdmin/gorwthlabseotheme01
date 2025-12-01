@@ -1,4 +1,23 @@
 <?php
+$args = isset($args) && is_array($args) ? $args : array();
+$args = wp_parse_args($args, array(
+    'classes'    => '',
+    'paged'      => max(1, (int) get_query_var('paged', 1)),
+    'query'      => null,
+    'prev_text'  => null,
+    'next_text'  => null,
+    'mid_size'   => 2,
+    'end_size'   => 1,
+));
+
+global $wp_query;
+$query = $args['query'] instanceof WP_Query ? $args['query'] : $wp_query;
+$paged = (int) $args['paged'];
+
+if (empty($query) || $query->max_num_pages <= 1) {
+    return;
+}
+
 $prev_arrow = '
             <svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2823 0.220341C10.3522 0.290009 10.4076 0.372773 10.4454 0.46389C10.4832 0.555008 10.5027 0.65269 10.5027 0.751341C10.5027 0.849992 10.4832 0.947674 10.4454 1.03879C10.4076 1.12991 10.3522 1.21267 10.2823 1.28234L1.81184 9.75134L10.2823 18.2203C10.4232 18.3612 10.5023 18.5522 10.5023 18.7513C10.5023 18.9505 10.4232 19.1415 10.2823 19.2823C10.1415 19.4232 9.95051 19.5023 9.75134 19.5023C9.55218 19.5023 9.36117 19.4232 9.22034 19.2823L0.22034 10.2823C0.150495 10.2127 0.0950809 10.1299 0.0572712 10.0388C0.0194616 9.94767 0 9.84999 0 9.75134C0 9.65269 0.0194616 9.55501 0.0572712 9.46389C0.0950809 9.37277 0.150495 9.29001 0.22034 9.22034L9.22034 0.220341C9.29001 0.150496 9.37277 0.0950816 9.46389 0.057272C9.55501 0.0194623 9.65269 0 9.75134 0C9.84999 0 9.94767 0.0194623 10.0388 0.057272C10.1299 0.0950816 10.2127 0.150496 10.2823 0.220341Z" fill="#BC9061" />
@@ -13,25 +32,26 @@ $next_arrow = '
             <span class="arrow__placeholder">Next</span>
         ';
 
+$pagination = paginate_links(array(
+    'format'    => '?paged=%#%',
+    'current'   => max(1, $paged),
+    'total'     => $query->max_num_pages,
+    'prev_text' => $prev_arrow,
+    'next_text' => $next_arrow,
+    'type'      => 'array',
+    'add_args'  => array(),
+    'mid_size'  => (int) $args['mid_size'],
+    'end_size'  => (int) $args['end_size'],
+));
+
+$container_classes = esc_attr($args['classes']);
 ?>
-<div class="<?= $args["classes"] ?>">
+<div class="<?= $container_classes ?>">
     <?php
     /*
     * Generate pagination links as an array
     * Returns array of link HTML for custom markup
     */
-    $pagination = paginate_links(array(
-        'format'    => '?paged=%#%',
-        'current'   => max(1, $args["paged"]),
-        'total'     => $args['query']->max_num_pages,
-        'prev_text' => $prev_arrow,
-        'next_text' => $next_arrow,
-        'type'      => 'array',
-        'add_args'  => array(), // Ensure no extra query args are added
-        'mid_size'  => 2,
-        'end_size'  => 1,
-    ));
-
     if (!empty($pagination)):
     ?>
         <ul class="pagination pagination-buttons">

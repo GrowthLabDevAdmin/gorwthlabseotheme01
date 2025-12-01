@@ -7,41 +7,43 @@ if (get_field('toggle_block')):
         id="<?= $block_id ?? "" ?>"
         class="block contact-form 
         <?php
-        if ($side_picture) {
+        if (isset($side_picture) && $side_picture && !$show_only_contact_form) {
             echo "contact-form--side-pic ";
-            if ($title || $main_content && !$background_image) {
+            if (($title || $main_content) && !$background_image) {
                 echo "bg-bicolor";
             }
-        } else if (!$background_image){
+        } else if (!isset($background_image) || !$background_image) {
             echo "bg-bicolor";
         }
         ?>"
-        <?php if (isset($extract_block_from_content) && $extract_block_from_content) echo "data-extract='$place'"; ?>>
+        <?php if (isset($extract_block_from_content) && $extract_block_from_content && !$show_only_contact_form) echo "data-extract='$place'"; ?>>
 
         <div class="contact-form__layer">
 
             <div class="contact-form__wrapper
             <?php
-            if ($side_picture && !$title && !$main_content && !$background_image) echo "bg-bicolor ";
+            if (isset($side_picture) && $side_picture && !$title && !$main_content && !$background_image) echo "bg-bicolor ";
             ?>
             ">
-                <?php if ($background_image) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form__bg bg-image gradient-overlay"); ?>
+                <?php if (isset($background_image) && $background_image && !$show_only_contact_form) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form__bg bg-image gradient-overlay"); ?>
 
                 <div class="contact-form__inner container">
 
                     <?php
-                    if (isset($title) && $title) {
-                        print_title($title, $title_tag, "contact-form__title");
-                        get_template_part('template-parts/ampersand', 'separator', array('classes' => 'contact-form__separator'));
-                    }
+                    if (!$show_only_contact_form):
+                        if (isset($title) && $title) {
+                            print_title($title, $title_tag, "contact-form__title");
+                            get_template_part('template-parts/ampersand', 'separator', array('classes' => 'contact-form__separator'));
+                        }
 
-                    if ($main_content):
+                        if (isset($main_content) && !empty($main_content)):
                     ?>
-                        <div class="contact-form__content formatted-text tx-center">
-                            <?= $main_content ?>
-                        </div>
+                            <div class="contact-form__content formatted-text tx-center">
+                                <?= $main_content ?>
+                            </div>
                     <?php
-                    endif
+                        endif;
+                    endif;
                     ?>
 
 
@@ -66,7 +68,7 @@ if (get_field('toggle_block')):
 
                     </div>
 
-                    <?php if ($side_picture) img_print_picture_tag(img: $side_picture,  classes: "contact-form__side-pic shadow-box"); ?>
+                    <?php if (isset($side_picture) && $side_picture && !$show_only_contact_form) img_print_picture_tag(img: $side_picture,  classes: "contact-form__side-pic shadow-box"); ?>
                 </div>
 
             </div>

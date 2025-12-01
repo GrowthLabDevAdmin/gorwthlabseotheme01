@@ -68,6 +68,27 @@
             "endpoint": 0
         },
         {
+            "key": "field_692d21b92b758",
+            "label": "Show Only Contact Form",
+            "name": "show_only_contact_form",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_69264b733b3df",
             "label": "Block ID",
             "name": "block_id",
@@ -99,8 +120,8 @@
             "conditional_logic": [
                 [
                     {
-                        "field": "field_69264b7333e8f",
-                        "operator": "==",
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
                         "value": "1"
                     }
                 ]
@@ -133,8 +154,8 @@
                         "value": "1"
                     },
                     {
-                        "field": "field_69264b7333e8f",
-                        "operator": "==",
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
                         "value": "1"
                     }
                 ]
@@ -172,9 +193,9 @@
                         "value": "1"
                     },
                     {
-                        "field": "field_6912bfc9d31b0",
-                        "operator": "==",
-                        "value": "full"
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
+                        "value": "1"
                     }
                 ]
             ],
@@ -209,6 +230,11 @@
                         "field": "field_69264b7333e8f",
                         "operator": "==",
                         "value": "1"
+                    },
+                    {
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
+                        "value": "1"
                     }
                 ]
             ],
@@ -237,6 +263,11 @@
                     {
                         "field": "field_69264b7333e8f",
                         "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
                         "value": "1"
                     }
                 ]
@@ -274,7 +305,15 @@
             "type": "wysiwyg",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -298,8 +337,9 @@
             "conditional_logic": [
                 [
                     {
-                        "field": "field_69264b9f2c7b2",
-                        "operator": "!="
+                        "field": "field_692d21b92b758",
+                        "operator": "!=",
+                        "value": "1"
                     }
                 ]
             ],
@@ -484,5 +524,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764123186
+    "modified": 1764565667
 }

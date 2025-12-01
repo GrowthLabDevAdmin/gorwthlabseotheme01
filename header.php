@@ -120,9 +120,6 @@
         case 'default':
             get_template_part('template-parts/hero', 'default', $args);
             break;
-        case 'nice':
-            get_template_part('template-parts/hero', 'nice', $args);
-            break;
         case 'nohero':
             break;
         default:

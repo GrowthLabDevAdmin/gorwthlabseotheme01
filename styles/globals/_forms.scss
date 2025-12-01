@@ -135,7 +135,7 @@ input[type="submit"] {
 }
 
 .gfield {
-  min-width: 208px;
+  min-width: 280px;
   flex-grow: 1;
 
   $ancestor: &;
@@ -176,7 +176,7 @@ input[type="submit"] {
     gap: var(--sp-xsm);
 
     & > * {
-      min-width: 208px;
+      min-width: 280px;
       flex: 1 0 calc(50% - var(--sp-xsm) / 2);
     }
 

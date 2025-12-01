@@ -29,6 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
   blocksInContent && extractBlocks();
 
   footerLocations && footerLocationsCarousel();
+
+  document.querySelectorAll(".sidebar").forEach((el) => {
+    if (!el.querySelector("*")) el.classList.add("is-empty");
+  });
 });
 
 function eventListeners() {
