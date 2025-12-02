@@ -20,15 +20,16 @@
     padding: var(--sp-sm);
     flex: 1 0 calc(60% - var(--sp-md));
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    align-items: center;
     gap: var(--sp-xsm);
   }
 
   &__loop {
+    width: 100%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    align-items: center;
     gap: var(--sp-xsm);
   }
 

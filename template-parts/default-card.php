@@ -2,11 +2,21 @@
     <div class="default-card__wrapper">
 
         <?php
-        if (isset($args['picture']) && $args['picture']):
-            if ($args['link_url']) echo "<a href=" . $args['link_url'] . " class='default-card__pic-link' target=" . $args['link_target'] . ">";
+        if ($args['link_url']) {
+            echo "<a href=" . $args['link_url'] . " class='default-card__pic-wrapper' target=" . $args['link_target'] . ">";
+        } else {
+            echo "<div class='default-card__pic-wrapper'>";
+        }
+        if (isset($args['picture']) && $args['picture']) {
             img_print_picture_tag(img: $args["picture"], max_size: "medium", classes: "default-card__pic");
-            if ($args['link_url']) echo "<span>". $args['title'] ."</span></a>";
-        endif;
+        } else {
+            include get_stylesheet_directory() . '/assets/icons/icon-file-image.svg';
+        }
+        if ($args['link_url']) {
+            echo "<span>" . $args['title'] . "</span></a>";
+        } else {
+            echo "</div>";
+        }
         ?>
 
         <div class="default-card__inner tx-center">
