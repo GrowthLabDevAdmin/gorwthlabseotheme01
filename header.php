@@ -113,17 +113,19 @@
         "hero_cta_button_default" => $hero_cta_button,
     );
 
-    switch (get_field('hero_style')) {
-        case 'home':
-            get_template_part('template-parts/hero', 'homepage', $args);
-            break;
-        case 'default':
-            get_template_part('template-parts/hero', 'default', $args);
-            break;
-        case 'nohero':
-            break;
-        default:
-            get_template_part('template-parts/hero', 'default', $args);
-            break;
+    if (!is_404()) {
+        switch (get_field('hero_style')) {
+            case 'home':
+                get_template_part('template-parts/hero', 'homepage', $args);
+                break;
+            case 'default':
+                get_template_part('template-parts/hero', 'default', $args);
+                break;
+            case 'nohero':
+                break;
+            default:
+                get_template_part('template-parts/hero', 'default', $args);
+                break;
+        }
     }
     ?>
