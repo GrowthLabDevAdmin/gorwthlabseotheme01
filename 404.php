@@ -5,15 +5,15 @@ if (!defined('ABSPATH')) {
 get_header();
 ?>
 
-<main class="404 bg-bicolor" style="padding: 100px;">
+<section class="404 bg-bicolor" style="padding-block: 300px;">
 
-    <section class="container">
+    <div class="container">
 
-        <p class="h2 tx-center">404:</p>
+        <p class="h1 tx-center">404:</p>
         <p class="h2 tx-center">Page Not Found</p>
 
-    </section>
+    </div>
 
-</main>
+</section>
 
 <?php get_footer() ?>

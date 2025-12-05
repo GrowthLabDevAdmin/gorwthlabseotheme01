@@ -20,7 +20,7 @@
     $phone_number = $contact_phone ?: $main_phone_number;
     ?>
 
-    <header class="site-header <?= $sticky_header ? "site-header--sticky" : "" ?>">
+    <header class="site-header <?= !is_404() && get_field('hero_style') !== "nohero" && $sticky_header ? "site-header--sticky" : "" ?>">
 
         <div class="site-header__wrapper container">
 
