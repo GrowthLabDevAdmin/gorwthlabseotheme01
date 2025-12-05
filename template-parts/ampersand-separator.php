@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
 foreach ($args as $key => $value) $$key = $value;
 ?>
 

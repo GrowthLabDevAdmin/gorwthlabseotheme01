@@ -1,3 +1,9 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
 <?php if ($args['iframe_src']):
     if ($args['iframe_src']): ?>
         <div class="<?= $args["classes"] ?> gmap-lazy"

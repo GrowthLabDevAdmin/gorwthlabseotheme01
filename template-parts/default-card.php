@@ -1,3 +1,9 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
 <div class="default-card <?= $args["classes"] ?>">
     <div class="default-card__wrapper">
 

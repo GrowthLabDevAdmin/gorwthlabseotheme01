@@ -1,3 +1,8 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
 <article class="post-card <?= $args["classes"] ?>">
     <div class="post-card__wrapper">
 

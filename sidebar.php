@@ -1,3 +1,9 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
 <aside class="sidebar <?= $args["classes"] ?>">
 
     <?php dynamic_sidebar("sidebar-default") ?>

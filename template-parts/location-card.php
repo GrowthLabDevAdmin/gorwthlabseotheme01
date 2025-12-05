@@ -1,3 +1,8 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
 <?php $location = $args['location']; ?>
 <div class="location-card <?= isset($args['classes']) ? $args['classes'] : '' ?>">
     <div class="location-card__wrapper">

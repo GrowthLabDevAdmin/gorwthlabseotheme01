@@ -1,3 +1,9 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
 <div class="testimonial-card <?= $args["classes"] ?>">
     <div class="testimonial-card__wrapper">
         <div class="testimonial-card__inner">

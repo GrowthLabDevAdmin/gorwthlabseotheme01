@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 if (get_field('toggle_block')):
     foreach (get_fields() as $key => $value) $$key = $value;
 ?>

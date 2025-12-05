@@ -1,13 +1,16 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
 $args = isset($args) && is_array($args) ? $args : array();
 $args = wp_parse_args($args, array(
-    'classes'    => '',
-    'paged'      => max(1, (int) get_query_var('paged', 1)),
-    'query'      => null,
-    'prev_text'  => null,
-    'next_text'  => null,
-    'mid_size'   => 2,
-    'end_size'   => 1,
+    'classes' => '',
+    'paged' => max(1, (int) get_query_var('paged', 1)),
+    'query' => null,
+    'prev_text' => null,
+    'next_text' => null,
+    'mid_size' => 2,
+    'end_size' => 1,
 ));
 
 global $wp_query;
@@ -33,15 +36,15 @@ $next_arrow = '
         ';
 
 $pagination = paginate_links(array(
-    'format'    => '?paged=%#%',
-    'current'   => max(1, $paged),
-    'total'     => $query->max_num_pages,
+    'format' => '?paged=%#%',
+    'current' => max(1, $paged),
+    'total' => $query->max_num_pages,
     'prev_text' => $prev_arrow,
     'next_text' => $next_arrow,
-    'type'      => 'array',
-    'add_args'  => array(),
-    'mid_size'  => (int) $args['mid_size'],
-    'end_size'  => (int) $args['end_size'],
+    'type' => 'array',
+    'add_args' => array(),
+    'mid_size' => (int) $args['mid_size'],
+    'end_size' => (int) $args['end_size'],
 ));
 
 $container_classes = esc_attr($args['classes']);

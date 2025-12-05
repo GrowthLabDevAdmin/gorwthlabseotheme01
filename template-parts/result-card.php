@@ -1,3 +1,8 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
 <div class="result-card <?= $args["classes"] ?>">
     <div class="result-card__wrapper">
         <div class="result-card__inner border-box tx-center">

@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 //Default Properties
 foreach ($args as $field => $content) $$field = $content;
 //Internal Fields
