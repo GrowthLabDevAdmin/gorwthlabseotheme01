@@ -44,6 +44,6 @@ if (!$bg_mobile) $bg_mobile = [];
                 <?php endif ?>
             </div>
         </div>
-        <?php if ($side_portrait) img_print_picture_tag(img: $side_portrait, classes: "hero__side-portrait", is_priority: false); ?>
+        <?php if ($side_portrait) img_print_picture_tag(img: $side_portrait, classes: "hero__side-portrait", is_priority: true); ?>
     </div>
 </section>

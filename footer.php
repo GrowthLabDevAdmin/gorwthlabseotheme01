@@ -86,8 +86,8 @@
                   <div class="splide__track">
                     <div class="splide__list">
                       <?php
-                      foreach ($locations as $location){
-                          get_template_part('template-parts/location', 'card', array('location' => $location));
+                      foreach ($locations as $location) {
+                        get_template_part('template-parts/location', 'card', array('location' => $location));
                       }
                       ?>
                     </div>
@@ -122,6 +122,10 @@
       <section class="copyright-footer">
         <div class="copyright-footer__wrapper container">
 
+          <div class="copyright-footer__social">
+            <?php get_template_part('template-parts/social', 'networks'); ?>
+          </div>
+
           <?php
           wp_nav_menu(
             array(
@@ -141,7 +145,7 @@
             <img src="<?= get_stylesheet_directory_uri() . "/assets/img/Growth-Lab-Logo.png" ?>" alt="Growth Lab SEO Logo" width="270" height="50">
           </a>
 
-          <p class="copyright-footer__advertisement">
+          <p class="copyright-footer__advertisement tx-center">
             <?= $copyright ?>
           </p>
 

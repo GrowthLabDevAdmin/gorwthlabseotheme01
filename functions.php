@@ -203,7 +203,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-dark',
-                    'color' => get_theme_mod('tertiary_color_dark', '#9D7A55'), // swapped -> secondary dark
+                    'color' => get_theme_mod('tertiary_color_dark', '#9D7A55'), 
                 ),
                 array(
                     'name'  => __(
@@ -211,7 +211,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-light',
-                    'color' => get_theme_mod('tertiary_color_light', '#DCAB77'), // swapped -> secondary light
+                    'color' => get_theme_mod('tertiary_color_light', '#DCAB77'), 
                 ),
                 array(
                     'name'  => __(
