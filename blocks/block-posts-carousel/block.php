@@ -68,7 +68,7 @@ if (get_field('toggle_block')):
                         <div class="splide__list">
 
                             <?php
-                            if (isset($custom_carousel) && !empty($custom_carousel) && !$select_posts) {
+                            if (isset($custom_carousel) && !empty($custom_carousel) && !$select_posts && $carousel_type === "") {
                                 foreach ($custom_carousel as $item) {
                                     foreach ($item as $field => $data) $$field = $data;
 
