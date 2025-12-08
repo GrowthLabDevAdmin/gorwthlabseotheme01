@@ -4,6 +4,14 @@
 @use "../../styles/template-parts/default-card";
 @use "../../styles/template-parts/testimonial-card";
 
+.page__main,
+.post__main {
+  .faq__wrapper {
+    padding: 0;
+    border: none;
+  }
+}
+
 .faq {
   padding: var(--sp-xsm) 0;
 
