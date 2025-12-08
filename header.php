@@ -20,6 +20,9 @@ if (!defined('ABSPATH')) {
     <?php wp_body_open(); ?>
 
     <?php
+    global $post;
+    $post_id = $post ? $post->ID : 0;
+
     $es = filterContentByLanguage() ? '_es' : '';
     $options = get_field_options('options' . $es);
     foreach ($options as $key => $value) $$key = $value;

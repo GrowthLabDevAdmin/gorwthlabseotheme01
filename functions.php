@@ -19,6 +19,7 @@ $includes = [
     'theme-functions/svg-support.php',
     'theme-functions/picture-optimization.php',
     'theme-functions/tiny-mce.php',
+    'theme-functions/page-menu-management.php',
 ];
 
 foreach ($includes as $file) {
