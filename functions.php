@@ -348,7 +348,6 @@ function growthlabtheme01_scripts()
 
 add_action('wp_enqueue_scripts', 'growthlabtheme01_scripts');
 
-
 /**
  * Register widget area.
  *

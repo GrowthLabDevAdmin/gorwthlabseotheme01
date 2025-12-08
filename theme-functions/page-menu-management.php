@@ -74,12 +74,13 @@ function add_page_to_menus($post_id, $menu_entries = [])
 
         $use_label = $label === '' ? $post->post_title : $label;
 
-        if ($existing_item_id) {
+        /* if ($existing_item_id) {
             wp_update_nav_menu_item($menu_id, $existing_item_id, [
                 'menu-item-title' => sanitize_text_field($use_label),
             ]);
             $added[$menu_id] = $existing_item_id;
-        } else {
+        }  */
+        if ($existing_item_id) {
             $menu_item_id = wp_update_nav_menu_item($menu_id, 0, [
                 'menu-item-type' => 'post_type',
                 'menu-item-object' => $post->post_type,
