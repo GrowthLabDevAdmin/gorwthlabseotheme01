@@ -68,7 +68,20 @@ if (get_field('toggle_block')):
                         <div class="splide__list">
 
                             <?php
-                            if (isset($query) && $query->have_posts()) {
+                            if (isset($custom_carousel) && !empty($custom_carousel) && !$select_posts) {
+                                foreach ($custom_carousel as $item) {
+                                    foreach ($item as $field => $data) $$field = $data;
+
+                                    get_template_part('template-parts/default', 'card', array(
+                                        "classes" => "splide__slide posts-carousel__card",
+                                        "picture" => $picture,
+                                        "title" => $title,
+                                        "content" => $content,
+                                        "link_url" => $link['url'],
+                                        "link_target" => $link['target'],
+                                    ));
+                                }
+                            } elseif (isset($query) && $query->have_posts()) {
                                 while ($query->have_posts()) {
                                     $query->the_post();
 
@@ -130,19 +143,6 @@ if (get_field('toggle_block')):
                                             ));
                                             break;
                                     }
-                                }
-                            } elseif (isset($custom_carousel) && !empty($custom_carousel)) {
-                                foreach ($custom_carousel as $item) {
-                                    foreach ($item as $field => $data) $$field = $data;
-
-                                    get_template_part('template-parts/default', 'card', array(
-                                        "classes" => "splide__slide posts-carousel__card",
-                                        "picture" => $picture,
-                                        "title" => $title,
-                                        "content" => $content,
-                                        "link_url" => $link['url'],
-                                        "link_target" => $link['target'],
-                                    ));
                                 }
                             }
                             ?>
