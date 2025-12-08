@@ -2,7 +2,7 @@
 @use "../../styles/globals/mixins" as m;
 
 .content-box {
-  padding-block: var(--sp-sm);
+  padding-block: var(--sp-xsm);
 
   &__wrapper {
     padding: var(--sp-sm);
