@@ -22,12 +22,12 @@
   &__content,
   &__side-portrait {
     min-width: 280px;
-    flex: 1 0 calc(50% - (var(--sp-xsm) / 2));
   }
-
+  
   &__content {
     padding: var(--sp-sm);
     @include m.flex-center;
+    flex: 1 0 calc(52% - (var(--sp-xsm) / 2));
     flex-direction: column;
     gap: var(--sp-xsm);
 
@@ -40,6 +40,7 @@
     width: 100%;
     height: 46rem;
     max-height: 100%;
+    flex: 1 0 calc(48% - (var(--sp-xsm) / 2));
     display: block;
     align-self: flex-end;
 
