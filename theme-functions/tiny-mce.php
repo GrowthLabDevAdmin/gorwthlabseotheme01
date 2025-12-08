@@ -126,10 +126,10 @@ function my_acf_tinymce_colors_script()
 }
 add_action('acf/input/admin_head', 'my_acf_tinymce_colors_script');
 
-// 6️⃣ Apply ACF colors to standard WordPress editor
-function my_wp_editor_colors_script()
+// 6️⃣ Inject colors directamente en la configuración de TinyMCE
+function my_wp_editor_colors_direct($init)
 {
-    // Get colors dynamically from PHP (same as ACF)
+    // Get colors dynamically from PHP
     $colors = array(
         get_theme_mod('primary_color', '#15253f') => 'Primary Color',
         get_theme_mod('primary_color_dark', '#08182f') => 'Primary Dark',
@@ -143,49 +143,26 @@ function my_wp_editor_colors_script()
         get_theme_mod('text_color', '#15253f') => 'Text Color',
     );
 
-    // Build array for WordPress editor
+    // Build color array alternando hex y nombre
     $color_array = array();
     foreach ($colors as $hex => $name) {
-        $color_array[] = array(
-            'name' => $name,
-            'color' => $hex
-        );
+        $color_array[] = str_replace('#', '', $hex);  // hex sin #
+        $color_array[] = $name;                        // nombre del color
     }
 
-    // Convert to valid JSON
-    $colors_json = json_encode($color_array);
-?>
-    <script type="text/javascript">
-        (function() {
-            // Custom colors from PHP for WordPress editor
-            var customColors = <?php echo $colors_json; ?>;
+    // Inyectar en el init
+    $init['textcolor_map'] = $color_array;
+    $init['textcolor_cols'] = 5;
 
-            // Hook TinyMCE before init
-            tinymce.PluginManager.add('customcolors', function(editor) {
-                editor.on('init', function() {
-                    // Inject custom colors into the color picker
-                    if (editor.settings.textcolor_map) {
-                        editor.settings.textcolor_map = [];
-                        customColors.forEach(function(color) {
-                            editor.settings.textcolor_map.push(color.color.replace('#', ''));
-                            editor.settings.textcolor_map.push(color.name);
-                        });
-                    }
-                });
-            });
-
-            console.log('✅ WP Editor colors loaded:', customColors);
-        })();
-    </script>
-<?php
+    return $init;
 }
-add_action('admin_print_footer_scripts', 'my_wp_editor_colors_script');
+add_filter('tiny_mce_before_init', 'my_wp_editor_colors_direct', 10);
 
 // 7️⃣ Configure WordPress editor with same fonts and sizes
 function my_wp_editor_formats()
 {
     add_editor_style(get_template_directory_uri() . '/styles/vendor/tiny-mce/tiny-mce-styles-min.css?ver=' . time());
-    
+
     // Add support for custom formats
     add_theme_support('editor-color-palette', array(
         array(
@@ -251,7 +228,21 @@ function my_wp_editor_default_settings($init)
     // Font sizes (same as ACF)
     $init['fontsize_formats'] = '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 40pt 48pt';
 
-    // Text color map
+    // Toolbar configuration (same buttons as ACF)
+    $init['toolbar1'] = 'formatselect,fontselect,fontsizeselect,bold,italic,underline,forecolor,backcolor,bullist,numlist,alignleft,aligncenter,alignright,link,unlink,removeformat,undo,redo';
+    $init['toolbar2'] = '';
+
+    $init['textcolor_map'] = isset($init['textcolor_map']) ? $init['textcolor_map'] : array();
+    $init['textcolor_cols'] = 5;
+    $init['plugins'] = (isset($init['plugins']) ? $init['plugins'] : '') . ' textcolor';
+
+    return $init;
+}
+add_filter('tiny_mce_before_init', 'my_wp_editor_default_settings', 20);
+
+// Inyecta colores directamente en cada instancia de TinyMCE cuando se crea (más fiable)
+function my_wp_editor_colors_apply_on_add()
+{
     $colors = array(
         get_theme_mod('primary_color', '#15253f') => 'Primary Color',
         get_theme_mod('primary_color_dark', '#08182f') => 'Primary Dark',
@@ -265,19 +256,87 @@ function my_wp_editor_default_settings($init)
         get_theme_mod('text_color', '#15253f') => 'Text Color',
     );
 
-    $color_array = array();
+    // Format TinyMCE expects: ['RRGGBB','Name',...]
+    $map = array();
     foreach ($colors as $hex => $name) {
-        $color_array[] = str_replace('#', '', $hex);
-        $color_array[] = $name;
+        $map[] = str_replace('#', '', $hex);
+        $map[] = $name;
     }
 
-    $init['textcolor_map'] = $color_array;
-    $init['textcolor_cols'] = 5;
+    $map_json = json_encode($map);
+    ?>
+    <script type="text/javascript">
+    (function($){
+        var customColors = <?php echo $map_json; ?>;
+        var customCols = 5;
 
-    // Toolbar configuration (same buttons as ACF)
-    $init['toolbar1'] = 'formatselect,fontselect,fontsizeselect,bold,italic,underline,forecolor,backcolor,bullist,numlist,alignleft,aligncenter,alignright,link,unlink,removeformat,undo,redo';
-    $init['toolbar2'] = '';
+        function applyToEditor(editor) {
+            if (!editor || !editor.settings) return;
+            try {
+                editor.settings.textcolor_map = customColors;
+                editor.settings.textcolor_cols = customCols;
 
-    return $init;
+                // Forzar actualización de estado e intentar refrescar UI
+                try {
+                    editor.nodeChanged();
+                } catch (err) { /* no crítico */ }
+
+                // Si el botón forecolor existe, intentar forzar reconstrucción del menú
+                try {
+                    var btn = editor.ui.registry.getAll && editor.ui && editor.ui.registry && editor.ui.registry.getAll && editor.ui.registry.getAll().buttons && editor.ui.registry.getAll().buttons.forecolor;
+                    if (btn && typeof btn.onAction === 'function') {
+                        // No podemos reconstruir internamente el plugin desde aquí fácilmente,
+                        // pero al tener editor.settings actualizado la próxima apertura del picker debería usarlo.
+                    }
+                } catch (e) {}
+            } catch (e) {
+                console.error('[growthlab] applyToEditor error', e);
+            }
+        }
+
+        // Si tinymce ya está cargado
+        if (window.tinymce && window.tinymce.EditorManager) {
+            // Aplicar a los editores ya creados
+            for (var id in tinymce.editors) {
+                if (tinymce.editors.hasOwnProperty(id)) {
+                    applyToEditor(tinymce.editors[id]);
+                }
+            }
+
+            // Aplicar a nuevos editores cuando se añadan
+            if (tinymce.EditorManager.on) {
+                tinymce.EditorManager.on('AddEditor', function(e){
+                    applyToEditor(e.editor);
+                });
+            } else if (tinymce.on) {
+                tinymce.on('AddEditor', function(e){
+                    applyToEditor(e.editor);
+                });
+            }
+        } else {
+            // Si tinymce no está aún, esperar y aplicar cuando esté listo
+            var wait = setInterval(function(){
+                if (window.tinymce && tinymce.EditorManager) {
+                    clearInterval(wait);
+                    for (var id2 in tinymce.editors) {
+                        if (tinymce.editors.hasOwnProperty(id2)) {
+                            applyToEditor(tinymce.editors[id2]);
+                        }
+                    }
+                    if (tinymce.EditorManager.on) {
+                        tinymce.EditorManager.on('AddEditor', function(e){
+                            applyToEditor(e.editor);
+                        });
+                    } else if (tinymce.on) {
+                        tinymce.on('AddEditor', function(e){
+                            applyToEditor(e.editor);
+                        });
+                    }
+                }
+            }, 250);
+        }
+    })(jQuery);
+    </script>
+    <?php
 }
-add_filter('tiny_mce_before_init', 'my_wp_editor_default_settings', 20);
+add_action('admin_print_footer_scripts', 'my_wp_editor_colors_apply_on_add', 999);
