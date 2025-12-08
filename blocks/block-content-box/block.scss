@@ -2,6 +2,8 @@
 @use "../../styles/globals/mixins" as m;
 
 .content-box {
+  padding-block: var(--sp-sm);
+
   &__wrapper {
     padding: var(--sp-sm);
     background-color: rgb(var(--secondary-light));
