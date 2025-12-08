@@ -57,6 +57,9 @@ if (!function_exists('growthlabtheme01_setup')) {
 		*/
         add_theme_support('post-thumbnails', array('post', 'page', "team"));
 
+        //Add customize selective refresh for widgets
+        add_theme_support('customize-selective-refresh-widgets');
+
         // Custom Logo Support
         $defaults = array(
             'height'               => 200,
