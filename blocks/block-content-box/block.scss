@@ -1,0 +1,28 @@
+@use "../../styles/globals/variables" as v;
+@use "../../styles/globals/mixins" as m;
+
+.content-box {
+  &__wrapper {
+    padding: var(--sp-sm);
+    background-color: rgb(var(--secondary-light));
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+  }
+
+  &__title {
+    margin-bottom: var(--sp-xsm);
+    @include m.title(null, 3rem, 3vw, 3.2rem);
+  }
+
+  &__content {
+    display: inline-block;
+    text-align: center;
+
+    @media (min-width: v.$tablet) {
+      text-align: left;
+
+      & > *:nth-child(2) {
+        margin-top: var(--sp-xsm);
+      }
+    }
+  }
+}

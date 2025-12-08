@@ -283,7 +283,7 @@ function inline_main_critical_css()
 
     echo '<style id="main-css">' . $critical_css . '</style>';
 }
-add_action('wp_head', 'inline_main_critical_css', 1);
+add_action('wp_head', 'inline_main_critical_css', 20);
 
 
 function growthlabtheme01_scripts()
