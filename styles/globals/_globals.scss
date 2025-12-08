@@ -85,11 +85,7 @@ h1 *,
   font-size: 4rem;
 
   @media (min-width: v.$tablet) {
-    font-size: 6.4rem;
-  }
-
-  @media (min-width: v.$mdpi) {
-    font-size: 10.8rem;
+    font-size: 7rem;
   }
 }
 
@@ -345,7 +341,7 @@ img.bg-image {
     transform-origin: top;
     transform: scaleY(0);
     transition: 0.3s ease;
-    
+
     & > * {
       opacity: 0;
       transition: 0.3s ease;

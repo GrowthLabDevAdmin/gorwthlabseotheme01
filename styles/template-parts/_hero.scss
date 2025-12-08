@@ -96,7 +96,7 @@
 
     &__title {
       margin: 0;
-      @include m.title(rgb(var(--secondary)), 4rem, 6.5vw, 9rem, null, 1);
+      @include m.title(rgb(var(--secondary)), 4rem, 6.5vw, 7rem, null, 1);
     }
 
     &__btn {
