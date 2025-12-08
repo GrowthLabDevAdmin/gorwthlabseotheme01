@@ -482,6 +482,10 @@ img {
   width: fit-content;
   contain: content;
 
+  &:has(.aligncenter) {
+    margin: 0 auto;
+  }
+
   &:has(.alignleft) {
     float: left;
   }
