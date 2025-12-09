@@ -68,17 +68,17 @@ if (get_field('toggle_block')):
                         <div class="splide__list">
 
                             <?php
-                            if (isset($custom_carousel) && !empty($custom_carousel) && !$select_posts && $carousel_type === "") {
+                            if (isset($custom_carousel) && !empty($custom_carousel) && !$select_or_create_items && $carousel_type === "") {
                                 foreach ($custom_carousel as $item) {
                                     foreach ($item as $field => $data) $$field = $data;
 
                                     get_template_part('template-parts/default', 'card', array(
                                         "classes" => "splide__slide posts-carousel__card",
-                                        "picture" => $picture,
-                                        "title" => $title,
-                                        "content" => $content,
-                                        "link_url" => $link['url'],
-                                        "link_target" => $link['target'],
+                                        "picture" => $picture ?? '',
+                                        "title" => $title ?? '',
+                                        "content" => $content ?? '',
+                                        "link_url" => $link['url'] ?? '',
+                                        "link_target" => $link['target'] ?? '_self',
                                     ));
                                 }
                             } elseif (isset($query) && $query->have_posts()) {

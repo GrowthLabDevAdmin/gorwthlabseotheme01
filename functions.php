@@ -57,9 +57,6 @@ if (!function_exists('growthlabtheme01_setup')) {
 		*/
         add_theme_support('post-thumbnails', array('post', 'page', "team"));
 
-        //Add customize selective refresh for widgets
-        add_theme_support('customize-selective-refresh-widgets');
-
         // Custom Logo Support
         $defaults = array(
             'height'               => 200,
@@ -207,7 +204,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-dark',
-                    'color' => get_theme_mod('tertiary_color_dark', '#9D7A55'), 
+                    'color' => get_theme_mod('tertiary_color_dark', '#9D7A55'),
                 ),
                 array(
                     'name'  => __(
@@ -215,7 +212,7 @@ if (!function_exists('growthlabtheme01_setup')) {
                         'growthlabtheme01'
                     ),
                     'slug'  => 'tertiary-color-light',
-                    'color' => get_theme_mod('tertiary_color_light', '#DCAB77'), 
+                    'color' => get_theme_mod('tertiary_color_light', '#DCAB77'),
                 ),
                 array(
                     'name'  => __(
@@ -330,19 +327,10 @@ function growthlabtheme01_scripts()
         if (!is_page_template('page-templates/template-full-width.php')) {
             wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
         }
-
-        /* switch (get_page_template_slug()) {
-            case 'page-templates/template-about.php':
-                wp_enqueue_style('growthlabtheme01-template-about', get_template_directory_uri() . '/assets/scss/page-templates/template-about.css', array(), '1.0.1');
-                break;
-                } */
     }
     if (is_home() || is_archive()) {
         wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
         wp_enqueue_style('growthlabtheme01-blog', get_template_directory_uri() . '/styles/page-templates/template-blog-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-blog-min.css'));
-    }
-    if (is_404()) {
-        //wp_enqueue_style('growthlabtheme01-template-default');
     }
 }
 
@@ -480,3 +468,55 @@ function import_theme_images_to_folder()
     import_theme_images_to_folder();
     wp_die('Images imported to /uploads/theme-icons/!');
 } */
+// Forzar que las secciones de widgets permanezcan disponibles
+add_action('customize_register', function ($wp_customize) {
+    // Verificar y forzar panel de widgets
+    $widgets_panel = $wp_customize->get_panel('widgets');
+    if ($widgets_panel) {
+        $widgets_panel->active_callback = '__return_true';
+    }
+
+    // Forzar que las secciones específicas siempre estén activas
+    $sidebar_default = $wp_customize->get_section('sidebar-widgets-sidebar-default');
+    if ($sidebar_default) {
+        $sidebar_default->active_callback = '__return_true';
+    }
+
+    $sidebar_blog = $wp_customize->get_section('sidebar-widgets-sidebar-blog');
+    if ($sidebar_blog) {
+        $sidebar_blog->active_callback = '__return_true';
+    }
+}, 999);
+
+// Prevenir que el Customizer oculte secciones de widgets dinámicamente
+add_action('customize_controls_print_footer_scripts', function () {
+?>
+    <script>
+        (function($) {
+            wp.customize.bind('ready', function() {
+                // Forzar que los paneles de widgets permanezcan visibles
+                var widgetsPanel = wp.customize.panel('widgets');
+                if (widgetsPanel) {
+                    widgetsPanel.active.set(true);
+
+                    // Prevenir que se oculte
+                    widgetsPanel.active.validate = function() {
+                        return true;
+                    };
+                }
+
+                // Forzar secciones específicas
+                ['sidebar-widgets-sidebar-default', 'sidebar-widgets-sidebar-blog'].forEach(function(sectionId) {
+                    var section = wp.customize.section(sectionId);
+                    if (section) {
+                        section.active.set(true);
+                        section.active.validate = function() {
+                            return true;
+                        };
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+<?php
+}, 999);

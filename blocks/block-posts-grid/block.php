@@ -61,7 +61,20 @@ if (get_field('toggle_block')):
                 <div class="posts-grid__grid  <?= $grid_type ?>">
 
                     <?php
-                    if (isset($query) && $query->have_posts()) {
+                    if (isset($custom_grid) && !empty($custom_grid) && !$select_or_create_items && $grid_type === "custom") {
+                        foreach ($custom_grid as $item) {
+                            foreach ($item as $field => $data) $$field = $data;
+
+                            get_template_part('template-parts/default', 'card', array(
+                                "classes" => "posts-grid__card " . $grid_type,
+                                "picture" => $picture ?? '',
+                                "title" => $title ?? '',
+                                "content" => $content ?? '',
+                                "link_url" => $link['url'] ?? '',
+                                "link_target" => $link['target'] ?? '_self',
+                            ));
+                        }
+                    } elseif (isset($query) && $query->have_posts()) {
                         while ($query->have_posts()) {
                             $query->the_post();
 
@@ -123,19 +136,6 @@ if (get_field('toggle_block')):
                                     ));
                                     break;
                             }
-                        }
-                    } elseif (isset($custom_grid) && !empty($custom_grid)) {
-                        foreach ($custom_grid as $item) {
-                            foreach ($item as $field => $data) $$field = $data;
-
-                            get_template_part('template-parts/default', 'card', array(
-                                "classes" => "posts-grid__card " . $grid_type,
-                                "picture" => $picture,
-                                "title" => $title,
-                                "content" => $content,
-                                "link_url" => $link['url'],
-                                "link_target" => $link['target'],
-                            ));
                         }
                     }
                     ?>

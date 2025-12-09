@@ -69,28 +69,31 @@ function add_page_to_menus($post_id, $menu_entries = [])
             continue;
         }
 
-        // comprobar si ya existe en este menú
+        // Comprobar si ya existe en este menú
         $existing_item_id = growthlabtheme01_post_in_menu($post_id, $menu_id);
 
         $use_label = $label === '' ? $post->post_title : $label;
 
-        /* if ($existing_item_id) {
-            wp_update_nav_menu_item($menu_id, $existing_item_id, [
-                'menu-item-title' => sanitize_text_field($use_label),
-            ]);
-            $added[$menu_id] = $existing_item_id;
-        }  */
+        $menu_item_args = [
+            'menu-item-type' => 'post_type',
+            'menu-item-object' => $post->post_type,
+            'menu-item-object-id' => $post_id,
+            'menu-item-title' => sanitize_text_field($use_label),
+            'menu-item-status' => 'publish',
+        ];
+
         if ($existing_item_id) {
-            $menu_item_id = wp_update_nav_menu_item($menu_id, 0, [
-                'menu-item-type' => 'post_type',
-                'menu-item-object' => $post->post_type,
-                'menu-item-object-id' => $post_id,
-                'menu-item-title' => sanitize_text_field($use_label),
-                'menu-item-status' => 'publish',
-            ]);
-            if (!is_wp_error($menu_item_id)) {
-                $added[$menu_id] = $menu_item_id;
-            }
+            // Actualizar item existente
+            $menu_item_id = wp_update_nav_menu_item($menu_id, $existing_item_id, $menu_item_args);
+        } else {
+            // Crear nuevo item
+            $menu_item_id = wp_update_nav_menu_item($menu_id, 0, $menu_item_args);
+        }
+
+        if (!is_wp_error($menu_item_id)) {
+            $added[$menu_id] = $menu_item_id;
+        } else {
+            error_log('[growthlab] Error al procesar menú ' . $menu_id . ': ' . $menu_item_id->get_error_message());
         }
     }
 
@@ -137,7 +140,7 @@ function growthlabtheme01_remove_post_from_other_menus($post_id, $keep_menu_ids 
         $menu_term_id = (!empty($terms) && !is_wp_error($terms)) ? intval($terms[0]->term_id) : 0;
 
         if ($menu_term_id && in_array($menu_term_id, $keep_menu_ids, true)) {
-            // conservar
+            // Conservar este item
             continue;
         }
 
@@ -167,7 +170,6 @@ function growthlabtheme01_sync_menu_on_save($post_id, $post, $update)
     $entries = [];
     if (is_array($rows) && !empty($rows)) {
         foreach ($rows as $row) {
-            // Ajusta los nombres de subfield si en tu ACF son distintos
             $menu_id = 0;
             $label = '';
 
@@ -175,7 +177,6 @@ function growthlabtheme01_sync_menu_on_save($post_id, $post, $update)
                 if (isset($row['menu'])) {
                     $menu_id = absint($row['menu']);
                 } elseif (isset($row['add_page_to_menu'])) {
-                    // fallback si el subfield se llama distinto
                     $menu_id = absint($row['add_page_to_menu']);
                 }
 
