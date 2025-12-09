@@ -25,7 +25,7 @@ $post_id =  $post->ID;
 
         <?php
         $args = array('ID' => $post_id, 'classes' => 'post__sidebar');
-        get_sidebar('blog', null, $args);
+        get_sidebar('blog', $args);
         ?>
 
     </div>
