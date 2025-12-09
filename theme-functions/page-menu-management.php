@@ -2,6 +2,7 @@
 
 /**
  * Verificar si un post ya existe en un menú
+ * CORREGIDO: Usa comparación no estricta y simplifica la lógica
  */
 function growthlabtheme01_post_in_menu($post_id, $menu_id)
 {
@@ -12,14 +13,8 @@ function growthlabtheme01_post_in_menu($post_id, $menu_id)
     }
 
     foreach ($menu_items as $item) {
-        if (
-            $item->object_id === $post_id &&
-            (
-                $item->type === 'post_type' ||
-                ($item->object === 'page') ||
-                ($item->object === 'post')
-            )
-        ) {
+        // Comparación no estricta (== en lugar de ===) porque object_id puede ser string
+        if ($item->object_id == $post_id && $item->type === 'post_type') {
             return $item->ID;
         }
     }
@@ -74,6 +69,15 @@ function add_page_to_menus($post_id, $menu_entries = [])
 
         $use_label = $label === '' ? $post->post_title : $label;
 
+        // Log para debug (puedes comentar después)
+        error_log(sprintf(
+            '[growthlab] Post %d en menú %d - Existe: %s (ID: %s)',
+            $post_id,
+            $menu_id,
+            $existing_item_id ? 'SÍ' : 'NO',
+            $existing_item_id ?: 'N/A'
+        ));
+
         $menu_item_args = [
             'menu-item-type' => 'post_type',
             'menu-item-object' => $post->post_type,
@@ -85,9 +89,11 @@ function add_page_to_menus($post_id, $menu_entries = [])
         if ($existing_item_id) {
             // Actualizar item existente
             $menu_item_id = wp_update_nav_menu_item($menu_id, $existing_item_id, $menu_item_args);
+            error_log("[growthlab] Actualizando item existente $existing_item_id");
         } else {
             // Crear nuevo item
             $menu_item_id = wp_update_nav_menu_item($menu_id, 0, $menu_item_args);
+            error_log("[growthlab] Creando nuevo item");
         }
 
         if (!is_wp_error($menu_item_id)) {
@@ -144,6 +150,8 @@ function growthlabtheme01_remove_post_from_other_menus($post_id, $keep_menu_ids 
             continue;
         }
 
+        // Log para debug
+        error_log("[growthlab] Eliminando item {$item->ID} del menú {$menu_term_id}");
         wp_delete_post($item->ID, true);
     }
 }
@@ -162,6 +170,11 @@ function growthlabtheme01_sync_menu_on_save($post_id, $post, $update)
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) return;
     if (!current_user_can('edit_post', $post_id)) return;
+
+    // Evitar recursión infinita
+    static $running = false;
+    if ($running) return;
+    $running = true;
 
     // Leer el repeater: 'add_page_to_menus'
     $rows = get_field('add_page_to_menus', $post_id);
@@ -212,5 +225,7 @@ function growthlabtheme01_sync_menu_on_save($post_id, $post, $update)
         // Si no hay filas -> eliminar de todos los menús
         growthlabtheme01_remove_post_from_other_menus($post_id, []);
     }
+
+    $running = false;
 }
 add_action('save_post', 'growthlabtheme01_sync_menu_on_save', 20, 3);
