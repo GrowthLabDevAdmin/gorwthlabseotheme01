@@ -31,7 +31,7 @@ if (get_field('toggle_block')):
             ">
                 <?php if (isset($background_image) && $background_image && !$show_only_contact_form) img_print_picture_tag(img: $background_image, is_cover: true, classes: "contact-form__bg bg-image gradient-overlay"); ?>
 
-                <div class="contact-form__inner container <?php if (!$show_only_contact_form) "border-box" ?>">
+                <div class="contact-form__inner container <?php if (!$show_only_contact_form) echo "border-box" ?>">
 
                     <?php
                     if (!$show_only_contact_form):
