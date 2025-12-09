@@ -97,6 +97,7 @@ aside {
   }
 
   &__inner {
+    margin-bottom: var(--sp-md);
     padding: var(--sp-xsm);
     position: relative;
     z-index: 5;
