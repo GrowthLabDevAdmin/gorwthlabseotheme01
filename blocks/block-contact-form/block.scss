@@ -25,33 +25,40 @@ aside {
 
   $parent: &;
 
-  &--side-pic:not(:has(#{$parent}__title)):not(:has(#{$parent}__content)) {
-    overflow: visible;
-    content-visibility: inherit;
-
-    #{$parent}__layer {
-      margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
-      @media (min-width: v.$tablet) {
-        margin-top: calc(-1 * var(--sp-sm));
-      }
-
-      @media (min-width: v.$mdpi) {
-        margin-top: calc(-1 * var(--sp-lg));
-      }
-    }
-
-    #{$parent}__wrapper {
-      position: relative;
-    }
-
+  &--side-pic {
     #{$parent}__inner {
-      margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
-      @media (min-width: v.$tablet) {
-        margin-top: calc(-1 * var(--sp-sm));
+      padding: 0;
+      border: none;
+    }
+
+    &:not(:has(#{$parent}__title)):not(:has(#{$parent}__content)) {
+      overflow: visible;
+      content-visibility: inherit;
+
+      #{$parent}__layer {
+        margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
+        @media (min-width: v.$tablet) {
+          margin-top: calc(-1 * var(--sp-sm));
+        }
+
+        @media (min-width: v.$mdpi) {
+          margin-top: calc(-1 * var(--sp-lg));
+        }
       }
 
-      @media (min-width: v.$mdpi) {
-        margin-top: calc(-1 * var(--sp-lg));
+      #{$parent}__wrapper {
+        position: relative;
+      }
+
+      #{$parent}__inner {
+        margin-top: calc(-1 * (var(--sp-sm) + var(--sp-xsm)));
+        @media (min-width: v.$tablet) {
+          margin-top: calc(-1 * var(--sp-sm));
+        }
+
+        @media (min-width: v.$mdpi) {
+          margin-top: calc(-1 * var(--sp-lg));
+        }
       }
     }
   }
@@ -90,7 +97,7 @@ aside {
   }
 
   &__inner {
-    padding: var(--sp-xsm) 0;
+    padding: var(--sp-xsm);
     position: relative;
     z-index: 5;
     display: flex;
@@ -100,7 +107,7 @@ aside {
     gap: var(--sp-sm);
 
     @media (min-width: v.$mdpi) {
-      padding: var(--sp-sm) 0;
+      padding: var(--sp-sm);
     }
   }
 
