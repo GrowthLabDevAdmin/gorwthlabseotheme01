@@ -219,6 +219,9 @@ section.contact-form--side-pic:has(+ .site-footer .contact-form-footer) {
       @media (min-width: v.$tablet) {
         width: calc((3 * (100% / 2)) + var(--sp-xsm) / 4);
         flex: 0 0 calc((3 * (100% / 2)) + var(--sp-xsm) / 4);
+        right: 0;
+        left: auto;
+        transform: none;
       }
 
       @media (min-width: v.$mdpi) {
