@@ -69,7 +69,14 @@ if (get_field('toggle_block')):
 
                                     <?php
                                     foreach ($locations as $location) {
-                                        get_template_part('template-parts/location', 'card', array('location' => $location, "classes" => count($locations) > 1 ? "splide__slide" : ""));
+                                        get_template_part(
+                                            'template-parts/location',
+                                            'card',
+                                            array(
+                                                'location' => $location,
+                                                'classes' => (count($locations) > 1 && $locations_view_structure === "carousel") ? "splide__slide" : ""
+                                            )
+                                        );
                                     }
                                     ?>
 

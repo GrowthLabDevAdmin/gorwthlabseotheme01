@@ -93,7 +93,7 @@
                     <div class="splide__list">
                       <?php
                       foreach ($locations as $location) {
-                        get_template_part('template-parts/location', 'card', array('location' => $location));
+                        get_template_part('template-parts/location', 'card', array('location' => $location, 'classes' => 'splide__slide'));
                       }
                       ?>
                     </div>

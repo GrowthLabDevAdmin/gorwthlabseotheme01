@@ -164,6 +164,7 @@ section.contact-form--side-pic:has(+ .site-footer .contact-form-footer) {
     display: flex;
     align-items: stretch;
     justify-content: center;
+    flex-wrap: wrap;
     gap: calc(var(--sp-xsm) / 2);
 
     @media (min-width: v.$mdpi) {
@@ -192,8 +193,10 @@ section.contact-form--side-pic:has(+ .site-footer .contact-form-footer) {
     }
 
     &__carousel {
-      width: calc(50% - var(--sp-xsm) / 4);
-      flex: 0 0 calc(50% - var(--sp-xsm) / 4);
+      width: 100%;
+      flex: 0 0 100%;
+      /*  width: calc(50% - var(--sp-xsm) / 4);
+      flex: 0 0 calc(50% - var(--sp-xsm) / 4); */
 
       @media (min-width: v.$tablet) {
         width: calc((2 * (100% / 3)) - var(--sp-xsm) / 4);
@@ -207,10 +210,11 @@ section.contact-form--side-pic:has(+ .site-footer .contact-form-footer) {
     }
 
     &__arrows {
-      width: calc((100% * 2) + var(--sp-xsm));
+      //width: calc((100% * 2) + var(--sp-xsm));
       position: absolute;
-      top: calc(100% + var(--sp-xsm));
-      right: 0;
+      top: calc(100% + var(--sp-md));
+      left: 50%;
+      transform: translate(-50%, -50%);
 
       @media (min-width: v.$tablet) {
         width: calc((3 * (100% / 2)) + var(--sp-xsm) / 4);

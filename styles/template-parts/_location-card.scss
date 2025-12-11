@@ -107,7 +107,8 @@
   }
 
   &--first {
-    padding: 0;
+    /* padding: 0 */
+    padding: 0 calc((var(--sp-xsm)) / 2);
 
     p {
       font-size: 1.4rem;
