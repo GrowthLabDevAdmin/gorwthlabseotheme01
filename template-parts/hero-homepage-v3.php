@@ -5,9 +5,10 @@ if (!defined('ABSPATH')) {
 
 //Default Properties
 foreach ($args as $field => $content) $$field = $content;
+
 //Internal Fields
-foreach (get_field('hero_properties') as $key => $value) $$key = $value;
-$cta_button = isset($hero_cta_button) && $hero_cta_button ? $hero_cta_button :   $hero_cta_button_default;
+if (get_field('hero_properties') !== null && !empty(get_field('hero_properties'))) foreach (get_field('hero_properties') as $key => $value) $$key = $value;
+$cta_button = isset($hero_cta_button) && $hero_cta_button ? $hero_cta_button : $hero_cta_button_default;
 
 //Hero pictures
 if (isset($hero_pictures)) foreach ($hero_pictures as $type => $picture) $$type = $picture;
@@ -20,25 +21,36 @@ if (!$bg_desktop) $bg_desktop = [];
 if (!$bg_tablet) $bg_tablet = [];
 if (!$bg_mobile) $bg_mobile = [];
 
-?>
-<section id="hero-homepage" class="hero hero--homepage">
+//Title Values
+$hero_title_tag = $hero_title_tag ?? null;
+$hero_title = $hero_title ?? null;
 
-    <?php if (!empty($bg_desktop)) img_print_picture_tag(
-        img: $bg_desktop, 
-        tablet_img: $bg_tablet, 
-        mobile_img: $bg_mobile, 
-        is_cover: true, 
-        classes: "hero__bg-image bg-image gradient-overlay", 
-        is_priority: true
-        ); ?>
+if ($hero_title === null || $hero_title === "") {
+    if (is_home()) {
+        $hero_title = get_the_title(get_option('page_for_posts'));
+    } elseif (is_page() || is_single()) {
+        $hero_title = get_the_title($id);
+    } elseif (is_post_type_archive()) {
+        $hero_title = post_type_archive_title('', false);
+    } elseif (is_tax()) {
+        $hero_title = single_term_title('', false);
+    }
+}
+
+?>
+<section id="hero" class="hero hero--v3">
+
+    <?php if (!empty($bg_desktop)) img_print_picture_tag(img: $bg_desktop, tablet_img: $bg_tablet, mobile_img: $bg_mobile, is_cover: true, classes: "hero__bg-image bg-image gradient-overlay", is_priority: true); ?>
 
     <div class="hero__wrapper container">
         <div class="hero__content">
             <div class="content-box shadow-box border-box">
                 <div class="content-box__inner border-box tx-center">
+
                     <?php
                     print_title($hero_tagline, $hero_tagline_tag, "content-box__tagline");
                     print_title($hero_title, $hero_title_tag, "content-box__title", true);
+                    print_title($hero_subtitle, $hero_subtitle_tag, "content-box__subtitle", true);
                     ?>
 
                     <?php if ($cta_button): ?>
@@ -56,16 +68,7 @@ if (!$bg_mobile) $bg_mobile = [];
                     <?php endif ?>
                 </div>
             </div>
-
-            <?php if (isset($badges) && $badges && !empty($badges)): ?>
-                <div class="hero__badges">
-                    <?php foreach ($badges as $badge) {
-                        $pic = $badge['badge'];
-                        img_print_picture_tag(img: $pic, classes: "hero__badge", is_priority: false, max_size: "thumbnail");
-                    } ?>
-                </div>
-            <?php endif ?>
         </div>
-        <?php if ($side_portrait) img_print_picture_tag(img: $side_portrait, classes: "hero__side-portrait", is_priority: false, is_cover: true); ?>
     </div>
+
 </section>

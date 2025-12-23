@@ -130,6 +130,21 @@ if (!defined('ABSPATH')) {
             case 'default':
                 get_template_part('template-parts/hero', 'default', $args);
                 break;
+            case 'home_2':
+                get_template_part('template-parts/hero', 'homepage-v2', $args);
+                break;
+            case 'home_3':
+                get_template_part('template-parts/hero', 'homepage-v3', $args);
+                break;
+            case 'home_4':
+                get_template_part('template-parts/hero', 'homepage-v4', $args);
+                break;
+            case 'home_5':
+                get_template_part('template-parts/hero', 'homepage-v5', $args);
+                break;
+            case 'home_6':
+                get_template_part('template-parts/hero', 'homepage-v6', $args);
+                break;
             case 'nohero':
                 break;
             default:

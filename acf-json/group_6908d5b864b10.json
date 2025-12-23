@@ -35,7 +35,12 @@
                 "id": ""
             },
             "choices": {
-                "home": "Homepage Hero",
+                "home": "Homepage Hero Style 1",
+                "home_2": "Homepage Hero Style 2",
+                "home_3": "Homepage Hero Style 3",
+                "home_4": "Homepage Hero Style 4",
+                "home_5": "Homepage Hero Style 5",
+                "home_6": "Homepage Hero Style 6",
                 "default": "Default Hero",
                 "nohero": "No Hero"
             },
@@ -86,15 +91,13 @@
                         [
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "home"
-                            }
-                        ],
-                        [
+                                "operator": "!=",
+                                "value": "default"
+                            },
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "nice"
+                                "operator": "!=",
+                                "value": "home_2"
                             }
                         ]
                     ],
@@ -122,15 +125,13 @@
                         [
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "home"
-                            }
-                        ],
-                        [
+                                "operator": "!=",
+                                "value": "default"
+                            },
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "nice"
+                                "operator": "!=",
+                                "value": "home_2"
                             }
                         ]
                     ],
@@ -219,15 +220,20 @@
                     "label": "Hero Subtitle",
                     "name": "hero_subtitle",
                     "aria-label": "",
-                    "type": "text",
+                    "type": "textarea",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": [
                         [
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "nice"
+                                "operator": "!=",
+                                "value": "home"
+                            },
+                            {
+                                "field": "field_6908d895c0fe4",
+                                "operator": "!=",
+                                "value": "default"
                             }
                         ]
                     ],
@@ -239,9 +245,9 @@
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
+                    "rows": "",
                     "placeholder": "",
-                    "prepend": "",
-                    "append": ""
+                    "new_lines": ""
                 },
                 {
                     "key": "field_6908dcf1c0fe8",
@@ -255,8 +261,13 @@
                         [
                             {
                                 "field": "field_6908d895c0fe4",
-                                "operator": "==",
-                                "value": "nice"
+                                "operator": "!=",
+                                "value": "home"
+                            },
+                            {
+                                "field": "field_6908d895c0fe4",
+                                "operator": "!=",
+                                "value": "default"
                             }
                         ]
                     ],
@@ -294,6 +305,38 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0
+                },
+                {
+                    "key": "field_6948def6f05f5",
+                    "label": "Hero CTA Button 2",
+                    "name": "hero_cta_button_2",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_6908d895c0fe4",
+                                "operator": "==",
+                                "value": "home_4"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_6908d895c0fe4",
+                                "operator": "==",
+                                "value": "home_6"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -416,7 +459,14 @@
                                     {
                                         "field": "field_6908d895c0fe4",
                                         "operator": "==",
-                                        "value": "nice"
+                                        "value": "home_4"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "field_6908d895c0fe4",
+                                        "operator": "==",
+                                        "value": "home_6"
                                     }
                                 ]
                             ],
@@ -451,13 +501,6 @@
                                         "field": "field_6908d895c0fe4",
                                         "operator": "==",
                                         "value": "home"
-                                    }
-                                ],
-                                [
-                                    {
-                                        "field": "field_6908d895c0fe4",
-                                        "operator": "==",
-                                        "value": "nice"
                                     }
                                 ]
                             ],
@@ -698,5 +741,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1765160110
+    "modified": 1766383609
 }
