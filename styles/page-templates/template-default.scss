@@ -3,7 +3,7 @@
 @use "../template-parts/sidebar";
 
 .page,
-.post {
+.single {
   &__inner {
     padding: var(--sp-lg) 0;
   }

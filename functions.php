@@ -327,6 +327,9 @@ function growthlabtheme01_scripts()
         if (!is_page_template('page-templates/template-full-width.php')) {
             wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
         }
+        if (is_singular('team')) {
+            wp_enqueue_style('growthlabtheme01-template-team-member', get_template_directory_uri() . '/styles/page-templates/template-team-member-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-team-member-min.css'));
+        }
     }
     if (is_home() || is_archive()) {
         wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
