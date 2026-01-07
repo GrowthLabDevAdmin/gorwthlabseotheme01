@@ -19,7 +19,6 @@ $includes = [
     'theme-functions/svg-support.php',
     'theme-functions/picture-optimization.php',
     'theme-functions/tiny-mce.php',
-    'theme-functions/page-menu-management.php',
 ];
 
 foreach ($includes as $file) {
@@ -327,12 +326,9 @@ function growthlabtheme01_scripts()
         if (!is_page_template('page-templates/template-full-width.php')) {
             wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
         }
-<<<<<<< HEAD
-=======
         if (is_singular('team')) {
             wp_enqueue_style('growthlabtheme01-template-team-member', get_template_directory_uri() . '/styles/page-templates/template-team-member-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-team-member-min.css'));
         }
->>>>>>> 1a1c395d1b87d8763cde298b0961287da44b9e95
     }
     if (is_home() || is_archive()) {
         wp_enqueue_style('growthlabtheme01-template-default', get_template_directory_uri() . '/styles/page-templates/template-default-min.css', array(),  filemtime(get_template_directory() . '/styles/page-templates/template-default-min.css'));
