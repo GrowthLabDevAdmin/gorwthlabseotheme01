@@ -26,27 +26,40 @@
 
 ### Local Development
 
-# 1. Clone the repository
+1. Clone the repository:
+
+```bash
 git clone https://github.com/GrowthLabDevAdmin/gorwthlabseotheme01.git
 cd wp-content/themes/growthlabtheme01
+```
 
-# 2. Install Node dependencies
+2. Install Node dependencies:
+
+```bash
 npm install
+```
 
-# 3. Compile assets (CSS/JS)
+3. Compile assets (CSS/JS):
+
+```bash
 npx gulp
+```
 
-# 4. Activate the theme from WordPress Admin
-# Dashboard > Appearance > Themes > Activate "GrowthLab Theme 01"
+4. Activate the theme from WordPress Admin:
 
-Production
-Upload theme files to /wp-content/themes/growthlabtheme01/
-Activate theme from WordPress Admin
-Import ACF JSON (if needed): Dashboard > ACF > Tools > Import
-Clear cache from plugins and CDN
+- Dashboard → Appearance → Themes → Activate "GrowthLab Theme 01"
+
+### Production
+
+- Upload theme files to `/wp-content/themes/growthlabtheme01/`
+- Activate theme from WordPress Admin
+- Import ACF JSON (if needed): Dashboard → ACF → Tools → Import
+- Clear cache from plugins and CDN
+
 
 # 📁 Project Structure
 
+```text
 growthlabtheme01/
 ├── blocks/                      # Dynamic Gutenberg blocks
 │   ├── block-contact-form/      # Contact form block
@@ -107,7 +120,7 @@ growthlabtheme01/
 ├── [gulpfile.js]                  # Gulp configuration
 ├── [package.json]                 # Node dependencies
 └── [README.md]                    # This file
-
+```
 
 # 🎨 Available Blocks
 The theme includes 10+ dynamic blocks ready to use in the Gutenberg editor:
@@ -242,6 +255,7 @@ The theme uses **Gulp** to automate asset compilation, minification, and optimiz
 
 ### Available Gulp Commands
 
+```bash
 # Run all tasks (compile SCSS, minify CSS/JS, optimize images)
 npx gulp
 
@@ -265,6 +279,7 @@ npx gulp clean
 
 # Run all tasks once (no watch)
 npx gulp default
+```
 
 # Gulpfile Configuration
 Location: gulpfile.js (root directory)
