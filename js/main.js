@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   blocksInContent && extractBlocks();
 
-  footerLocations && footerLocationsCarousel();
+  if(footerLocations && footerLocations.length > 1) footerLocationsCarousel();
 
   document.querySelectorAll(".sidebar").forEach((el) => {
     if (!el.querySelector("*")) el.classList.add("is-empty");
