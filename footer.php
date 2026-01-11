@@ -88,25 +88,31 @@
             if (!empty($locations)):
             ?>
               <div class="locations-cards__carousel">
-                <div class="splide">
-                  <div class="splide__track">
-                    <div class="splide__list">
+
+                <?php if (count($locations) > 1): ?>
+                  <div class="splide">
+                    <div class="splide__track">
+                      <div class="splide__list">
+                      <?php endif; ?>
+
                       <?php
                       foreach ($locations as $location) {
                         get_template_part('template-parts/location', 'card', array('location' => $location, 'classes' => 'splide__slide'));
                       }
                       ?>
+                      
+                      <?php if (count($locations) > 1 && $locations_view_structure === "carousel"): ?>
+                      </div>
                     </div>
+                    <?php
+                        get_template_part('template-parts/splide', 'navigation', array(
+                          'nav_link' => $locations_page_link,
+                          'classes' => 'locations-cards__arrows'
+                        ));
+                    ?>
                   </div>
+                <?php endif ?>
 
-                  <?php
-                  get_template_part('template-parts/splide', 'navigation', array(
-                    'nav_link' => $locations_page_link,
-                    'classes' => 'locations-cards__arrows'
-                  ));
-                  ?>
-
-                </div>
               </div>
             <?php
             endif;
