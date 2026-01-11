@@ -20,18 +20,33 @@ add_filter('block_categories_all', 'growthlabtheme01_blocks_category', 10, 2);
 // Register Block Types
 function register_acf_blocks()
 {
-    $paths = [
-        get_template_directory() . '../blocks/*/block.json',
-        get_stylesheet_directory() . '/blocks/*/block.json',
-    ];
+    $block_files = [];
 
-    foreach ($paths as $path) {
-        foreach (glob($path) ?: [] as $block) {
-            register_block_type(dirname($block));
+    // 1. Parent blocks
+    foreach (glob(get_template_directory() . '/blocks/*/block.json') ?: [] as $block) {
+        $data = json_decode(file_get_contents($block), true);
+
+        if (!empty($data['name'])) {
+            $block_files[$data['name']] = dirname($block);
         }
+    }
+
+    // 2. Child blocks (override)
+    foreach (glob(get_stylesheet_directory() . '/blocks/*/block.json') ?: [] as $block) {
+        $data = json_decode(file_get_contents($block), true);
+
+        if (!empty($data['name'])) {
+            $block_files[$data['name']] = dirname($block);
+        }
+    }
+
+    // 3. Register all found blocks
+    foreach ($block_files as $block_dir) {
+        register_block_type($block_dir);
     }
 }
 add_action('init', 'register_acf_blocks', 5);
+
 
 /**
  * Load block assets only when block is present on the page
