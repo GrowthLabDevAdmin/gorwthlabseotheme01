@@ -20,10 +20,15 @@ add_filter('block_categories_all', 'growthlabtheme01_blocks_category', 10, 2);
 // Register Block Types
 function register_acf_blocks()
 {
-    $blocks = glob(get_stylesheet_directory() . '/blocks/*/block.json');
+    $paths = [
+        get_template_directory() . '../blocks/*/block.json',
+        get_stylesheet_directory() . '/blocks/*/block.json',
+    ];
 
-    foreach ($blocks as $block) {
-        register_block_type(dirname($block));
+    foreach ($paths as $path) {
+        foreach (glob($path) ?: [] as $block) {
+            register_block_type(dirname($block));
+        }
     }
 }
 add_action('init', 'register_acf_blocks', 5);
@@ -144,25 +149,25 @@ if (function_exists('acf_add_options_page') && current_user_can('manage_options'
 }
 
 
-// Customize ACF JSON Save and Load Points
 function my_acf_json_save_point($path)
 {
-    // update path
-    $path = get_stylesheet_directory() . '/acf-json';
-
-    // return
-    return $path;
+    // Always save in child theme
+    return get_stylesheet_directory() . '/acf-json';
 }
 
 function my_acf_json_load_point($paths)
 {
-    // remove original path (optional)
+    // Remove Default Path
     unset($paths[0]);
 
-    // append path
-    $paths[] = get_stylesheet_directory() . '/acf-json';
+    // Parent First
+    $paths[] = get_template_directory() . '../acf-json';
 
-    // return
+    // Child Override
+    if (get_stylesheet_directory() !== get_template_directory()) {
+        $paths[] = get_stylesheet_directory() . '/acf-json';
+    }
+
     return $paths;
 }
 

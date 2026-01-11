@@ -14,29 +14,29 @@ if (!defined('ABSPATH')) {
                     <?php
                     switch ($args["source"]) {
                         case 'fb':
-                            include get_stylesheet_directory() . '/assets/icons/icon-facebook.svg';
+                            include get_template_directory() . '/assets/icons/icon-facebook.svg';
                             break;
                         case 'inst':
-                            include get_stylesheet_directory() . '/assets/icons/icon-instagram.svg';
+                            include get_template_directory() . '/assets/icons/icon-instagram.svg';
                             break;
                         case 'gg':
-                            include get_stylesheet_directory() . '/assets/icons/icon-google.svg';
+                            include get_template_directory() . '/assets/icons/icon-google.svg';
                             break;
                         case 'lin':
-                            include get_stylesheet_directory() . '/assets/icons/icon-linkedin.svg';
+                            include get_template_directory() . '/assets/icons/icon-linkedin.svg';
                             break;
                         case 'x':
-                            include get_stylesheet_directory() . '/assets/icons/icon-twitter-x.svg';
+                            include get_template_directory() . '/assets/icons/icon-twitter-x.svg';
                             break;
                         default:
-                            include get_stylesheet_directory() . '/assets/icons/icon-google.svg';
+                            include get_template_directory() . '/assets/icons/icon-google.svg';
                             break;
                     }
                     ?>
                 </div>
 
                 <div class="testimonial-card__quote">
-                    <?php include get_stylesheet_directory() . '/assets/icons/icon-quote.svg'; ?>
+                    <?php include get_template_directory() . '/assets/icons/icon-quote.svg'; ?>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@ if (!defined('ABSPATH')) {
                 <?php
                 $i = 1;
                 while ($i <= 5) {
-                    include get_stylesheet_directory() . '/assets/icons/icon-star.svg';
+                    include get_template_directory() . '/assets/icons/icon-star.svg';
                     $i++;
                 }
                 ?>

@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
         if (isset($args['picture']) && $args['picture']) {
             img_print_picture_tag(img: $args["picture"], max_size: "medium", classes: "post-card__pic");
         } else {
-            include get_stylesheet_directory() . '/assets/icons/icon-file-image.svg';
+            include get_template_directory() . '../assets/icons/icon-file-image.svg';
         }
         if ($args['link_url']) {
             echo "</a>";

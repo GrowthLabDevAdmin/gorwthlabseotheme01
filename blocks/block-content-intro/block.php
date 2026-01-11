@@ -43,7 +43,7 @@ if (get_field('toggle_block')):
                             ?>
 
                                 <div class="content-intro__caption">
-                                    <?php include get_stylesheet_directory() . '/assets/img/ampersand-symbol.svg'; ?>
+                                    <?php include get_stylesheet_directory() . '/assets/img/separator-symbol.svg'; ?>
                                     <p><?= $featured_image['picture_caption'] ?></p>
                                 </div>
 
@@ -72,7 +72,7 @@ if (get_field('toggle_block')):
                             ?>
 
                                 <div class="content-intro__caption">
-                                    <?php include get_stylesheet_directory() . '/assets/img/ampersand-symbol.svg'; ?>
+                                    <?php include get_stylesheet_directory() . '/assets/img/separator-symbol.svg'; ?>
                                     <p><?= $featured_image['picture_caption'] ?></p>
                                 </div>
 

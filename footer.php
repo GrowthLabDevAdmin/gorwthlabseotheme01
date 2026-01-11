@@ -100,7 +100,7 @@
                         get_template_part('template-parts/location', 'card', array('location' => $location, 'classes' => 'splide__slide'));
                       }
                       ?>
-                      
+
                       <?php if (count($locations) > 1 && $locations_view_structure === "carousel"): ?>
                       </div>
                     </div>
@@ -154,7 +154,7 @@
           ?>
 
           <a href="https://growthlabseo.com/" target="_blank" class="copyright-footer__logo">
-            <img src="<?= get_stylesheet_directory_uri() . "/assets/img/Growth-Lab-Logo.png" ?>" alt="Growth Lab SEO Logo" width="270" height="50">
+            <img src="<?= get_template_directory_uri() . "/assets/img/Growth-Lab-Logo.png" ?>" alt="Growth Lab SEO Logo" width="270" height="50">
           </a>
 
           <p class="copyright-footer__advertisement tx-center">
