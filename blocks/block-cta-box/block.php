@@ -9,7 +9,7 @@ if (get_field('toggle_block')):
 
     <section
         id="<?= $block_id ?? "" ?>"
-        class="block cta-box <?= $box_position ?? "" ?> <?= $block_style ?? "" ?>  <?php if ($box_position === "within" || $box_position === "full") echo "bg-bicolor"; ?>"
+        class="block cta-box <?= $box_position ?? "" ?> <?= $block_style ?? "" ?>  <?php if ($box_position === "within" || ($box_position === "full" && !$background_image)) echo "bg-bicolor"; ?>"
         <?php if (isset($extract_block_from_content) && $extract_block_from_content) echo "data-extract='$place'"; ?>>
 
         <?php
