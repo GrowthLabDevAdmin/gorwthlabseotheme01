@@ -38,7 +38,7 @@ if (get_field('toggle_block')):
 
                         <?php
                         print_title($title, $title_tag, "cta-box__title");
-                        if (isset($block_style) && $block_style !== "light") get_template_part('template-parts/ampersand', 'separator', array('classes' => 'cta-box__separator'));
+                        if ($box_position === "float" || ($box_position === "within" &&isset($block_style) && $block_style !== "light")) get_template_part('template-parts/ampersand', 'separator', array('classes' => 'cta-box__separator'));
                         ?>
                     </div>
 

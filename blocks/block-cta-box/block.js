@@ -42,7 +42,7 @@ function setBoxPosition() {
           const isFooter = nextSibling.classList.contains("site-footer");
           const paddingTop = `${bottomPosition + 60}px`;
 
-          nextSibling.style.marginTop = `${-boxHeight}px`;
+          nextSibling.style.marginTop = `${-boxHeight - 30}px`;
 
           if (isFooter && contactFormFooterWrapper) {
             contactFormFooterWrapper.style.paddingTop = paddingTop;
