@@ -39,9 +39,11 @@
                 <?php gravity_form($contact_form, display_title: false, display_description: false); ?>
               </div>
 
-              <div class="contact-form__message formatted-text tx-center flex-center">
-                <?= $message_before_submit ?>
-              </div>
+              <?php if ($message_before_submit && $message_before_submit !== ''): ?>
+                <div class="contact-form__message formatted-text tx-center flex-center">
+                  <?= $message_before_submit ?>
+                </div>
+              <?php endif; ?>
 
             </div>
 
