@@ -470,6 +470,7 @@ function import_theme_images_to_folder()
     import_theme_images_to_folder();
     wp_die('Images imported to /uploads/theme-icons/!');
 } */
+
 // Forzar que las secciones de widgets permanezcan disponibles
 add_action('customize_register', function ($wp_customize) {
     // Verificar y forzar panel de widgets

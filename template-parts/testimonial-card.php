@@ -10,30 +10,31 @@ if (!defined('ABSPATH')) {
 
             <div class="testimonial-card__header">
                 <?php if (isset($args['picture']) && $args['picture']) img_print_picture_tag(img: $args['picture'], classes: "testimonial-card__pic"); ?>
-                <div class="testimonial-card__src">
-                    <?php
-                    switch ($args["source"]) {
-                        case 'fb':
-                            include get_template_directory() . '/assets/icons/icon-facebook.svg';
-                            break;
-                        case 'inst':
-                            include get_template_directory() . '/assets/icons/icon-instagram.svg';
-                            break;
-                        case 'gg':
-                            include get_template_directory() . '/assets/icons/icon-google.svg';
-                            break;
-                        case 'lin':
-                            include get_template_directory() . '/assets/icons/icon-linkedin.svg';
-                            break;
-                        case 'x':
-                            include get_template_directory() . '/assets/icons/icon-twitter-x.svg';
-                            break;
-                        default:
-                            include get_template_directory() . '/assets/icons/icon-google.svg';
-                            break;
-                    }
-                    ?>
-                </div>
+                <?php if ($args["source"]): ?>
+                    <div class="testimonial-card__src">
+                        <?php
+                        switch ($args["source"]) {
+                            case 'fb':
+                                include get_template_directory() . '/assets/icons/icon-facebook.svg';
+                                break;
+                            case 'inst':
+                                include get_template_directory() . '/assets/icons/icon-instagram.svg';
+                                break;
+                            case 'gg':
+                                include get_template_directory() . '/assets/icons/icon-google.svg';
+                                break;
+                            case 'lin':
+                                include get_template_directory() . '/assets/icons/icon-linkedin.svg';
+                                break;
+                            case 'x':
+                                include get_template_directory() . '/assets/icons/icon-twitter-x.svg';
+                                break;
+                            default:
+                                break;
+                        }
+                        ?>
+                    </div>
+                <?php endif ?>
 
                 <div class="testimonial-card__quote">
                     <?php include get_template_directory() . '/assets/icons/icon-quote.svg'; ?>
