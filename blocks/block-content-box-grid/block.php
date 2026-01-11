@@ -91,6 +91,6 @@ if (get_field('toggle_block')):
 
     </section>
 
-    <?php
+<?php
 endif;
-    ?>;
+?>
