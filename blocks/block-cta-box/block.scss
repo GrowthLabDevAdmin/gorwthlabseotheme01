@@ -233,6 +233,11 @@
     p {
       color: rgb(var(--secondary));
     }
+    ul {
+      li {
+        color: rgb(var(--secondary));
+      }
+    }
   }
 
   &__btn {
