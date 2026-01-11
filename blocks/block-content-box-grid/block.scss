@@ -26,12 +26,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
     gap: var(--sp-xsm);
-
-    &:has(.content-box--menu-item) {
-      justify-content: flex-start;
-    }
   }
 }
 
