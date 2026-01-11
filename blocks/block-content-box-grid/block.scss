@@ -27,16 +27,16 @@
     flex-wrap: wrap;
     align-items: stretch;
     justify-content: center;
-    gap: var(--sp-sm);
+    gap: var(--sp-xsm);
 
     &:has(.content-box--menu-item) {
       justify-content: flex-start;
-      gap: var(--sp-xsm);
     }
   }
 }
 
 .content-box {
+  max-width: 61.2rem;
   min-width: 280px;
   height: auto;
   padding-block: var(--sp-xsm);
