@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
         if (isset($args['picture']) && $args['picture'] && $args['picture'] !== '') {
             img_print_picture_tag(img: $args["picture"], max_size: "medium", classes: "default-card__pic");
         } else {
-            include get_template_directory() . '../assets/icons/icon-file-image.svg';
+            include get_template_directory() . '/assets/icons/icon-file-image.svg';
         }
         if ($args['link_url'] && $args['link_url'] !== '') {
             echo "<span>" . $args['title'] . "</span></a>";

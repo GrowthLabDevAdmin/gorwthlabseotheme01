@@ -103,7 +103,7 @@
                       }
                       ?>
 
-                      <?php if (count($locations) > 1 && $locations_view_structure === "carousel"): ?>
+                      <?php if (count($locations) > 1 ): ?>
                       </div>
                     </div>
                     <?php
