@@ -339,6 +339,16 @@ function growthlabtheme01_scripts()
 
 add_action('wp_enqueue_scripts', 'growthlabtheme01_scripts');
 
+// Add theme and parent/child theme classes to body
+add_filter('body_class', function ($classes) {
+    if (is_child_theme()) {
+        $theme = wp_get_theme();
+        $classes[] = 'theme-child-' . sanitize_html_class($theme->get_stylesheet());
+        $classes[] = 'theme-parent-' . sanitize_html_class($theme->get_template());
+    }
+    return $classes;
+});
+
 /**
  * Register widget area.
  *
