@@ -38,7 +38,7 @@ if (get_field('toggle_block')):
 
                                             <?= img_generate_picture_tag(
                                                 img: $logo['logo'],
-                                                max_size: "thumbnail",
+                                                max_size: "featured-small",
                                                 classes: "logo__pic"
                                             ); ?>
 
