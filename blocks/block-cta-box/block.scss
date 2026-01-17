@@ -180,6 +180,7 @@
   }
 
   &__box {
+    max-width: 100%;
     padding: var(--sp-xsm);
     background-color: rgb(var(--primary));
     contain: layout;
@@ -210,7 +211,7 @@
 
   &__title {
     min-width: 250px;
-    @include m.title(rgb(var(--secondary)), 9rem, 5.6vw, 4rem);
+    @include m.title(rgb(var(--secondary)), 4rem, 5.6vw, 7rem);
   }
 
   &__pretitle {
